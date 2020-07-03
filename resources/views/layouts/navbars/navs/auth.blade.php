@@ -1,58 +1,38 @@
 <nav class="navbar navbar-expand-lg " color-on-scroll="500">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"> {{ $navName }} </a>
+        <a class="navbar-brand" href="#"> LEADBOX MANAGEMENT SYSTEM </a>
         <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar burger-lines"></span>
             <span class="navbar-toggler-bar burger-lines"></span>
             <span class="navbar-toggler-bar burger-lines"></span>
         </button>
         <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <ul class="nav navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-link" data-toggle="dropdown">
-                        <i class="nc-icon nc-palette"></i>
-                        <span class="d-lg-none">{{ __('Dashboard') }}</span>
+            
+            <ul class="navbar-nav   d-flex align-items-center mr-4">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="no-icon">{{ __('Links') }}</span>
                     </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" target="_blank" href="https://www.cruisertravels.com">CRUISER TRAVELS</a>
+                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">REPORT A NEW BOOKING</a>
+                      <a class="dropdown-item" target="_blank" href="http://www.cruisertravels.com/ta-training.html">TRAINING VIDEOS</a>
+                      <a class="dropdown-item" target="_blank" href="https://WWW.GOCCL.COM">CARNIVAL</a>
+                      <a class="dropdown-item" target="_blank" href="https://WWW.CRUISINGPOWER.COM">ROYAL/CELEBRITY/AZAMARA</a>
+                      <a class="dropdown-item" target="_blank" href="https://WWW.FIRSTMATES.COM">VIRGIN VOYAGES</a>
+                      <a class="dropdown-item" target="_blank" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/SCDO/login.jsp">SABRE GDS </a>
+                      <a class="dropdown-item" href=" https://www.vaxvacationaccess.com">VAX LAND BDS </a>
+                      <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a>
+                      <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a>
+                      <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
+                      <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">UPLIFT</a>
+                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a>
+                    </div>
                 </li>
-                <li class="dropdown nav-item">
-                    <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                        <i class="nc-icon nc-planet"></i>
-                        <span class="notification">5</span>
-                        <span class="d-lg-none">{{ __('Notification') }}</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <a class="dropdown-item" href="#">{{ __('Notification 1') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Notification 2') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Notification 3') }}3</a>
-                        <a class="dropdown-item" href="#">{{ __('Notification 4') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Another notification') }}</a>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nc-icon nc-zoom-split"></i>
-                        <span class="d-lg-block">&nbsp;{{ __('Search') }}</span>
-                    </a>
-                </li>
-            </ul>
-            <ul class="navbar-nav   d-flex align-items-center">
                 <li class="nav-item">
                     <a class="nav-link" href=" {{route('profile.edit') }} ">
                         <span class="no-icon">{{ __('Account') }}</span>
                     </a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="no-icon">{{ __('Dropdown') }}</span>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">{{ __('Action') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Another action') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Something') }}</a>
-                        <a class="dropdown-item" href="#">{{ __('Something else here') }}</a>
-                        <div class="divider"></div>
-                        <a class="dropdown-item" href="#">{{ __('Separated link') }}</a>
-                    </div>
                 </li>
                 <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">

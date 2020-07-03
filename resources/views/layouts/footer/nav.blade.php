@@ -3,24 +3,16 @@
         <nav>
             <ul class="footer-menu">
                 <li>
-                    <a href="https://www.creative-tim.com" class="nav-link" target="_blank">{{ __('Creative Tim') }}</a>
+                    <a href="https://www.cruisertravels.com/" class="nav-link" target="_blank">{{ __('Cruiser Travels') }}</a>
                 </li>
-                <li>
-                    <a href="https://www.updivision.com" class="nav-link" target="_blank">{{ __('Updivision') }}</a>
-                </li>
-                <li>
-                    <a href="https://www.creative-tim.com/presentation" class="nav-link" target="_blank">{{ __('About Us') }}</a>
-                </li>
-                <li>
-                    <a href="http://blog.creative-tim.com" class="nav-link" target="_blank">{{ __('Blog') }}</a>
-                </li>
+                
             </ul>
             <p class="copyright text-center">
                 ©
                 <script>
                     document.write(new Date().getFullYear())
                 </script>
-                <a href="http://www.creative-tim.com">{{ __('Creative Tim') }}</a> &amp; <a href="https://www.updivision.com">{{ __('Updivision') }}</a> {{ __(', made with love for a better web') }}
+                <a href="https://visiontocode.com" target="_blank">{{ __('Vision To Code,') }}</a> {{ __(' made with love for Cruiser Travels') }}
             </p>
         </nav>
     </div>

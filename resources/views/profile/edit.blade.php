@@ -96,31 +96,12 @@
                             <div class="card-body">
                                 <div class="author">
                                     <a href="#">
-                                        <img class="avatar border-gray" src="{{ asset('light-bootstrap/img/faces/face-3.jpg') }}" alt="...">
-                                        <h5 class="title">{{ __('Mike Andrew') }}</h5>
+                                        <img class="avatar border-gray" src="{{ asset('light-bootstrap/img/default-avatar.png') }}" alt="...">
+                                        <h5 class="title">{{ __('Chris Lounder') }}</h5>
                                     </a>
-                                    <p class="description">
-                                        {{ __('michael24') }}
-                                    </p>
-                                </div>
-                                <p class="description text-center">
-                                {{ __(' "Lamborghini Mercy') }}
-                                    <br> {{ __('Your chick she so thirsty') }}
-                                    <br> {{ __('I am in that two seat Lambo') }}
-                                </p>
+                                    
                             </div>
-                            <hr>
-                            <div class="button-container mr-auto ml-auto">
-                                <button href="#" class="btn btn-simple btn-link btn-icon">
-                                    <i class="fa fa-facebook-square"></i>
-                                </button>
-                                <button href="#" class="btn btn-simple btn-link btn-icon">
-                                    <i class="fa fa-twitter"></i>
-                                </button>
-                                <button href="#" class="btn btn-simple btn-link btn-icon">
-                                    <i class="fa fa-google-plus-square"></i>
-                                </button>
-                            </div>
+                        
                         </div>
                     </div>
                 </div>

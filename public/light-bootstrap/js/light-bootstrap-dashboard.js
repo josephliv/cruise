@@ -112,7 +112,7 @@ lbd = {
             $nav_content.insertBefore($sidebar_nav);
             $navbar_form.insertBefore($nav_content);
 
-            $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").click(function(event) {
+            $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").onmouseover(function(event) {
                 event.stopPropagation();
 
             });

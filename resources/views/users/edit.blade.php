@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">{{ __('Edit User') }}</h3>
+                                    <h3 class="mb-0">{{ __('Edit Agent') }}</h3>
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ route('user.index') }}" class="btn btn-sm btn-default">{{ __('Back to list') }}</a>
@@ -51,10 +51,21 @@
                                         <label class="form-control-label" for="input-password-confirmation">{{ __('Confirm Password') }}</label>
                                         <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="">
                                     </div>
+                                    <!-- Additional settings according to scope -->
+                                    <div class="">
+                                        <label>Leads Allowed</label>
+                                        <input type="number" class="p-1 mt-4" placeholder="50">
+                                        <form action="/">
+                                          <label for="time-set">Select time period:</label>
+                                          <input type="time" id="time-set" name="time-set"> to <input type="time" id="time-set" name="time-set">
+                                            <input type="submit">
+                                        </form>
 
+                                    </div>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-default mt-4">{{ __('Save changes') }}</button>
                                     </div>
+                                    
                                 </div>
                             </form>
                         </div>
