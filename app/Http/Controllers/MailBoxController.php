@@ -23,7 +23,7 @@ class MailBoxController extends Controller
 	//Get all Mailboxes
 	/** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
     $aFolder = $oClient->getFolders();
-    dump($aFolder);
+    dd($aFolder);
 
 	//Loop through every Mailbox
 	/** @var \Webklex\IMAP\Folder $oFolder */
