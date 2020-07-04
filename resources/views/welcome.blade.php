@@ -6,7 +6,7 @@
             <div class="container">
                 <div class="row justify-content-center">
                     <div class="col-lg-7 col-md-8">
-                        <h1 class="text-white text-center mb-4">{{ __('Welcome to Leadbox Management System.') }}</h1>
+                        <h2 class="text-white text-center mb-4">Welcome to The <br> Leadbox Management System.</h2>
                         <hr style=" border-color: #bbb; margin: 2em;">
                     </div>
                 </div>
@@ -26,8 +26,8 @@
                         <a href=" https://www.vaxvacationaccess.com">VAX LAND BDS </a> |
                         <a target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a> |
                         <a target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a> |
-                        <a target="_blank" href="www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a> |
-                        <a target="_blank" href="www.americanexpress.com/asdonline">UPLIFT</a>
+                        <a target="_blank" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a> |
+                        <a target="_blank" href="http://www.americanexpress.com/asdonline">UPLIFT</a>
                     </div>
                 </div>
             </div>
