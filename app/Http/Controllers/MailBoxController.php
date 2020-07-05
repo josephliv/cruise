@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Webklex\IMAP\Client;
+use Carbon\Carbon;
 
 class MailBoxController extends Controller
 {
@@ -23,7 +24,6 @@ class MailBoxController extends Controller
 	//Get all Mailboxes
 	/** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
     $aFolder = $oClient->getFolders();
-    dd($aFolder);
 
 	//Loop through every Mailbox
 	/** @var \Webklex\IMAP\Folder $oFolder */
@@ -31,13 +31,22 @@ class MailBoxController extends Controller
 
 		//Get all Messages of the current Mailbox $oFolder
 		/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
-		$aMessage = $oFolder->messages()->all()->get();
+        //$aMessage = $oFolder->messages()->all()->get();
+        //$aMessage = $oFolder->query()->unseen()->get();
+        $aMessage = $oFolder->query()->since(Carbon::now()->subDays(5))->get();
 		
-		/** @var \Webklex\IMAP\Message $oMessage */
+        /** @var \Webklex\IMAP\Message $oMessage */
+        $i = 0;
 		foreach($aMessage as $oMessage){
 			if(! $oMessage->getAttachments()->count()){
 				continue;
-			}
+            }
+
+			if($i > 2){
+				continue;
+            }
+            
+            $i++;
 			echo $oMessage->getSubject().'<br />';
 			echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
 
