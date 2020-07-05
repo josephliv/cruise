@@ -43,7 +43,7 @@
     <div class="dash-content">
      <div class="text-center"> 
             <!-- This should show the current agent's name that is logged in.  -->
-           Logged in as: <span id="agent" style="color: green;">John Doe</span>
+           Logged in as: <span id="agent" style="color: green;">{{ \Auth::user()->name }}</span>
      </div>
         <div class="dash-logo "><img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4"> </div>
             <ul>

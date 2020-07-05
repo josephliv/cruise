@@ -36,12 +36,18 @@
         <div class="wrapper @if (!auth()->check() || request()->route()->getName() == "") wrapper-full-page @endif">
 
             @if (auth()->check() && request()->route()->getName() != "")
-                @include('layouts.navbars.sidebar')
+                @if(auth()->check() && ! \Auth::user()->is_admin)
+                @include('layouts.navbars.sidebaragent')
+                @else
+                  @include('layouts.navbars.sidebar')
+                @endif
                 @include('pages/sidebarstyle')
             @endif
 
             <div class="@if (auth()->check() && request()->route()->getName() != "") main-panel @endif">
+
                 @include('layouts.navbars.navbar')
+
                 @yield('content')
                 @include('layouts.footer.nav')
             </div>
