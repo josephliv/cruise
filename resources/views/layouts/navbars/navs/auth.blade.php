@@ -26,13 +26,16 @@
                       <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a>
                       <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
                       <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">UPLIFT</a>
-                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a>
+                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a> 
                     </div>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href=" {{route('profile.edit') }} ">
                         <span class="no-icon">{{ __('Account') }}</span>
                     </a>
+                </li>
+                 <li class="nav-item">
+                      <span class="no-icon mr-2 nav-link"> logged in as: {{ \Auth::user()->name }} </span>
                 </li>
                 <li class="nav-item">
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
