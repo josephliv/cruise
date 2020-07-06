@@ -38,6 +38,7 @@
             @if (auth()->check() && request()->route()->getName() != "")
                 @if(auth()->check() && ! \Auth::user()->is_admin)
                 @include('layouts.navbars.sidebaragent')
+                
                 @else
                   @include('layouts.navbars.sidebar')
                 @endif

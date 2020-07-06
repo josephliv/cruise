@@ -38,13 +38,6 @@ Tip 2: you can also add an image using data-image tag
                     </ul>
                 </div>
             </li>
-
-            <li class="nav-item @if($activePage == 'table') active @endif">
-                <a class="nav-link" href="{{route('page.index', 'table')}}">
-                    <i class="nc-icon nc-spaceship"></i>
-                    <p>{{ __("Reports") }}</p>
-                </a>
-            </li>
         </ul>
     </div>
 </div>

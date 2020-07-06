@@ -1,60 +1,103 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
 @section('content')
-<style>
-    
-.grid-container {
-    height: 100%;
-    display: grid;
-    grid-template-areas: repeat(20, 1fr);
-    place-items: center center;
-}
 
-.dash-content ul li{
-    list-style: none;
-    float: left;
-    padding: 20px;
-}
-.dash-logo {
-    margin: 0 auto; 
-    width: 200px;
-}
-.count {
-    border: 1px solid #ccc;
-}
-#generateLeadBtn {
-    display: grid;
-    align-self: center;
-}
-.btn-success {
-    background-color: #559900!important;
-    color: white;
-    font-size: 2em;
-    transition: .5s ease;
-}
-.btn-success:hover {
-    background-color: white!important;
-}
-
-</style>
-    <div class="content">
-        <div class="container-fluid">
-            <div class="grid-container">
-    <div class="dash-content">
-     <div class="text-center"> 
-            <!-- This should show the current agent's name that is logged in.  -->
-           Logged in as: <span id="agent" style="color: green;">{{ \Auth::user()->name }}</span>
-     </div>
-        <div class="dash-logo "><img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4"> </div>
-            <ul>
-                <!-- This should show how many leads that are in the database that hasn't been generated yet. -->
-                <li>Available Leads: <span class="amount" id="availableLeads">300</span></li>
-                <!-- This should show how many that the logged in agent have generated. -->
-                <li>Leads Sent: <span class="amount" id="leadsGenerated">5</span></li>
-            </ul>
-        <a href="#" id="generateLeadBtn" class="btn btn-success btn-lg">Send a Lead</a>
-    </div>
-</div>
+<div class="container mt-4">
+    <div class="row justify-content-around" >
+      <div class="col-12 col-md-4">
+        <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item active"> <h3> Today's Stats</h3>
+              <small>This resets every 24 hours</small>
+            </li>
+            <li class="list-group-item">Emails Sent: <span id="emails-sent">13</span></li>
+            <li class="list-group-item">Emails rejected: <span id="emails-sent">5</span></li>
+           
+          </ul>
+        </div>
+      </div>
+        <div class="col-12 col-md-6">
+          <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item active"> <h3> Total Stats</h3>
+              <small>This shows the total stats.</small>
+                </li>
+                <li class="list-group-item">Emails Sent: <span id="emails-sent">135</span></li>
+                <li class="list-group-item">Emails rejected: <span id="emails-sent">15</span></li>
+                
+              </ul>
+            </div>
         </div>
     </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card strpied-tabled-with-hover" style="box-shadow: 0 0 5px #555;">
+                        <div class="card-header  text-center">
+                            <h3 class="card-title ">Detailed Reports</h3>
+                            <p class="card-category ">Here you can view the progress of each agent.</p>
+                            <div class="p-4">
+                                <label for="time-set">Run the report by dates: </label>
+                                <input type="date" id="from-date" name="from-date"> to <input type="date" id="to-date" name="to-date">
+                                <input type="submit">
+                            </div>
+                        </div>
+                        <div class="card-body table-full-width table-responsive" >
+                            <table class="table table-hover table-striped" >
+                                <thead>
+                                    <th>Agent ID</th>
+                                    <th>Name</th>
+                                    <th>Leads sent</th>
+                                    <th>Most Recent</th>
+                                    <th>Leads Rejected</th>
+                                  
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><span id="agent-id">agent id</span></td>
+                                        <td><span id="agent-name">agent name</span></td>
+                                        <td><span id="leads-sent">5</span></td>
+                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
+                                        <td><span id="leads-rejected">2</span></td>
+
+                                    </tr> 
+                                    <tr>
+                                        <td><span id="agent-id">agent id</span></td>
+                                        <td><span id="agent-name">agent name</span></td>
+                                        <td><span id="leads-sent">5</span></td>
+                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
+                                        <td><span id="leads-rejected">2</span></td>
+                                        
+                                    </tr> 
+                                    <tr>
+                                        <td><span id="agent-id">agent id</span></td>
+                                        <td><span id="agent-name">agent name</span></td>
+                                        <td><span id="leads-sent">5</span></td>
+                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
+                                        <td><span id="leads-rejected">2</span></td>
+                                        
+                                    </tr> 
+                                    <tr>
+                                        <td><span id="agent-id">agent id</span></td>
+                                        <td><span id="agent-name">Agent name</span></td>
+                                        <td><span id="leads-sent">5</span></td>
+                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
+                                        <td><span id="leads-rejected">2</span></td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td><span id="agent-id">agent id</span></td>
+                                        <td><span id="agent-name">Agent name</span></td>
+                                        <td><span id="leads-sent">5</span></td>
+                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
+                                        <td><span id="leads-rejected">2</span></td>
+                                        
+                                    </tr>     
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+  
+</div>
 @endsection

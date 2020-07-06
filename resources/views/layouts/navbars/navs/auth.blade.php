@@ -1,3 +1,9 @@
+<style>
+  .dropdown-menu a {
+    font-size: .8em;
+  }
+</style>
+
 <nav class="navbar navbar-expand-lg " color-on-scroll="500">
     <div class="container-fluid">
         <a class="navbar-brand" href="#"> LEADBOX MANAGEMENT SYSTEM </a>
@@ -24,8 +30,8 @@
                       <a class="dropdown-item" href=" https://www.vaxvacationaccess.com">VAX LAND BDS </a>
                       <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a>
                       <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a>
-                      <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
-                      <a class="dropdown-item" target="_blank" href="www.americanexpress.com/asdonline">UPLIFT</a>
+                      <a class="dropdown-item" target="_blank" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
+                      <a class="dropdown-item" target="_blank" href="http://www.americanexpress.com/asdonline">UPLIFT</a>
                       <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a> 
                     </div>
                 </li>

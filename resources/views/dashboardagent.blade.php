@@ -4,9 +4,8 @@
 <style>
     
 .grid-container {
-    height: 100%;
+    height: 80vh;
     display: grid;
-    grid-template-areas: repeat(20, 1fr);
     place-items: center center;
 }
 
@@ -26,35 +25,41 @@
     display: grid;
     align-self: center;
 }
-.btn-success {
-    background-color: #559900!important;
+.btn-primary {
+   background-color: #0089BA!important;
     color: white;
-    font-size: 2em;
+    font-size: 1.8em;
     transition: .5s ease;
 }
-.btn-success:hover {
+.btn-primary:hover {
     background-color: white!important;
+    color: #0089BA!important;
 }
 
 </style>
-    <div class="content">
-        <div class="container-fluid">
-            <div class="grid-container">
-    <div class="dash-content">
-     <div class="text-center"> 
-            <!-- This should show the current agent's name that is logged in.  -->
-           Logged in as: <span id="agent" style="color: green;">{{ \Auth::user()->name }}</span>
-     </div>
-        <div class="dash-logo "><img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4"> </div>
-            <ul>
-                <!-- This should show how many leads that are in the database that hasn't been generated yet. -->
-                <li>Available Leads: <span class="amount" id="availableLeads">300</span></li>
-                <!-- This should show how many that the logged in agent have generated. -->
-                <li>Leads Sent: <span class="amount" id="leadsGenerated">5</span></li>
-            </ul>
-        <a href="#" id="generateLeadBtn" class="btn btn-success btn-lg">Send a Lead</a>
-    </div>
-</div>
+<div class="content">
+    <div class="container-fluid">
+        <div class="grid-container">
+            <div class="dash-content">
+                <div class="dash-logo ">
+                    <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4"> 
+                </div>
+                <ul>
+                    <!-- This should show how many leads that are in the database that hasn't been sent to an agents email yet. -->
+                    <li>Available Leads: <span class="amount" id="availableLeads">300</span></li>
+                    <!-- This should show how many that the logged in agent have generated. -->
+                    <li>Leads Sent: <span class="amount" id="leadsGenerated">5</span></li>
+                </ul>
+                  <a href="#" id="generateLeadBtn" class="btn btn-primary">Send a Lead</a>
+            </div>
         </div>
     </div>
+</div>
+<script type="text/javascript">
+    const leadBtn = document.querySelector("#generateLeadBtn") 
+
+    leadBtn.addEventListener("click", () => {
+        alert("A lead has been sent to your email.")
+    })
+</script>
 @endsection
