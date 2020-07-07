@@ -1,19 +1,15 @@
 <footer class="footer">
-    <div class="container @auth-fluid @endauth">
-        <nav>
-            <ul class="footer-menu">
-                <li>
-                    <a href="https://www.cruisertravels.com/" class="nav-link" target="_blank">{{ __('Cruiser Travels') }}</a>
-                </li>
-                
-            </ul>
-            <p class="copyright text-center">
+    <div class="container d-flex">
+        <div class="row">
+            <div class="col ">
+            <div class="copyright">
                 ©
                 <script>
                     document.write(new Date().getFullYear())
                 </script>
-                <a href="https://visiontocode.com" target="_blank">{{ __('Vision To Code,') }}</a> {{ __(' made with love for Cruiser Travels') }}
-            </p>
-        </nav>
+                <a href="https://visiontocode.com" target="_blank">{{ __('Cruiser Travels,') }}</a> {{ __(' Leadbox Management System. All rights reserved.') }}
+            </div>
+            </div>
+        </div>
     </div>
 </footer>

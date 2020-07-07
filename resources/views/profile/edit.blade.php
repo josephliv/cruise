@@ -97,7 +97,7 @@
                                 <div class="author">
                                     <a href="#">
                                         <img class="avatar border-gray" src="{{ asset('light-bootstrap/img/default-avatar.png') }}" alt="...">
-                                        <h5 class="title">{{ \Auth::user()->name }}</h5>
+                                        <h5 class="title">{{ \Auth::user()->name }} </h5>
                                     </a>
                                     
                             </div>
