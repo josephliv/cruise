@@ -35,6 +35,13 @@ Tip 2: you can also add an image using data-image tag
                                 <p>{{ __("Manage Agents") }}</p>
                             </a>
                         </li>
+                        <!-- Please route this to table.blade.php in the pages folder -->
+                        <li class="nav-item @if($activePage == 'user-management') active @endif">
+                            <a class="nav-link" href="table">
+                                <i class="nc-icon nc-circle-09"></i>
+                                <p>{{ __("Manage Leads") }}</p>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </li>

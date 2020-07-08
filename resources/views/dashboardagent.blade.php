@@ -33,7 +33,12 @@
 }
 .btn-primary:hover {
     background-color: white!important;
-    color: #0089BA!important;
+    color: #0089BA!important; 
+}
+.disabled {
+    color: #eee!important;
+    background-color: #888;
+    cursor: not-allowed;
 }
 
 </style>
@@ -50,16 +55,23 @@
                     <!-- This should show how many that the logged in agent have generated. -->
                     <li>Leads Sent: <span class="amount" id="leadsGenerated">5</span></li>
                 </ul>
-                  <a href="#" id="generateLeadBtn" class="btn btn-primary">Send a Lead</a>
+                  <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()">Send a Lead</a>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
     const leadBtn = document.querySelector("#generateLeadBtn") 
-
-    leadBtn.addEventListener("click", () => {
-        alert("A lead has been sent to your email.")
-    })
+function lead() {
+    leadBtn.disabled = true;
+    leadBtn.classList.add("disabled")
+    leadBtn.innerText = "Check your email."
+    setTimeout(function() {
+    leadBtn.disabled = false;
+    leadBtn.classList.remove("disabled")
+    leadBtn.innerText = "Send a lead."
+    }, 5000);
+}
+    
 </script>
 @endsection

@@ -17,7 +17,8 @@ Tip 2: you can also add an image using data-image tag
                     <p>{{ __("Dashboard") }}</p>
                 </a>
             </li>
-            <li class="nav-item @if($activePage == 'user') active @endif">
+            <!-- THIS MAY BE ENABLED AGAIN, LET'S SEE WHAT HE SAYS. -->
+            <!-- <li class="nav-item @if($activePage == 'user') active @endif">
                 <a class="nav-link" href="{{route('profile.edit')}}">
                     <i class="nc-icon nc-single-02"></i>
                     <p>{{ __("My Profile") }}</p>
@@ -50,10 +51,10 @@ Tip 2: you can also add an image using data-image tag
                         <li><a class="nav-link" target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a> </li>
                         <li><a class="nav-link" target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a></li>
                         <li><a class="nav-link" target="_blank" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a> </li>
-                        <li><a class="nav-link" target="_blank" href="http://www.americanexpress.com/asdonline">UPLIFT</a></li> 
+                        <li><a class="nav-link" target="_blank" href="www.agent.uplift.com ">UPLIFT</a></li> 
                     </ul>
                 </div>
-            </li>    
+            </li>  -->   
         </ul>
     </div>
 </div>
