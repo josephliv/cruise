@@ -37,8 +37,8 @@ Tip 2: you can also add an image using data-image tag
                         </li>
                         <!-- Please route this to table.blade.php in the pages folder -->
                         <li class="nav-item @if($activePage == 'user-management') active @endif">
-                            <a class="nav-link" href="table">
-                                <i class="nc-icon nc-circle-09"></i>
+                            <a class="nav-link" href="{{route('emails.manage')}}">
+                                <i class="nc-icon nc-email-85"></i>
                                 <p>{{ __("Manage Leads") }}</p>
                             </a>
                         </li>

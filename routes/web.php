@@ -23,6 +23,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::patch('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::patch('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+	Route::get('emails', ['as' => 'emails.manage', 'uses' => 'MailBoxController@manage']);
 });
 
 Route::group(['middleware' => 'auth'], function () {

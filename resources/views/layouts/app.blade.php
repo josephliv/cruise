@@ -80,6 +80,11 @@
     <script>
       $(document).ready(function () {
         
+        $('.removeLead').on('click', function(e){
+            e.stopPropagation();
+            confirm('You really want to delete this lead?');
+        });
+
         $('#facebook').sharrre({
           share: {
             facebook: true
