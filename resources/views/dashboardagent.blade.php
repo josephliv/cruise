@@ -26,51 +26,70 @@
     align-self: center;
 }
 .btn-primary {
-   background-color: #0089BA!important;
+    background-color: #0089BA!important;
     color: white;
     font-size: 1.8em;
     transition: .5s ease;
+    width: ;
 }
 .btn-primary:hover {
     background-color: white!important;
     color: #0089BA!important; 
 }
-.disabled {
-    color: #eee!important;
-    background-color: #888;
-    cursor: not-allowed;
+.cover {   
+    text-shadow: 0 0 5px #555;
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    height: 130px; 
+    padding: 50px;
+    text-align: center;
+    font-size: 1em;
+   background-color: rgba(88,88,88,0.9);
+   color: #fff;
+   border: 2px solid white;
+   box-shadow: 5px 5px 15px #000;
+   border-radius: 8px;
 }
+#cover {
+    display: none;
+}
+
+
 
 </style>
 <div class="content">
     <div class="container-fluid">
         <div class="grid-container">
-            <div class="dash-content">
-                <div class="dash-logo ">
+            <div class="dash-content text-center" style="position: relative;">
+                <div class="dash-logo height: 200px;">
                     <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4"> 
                 </div>
-                <ul>
+                <ul class=" text-center">
                     <!-- This should show how many leads that are in the database that hasn't been sent to an agents email yet. -->
                     <li>Available Leads: <span class="amount" id="availableLeads">300</span></li>
                     <!-- This should show how many that the logged in agent have generated. -->
                     <li>Leads Sent: <span class="amount" id="leadsGenerated">5</span></li>
                 </ul>
-                  <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()">Send a Lead</a>
+                <div id="cover" class="cover" title="A new lead has been sent to your inbox.">A lead has been sent to your email.</div>
+                  <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()" title="Click here to send a lead to your inbox.">Send a Lead</a>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    const leadBtn = document.querySelector("#generateLeadBtn") 
+    const leadBtn = document.querySelector("#generateLeadBtn") ;
+    const cover = document.querySelector("#cover")
+
+
 function lead() {
-    leadBtn.disabled = true;
-    leadBtn.classList.add("disabled")
-    leadBtn.innerText = "Check your email."
+    cover.style.display = "block"
+    leadBtn.style.color = "#eee!important"
+    setTimeout(() => cover.style.cursor = "not-allowed", 700);
     setTimeout(function() {
-    leadBtn.disabled = false;
-    leadBtn.classList.remove("disabled")
-    leadBtn.innerText = "Send a lead."
-    }, 5000);
+    cover.style.display = "none";
+    leadBtn.style.color = "#fff!important"
+    }, 10000);
 }
     
 </script>
