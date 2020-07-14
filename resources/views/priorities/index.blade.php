@@ -34,12 +34,12 @@
                                 <thead>
                                     <th>{{ __('Title') }}</th>
                                     <th>{{ __('Condition') }}</th>
-                                    <th>{{ __('Send To Agent') }}</th>
+                                    <th>{{ __('Send To Specific Agent') }}</th>
                                     <th>{{ __('Send To Veteran') }}</th>
                                     <th>{{ __('Priority') }}</th>
                                     <th>{{ __('Actions') }}</th>
                                 </thead>
-                                <tfoot>
+                                <!-- <tfoot>
                                     <tr>
                                         <th>{{ __('Title') }}</th>
                                         <th>{{ __('Condition') }}</th>
@@ -48,7 +48,7 @@
                                         <th>{{ __('Priority') }}</th>
                                         <th>{{ __('Actions') }}</th>
                                     </tr>
-                                </tfoot>
+                                 </tfoot>-->
                                 <tbody>
                                 
                                     @foreach ($priorities as $priority)

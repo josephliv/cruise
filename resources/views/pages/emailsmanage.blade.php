@@ -59,10 +59,14 @@ table tbody{
                                         
                                         <td><span id="mail-date">{{$leadMail->received_date}}</span> </td>
                                         <td class="d-flex justify-content-end">
-                                                    <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"></i></a>
+                                                    @if($leadMail->attachment)
+                                                        <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                                    @else
+                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    @endif
+                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
 
-                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', $leadMail->id) }}' : ''"s><i class="fa fa-times"></i></a>
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', $leadMail->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                             </td>
                                     </tr>
                                 @endforeach

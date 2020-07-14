@@ -49,7 +49,7 @@ table tbody{
                                     
                                 </thead>
                                 <tbody>
-                                     @foreach ($leadMails as $leadMail)
+                                     @foreach ($leadMails ?? '' as $leadMail)
                                     <tr>
                                         <td style="width: 50px!important"><input type="checkbox" name="lead-mail"></td>
                                         <td><span id="mail-from">{{$leadMail->id}}</span></td>
@@ -63,7 +63,7 @@ table tbody{
                                     @endforeach
                                 </tbody>
                             </table>
-                            {{ $leadMails->links() }}
+                            {{ $leadMails ?? ''->links() }}
                             <p class="py-2">Select the leads you want to send to your inbox and click the button below.</p>
                             <a href="#" class="btn btn-primary m-2"> Send to email</a>
                         </div>

@@ -79,7 +79,7 @@ class MailBoxController extends Controller
 
             $emailFirstWord = explode(' ', strip_tags($body))[0];
 
-            if(strpos($emailFirstWord,'duplicated') !== false){
+            if(strpos($emailFirstWord,'duplicate') !== false){
                 if(count(explode('-||', $oMessage->getSubject()))){
                     $originalMessageId = explode('-||', $oMessage->getSubject())[1];
 

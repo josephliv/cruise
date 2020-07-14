@@ -1,5 +1,5 @@
 <!-- To display the side bar options, just remove the class d-none. -->
-<div class="fixed-plugin d-none">
+<div class="fixed-plugin" style="display: none;">
     <div class="dropdown show-dropdown">
         <a href="#" data-toggle="dropdown">
             <i class="fa fa-cog fa-2x"> </i>
