@@ -45,9 +45,9 @@
     width: 500px;
     padding: 50px;
     text-align: center;
-    font-size: 1.3em;
+    font-size: 1.2em;
     top: -30px;
-    left: -125px;
+    width: 100%;
    background-color: rgba(9, 87, 170, 0.85);
    -webkit-transition: opacity 1800ms, visibility 1800ms;
    transition: opacity 1800ms, visibility 1800ms;
@@ -97,13 +97,14 @@
                         
                     </div>
                 </div>
+                <!-- Box that covers the button on click -->  
                     <div style="position: relative">
                         <div  class="cover" title="A new lead has been sent to your inbox.">
                          A lead has been sent to your email.</div>
                         <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()" title="Click here to send a lead to your inbox.">
                         Send a Lead
                         </a>
-                        <!-- Box that covers the button on click -->     
+                        
                     </div> 
                 </div>
             </div>
