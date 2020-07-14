@@ -30,12 +30,16 @@ table tbody{
 </head>
     <div class="content">
         <div class="container-fluid">
+            <div class="col-12 mt-2">
+                @include('alerts.success')
+                @include('alerts.errors')
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card striped-tabled-with-hover">
                         <div class="card-header  text-center">
                             <h3 class="card-title ">Leads</h3>
-                            <p class="card-category ">Here you can view the leads and set the priority or delete them.</p>
+                            <p class="card-category ">Here you can view or delete the leads.</p>
                         </div>
                         <div class="card-body">
                             <table class="table table-striped">
@@ -54,11 +58,12 @@ table tbody{
                                         <td style="width: 50px;"><span id="mail-subject">{{$leadMail->subject}}</span></td>
                                         
                                         <td><span id="mail-date">{{$leadMail->received_date}}</span> </td>
-                                        <td>
-                                            <a class="btn btn-info btn-fill" href="{{$leadMail->attachment}}"><i class="nc-icon nc-attach-87"></i></a>&nbsp;
-                                            <a class="btn btn-info btn-fill" data-toggle="modal" data-target="#leadsModal"><i class="nc-icon nc-paper-2"></i></a>&nbsp;
-                                            <a class="btn btn-danger btn-fill removeLead" href="#"><i class="nc-icon nc-simple-remove" data-lead="{{$leadMail->id}}"></i></a>
-                                        </td>
+                                        <td class="d-flex justify-content-end">
+                                                    <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"></i></a>
+
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', $leadMail->id) }}' : ''"s><i class="fa fa-times"></i></a>
+                                            </td>
                                     </tr>
                                 @endforeach
                                 </tbody>
@@ -70,24 +75,15 @@ table tbody{
         </div>
     </div>
 
-    <div class="modal fade modal-mini modal-primary" id="leadsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header justify-content-center">
-                    <div class="modal-profile">
-                        <i class="nc-icon nc-bulb-63"></i>
-                    </div>
-                </div>
-                <div class="modal-body text-center">
-                    <p>Always have an access to your profile</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-link btn-simple">Back</button>
-                    <button type="button" class="btn btn-link btn-simple" data-dismiss="modal">Close</button>
-                </div>
-            </div>
+
+    <div class="modal fade " id="leadsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" id="leadsModalBody" style="border:solid darkgray 1px!important; padding:25px; min-height:400px">
+        ...
         </div>
     </div>
+    </div>
+
     <script>
     </script>
 @endsection

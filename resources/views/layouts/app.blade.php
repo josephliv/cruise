@@ -85,6 +85,24 @@
             confirm('You really want to delete this lead?');
         });
 
+        $('.getbody').on('click', function(e){
+            id = $(this).data('id');
+            $('#leadsModalBody').html('Processing');
+            $.ajax({
+                url: "/leads/" + id + "/body",
+                success: function(result){
+                    res = JSON.parse(result);
+                    //console.log(atob(res.body));
+                    $('#leadsModalBody').html(atob(res.body))
+                },
+                error: function(a,b,c){
+                    alert('Something Went Wrong!');
+                    console.log(a,b,c);
+                }
+            });
+
+        });
+
         $('#facebook').sharrre({
           share: {
             facebook: true

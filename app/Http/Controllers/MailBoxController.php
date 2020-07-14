@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Webklex\IMAP\Client;
 use Carbon\Carbon;
 use App\LeadMails;
+use App\Priority;
+use App\Mail\LeadSent;
+use App\User;
 
 class MailBoxController extends Controller
 {
@@ -59,28 +62,88 @@ class MailBoxController extends Controller
 
                 $path = public_path('files');
                 $filename = $token;
-                echo '<a href="/files/' . $filename . '">Download</a>';
+                /*echo '<a href="/files/' . $filename . '">Download</a>';*/
 
                 $path = substr($path, -1) == DIRECTORY_SEPARATOR ? $path : $path.DIRECTORY_SEPARATOR;
-                $filename = str_replace("'", "", $path."/".$filename);
+                $filename = str_replace("/", "", str_replace("'", "", $filename));
 
-                \Illuminate\Support\Facades\File::put($filename, $masked_attachment->getContent());
+                /*\Illuminate\Support\Facades\File::put($filename, $masked_attachment->getContent());*/
+                \Storage::disk('public')->put($filename, $masked_attachment->getContent());
+
             }
 
 
             $lead = LeadMails::where('email_imap_id', $oMessage->message_id);
-            dump($lead->get());
-            if(!$lead->get()->count()){
-                $lead = new LeadMails();
-                $lead->email_imap_id    = $oMessage->message_id;
-                $lead->email_from       = $oMessage->getFrom()[0]->mail;
-                $lead->agent_id         = 0;
-                $lead->subject          = $oMessage->getSubject();
-                $lead->body             = $oMessage->getHTMLBody(true);
-                $lead->attachment       = $filename;
-                $lead->received_date    = $oMessage->date;
-                $lead->priority         = 0;
-                $lead->save();
+            $body = $oMessage->getHTMLBody(true);
+            $body = $body ? $body : $oMessage->getTextBody();
+
+            $emailFirstWord = explode(' ', strip_tags($body))[0];
+
+            if(strpos($emailFirstWord,'duplicated') !== false){
+                if(count(explode('-||', $oMessage->getSubject()))){
+                    $originalMessageId = explode('-||', $oMessage->getSubject())[1];
+
+                    $lead = LeadMails::find($originalMessageId);
+                    $lead->rejected = 1;
+                    $lead->save();
+
+                } else {
+                    continue;
+                }
+            } elseif(filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL)){
+                $originalMessageId = explode('-||', $oMessage->getSubject())[1];
+                $newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
+                $this->sendIndividualLead($originalMessageId, $newUser->first());
+                
+            } else { //Count as a new Lead
+                if(!$lead->get()->count()){
+                    $lead = new LeadMails();
+                    $lead->email_imap_id    = $oMessage->message_id;
+                    $lead->email_from       = $oMessage->getFrom()[0]->mail;
+                    $lead->agent_id         = 0;
+                    $lead->subject          = $oMessage->getSubject();
+                    $lead->body             = $body;
+                    $lead->attachment       = $filename;
+                    $lead->received_date    = $oMessage->date;
+                    $lead->priority         = 0;
+                    $lead->save();
+
+                    foreach(Priority::all() as $priority){
+
+                        switch($priority->field){
+                            case 1: {
+                                if(strpos($lead->subject, $priority->condition)){
+                                    $lead->priority = $priority->priority;
+                                    
+                                    if(trim($priority->send_to_email) != ''){
+                                        $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
+                                        $this->sendIndividualLead($lead->id, $newUser->first());
+                                    }
+
+                                    $lead->priority = $priority->priority;
+                                    $lead->save();
+                                }
+                                break;
+                            }
+
+                            case 2: {
+                                if($lead->email_from == $priority->condition){
+
+                                    if(trim($priority->send_to_email) != ''){
+                                        $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
+                                        $this->sendIndividualLead($lead->id, $newUser->first());
+                                    }
+
+                                    $lead->priority = $priority->priority;
+                                    $lead->save();                                    
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    //DONOTREPLY@royalcaribbean.com
+                }
             }
 
 
@@ -105,6 +168,67 @@ class MailBoxController extends Controller
         $leadMails = LeadMails::orderBy('id', 'desc')->paginate(10);
         return view('pages.emailsmanage', compact('leadMails'));
 
+    }
+
+    public function sendLeads(Request $request){
+
+        $user = \Auth::user();
+
+        $currentTime    = 1 * (explode(':', explode(' ', \Carbon\Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', \Carbon\Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
+        $time_set_init  = 1 * (explode(':',$user->time_set_init)[0] . explode(':',$user->time_set_init)[1]);
+        $time_set_final = 1 * (explode(':',$user->time_set_final)[0] . explode(':',$user->time_set_final)[1]);
+
+        if(LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed){
+            if($currentTime >= $time_set_init && $currentTime <= $time_set_final){
+                if($user->is_veteran){
+                    $leadMails = LeadMails::where('rejected', 0)
+                                    ->where('agent_id', 0)
+                                    ->orderBy('to_veteran', 'desc')
+                                    ->orderBy('priority')
+                                    ->limit($user->leads_allowed)
+                                    ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+                } else {
+                    $leadMails = LeadMails::where('rejected', 0)
+                                    ->where('agent_id', 0)
+                                    ->whereNull('to_veteran')
+                                    ->orderBy('priority')
+                                    ->limit($user->leads_allowed)
+                                    ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+                }
+
+                foreach($leadMails as $lead){
+                    \Mail::to($user->email)->send(new LeadSent($lead));
+                    $lead->agent_id = $user->id;
+                    $lead->save();
+                }
+
+            } else {
+                return array('type' => 'ERROR', 'message' => 'You are not in the Allowed Period!');
+            }
+        } else {
+            return array('type' => 'ERROR', 'message' => 'You have reached your 24h leads limit!');
+        }
+
+        return array('type' => 'SUCCESS', 'message' => count($leadMails) . ' Leads ' . (count($leadMails) > 1 ? 'have' : 'has') . ' been sent to your e-mail!', 'leads' => count($leadMails));
+
+    }
+
+    public function sendIndividualLead($leadId, $user){
+        $lead = LeadMails::find($leadId);
+        $lead->agent_id = $user->id;
+        $lead->save();
+
+        return  \Mail::to($user->email)->send(new LeadSent($lead));
+    }
+
+    public function downloadAttachment($leadId){
+        $lead = LeadMails::find($leadId);
+        return redirect(\Storage::url($lead->attachment));
+    }
+
+    public function getBody($leadId){
+        $lead = LeadMails::find($leadId);
+        return  json_encode(array('body' => base64_encode($lead->body)));
     }
 
     /**
@@ -168,8 +292,12 @@ class MailBoxController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($leadId)
     {
-        //
+        $lead = LeadMails::find($leadId);
+
+        $lead->delete();
+
+        return redirect()->route('emails.manage')->withStatus(__('Lead successfully deleted.'));
     }
 }

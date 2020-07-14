@@ -18,15 +18,21 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('dashboard');
 
+Route::resource('priorities', 'PriorityController');
+Route::get('leads/{leadId}/download', 'MailBoxController@downloadAttachment')->name('leads.download');
+Route::get('leads/{leadId}/body', 'MailBoxController@getBody')->name('leads.body');
+Route::get('leads/{leadId}/delete', 'MailBoxController@destroy')->name('leads.destroy');
+
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'UserController', ['except' => ['show']]);
 	Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
 	Route::patch('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
 	Route::patch('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
 	Route::get('emails', ['as' => 'emails.manage', 'uses' => 'MailBoxController@manage']);
-});
-
-Route::group(['middleware' => 'auth'], function () {
+	Route::get('reademail', 'MailBoxController@index');
+	Route::get('leads/get', 'MailBoxController@sendLeads');
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
+
+	
 });
 

@@ -75,7 +75,7 @@
                     
                           <div class="card-body">
                             <h5 class="card-title">Available Leads:</h5>
-                            <p class="card-text"><span class="amount" id="availableLeads">300</span></p>
+                            <p class="card-text"><span class="amount" id="availableLeads">{{$leadMails['available']}}</span></p>
                           </div>
                         </div>
                       
@@ -84,9 +84,16 @@
                        
                           <div class="card-body">
                             <h5 class="card-title">Leads Sent:</h5>
-                            <p class="card-text"><span class="amount" id="availableLeads">5</span></p>
+                            <p class="card-text"><span class="amount" id="availableLeads">{{$leadMails['totalSent']}}</span></p>
                           </div>
                         </div>
+                        <div class="card bg-light mb-3" style="max-width: 18rem;">
+                       
+                       <div class="card-body">
+                         <h5 class="card-title">Leads Rejected:</h5>
+                         <p class="card-text"><span class="amount" id="availableLeads">{{$leadMails['totalReject']}}</span></p>
+                       </div>
+                     </div>
                         
                     </div>
                 </div>
@@ -109,17 +116,30 @@
 
 
 function lead() {
+
+    cover.innerHTML = 'Processing...';
     cover.style.visibility = "visible";
     cover.style.opacity = 1;
     leadBtn.classList.add('disabled');
     leadBtn.style.color = "#fff!important";
-    cover.style.cursor = "not-allowed";
-    setTimeout(() => {
-    cover.style.visibility = "hidden";
-    cover.style.opacity = 0;
-    leadBtn.classList.remove('disabled'); 
-    location.reload();
-    }, 10000);
+    cover.style.cursor = "not-allowed";    
+
+    $.ajax({
+        url: "/leads/get",
+        success: function(result){
+            cover.innerHTML = result.message;
+            setTimeout(() => {
+                cover.style.visibility = "hidden";
+                cover.style.opacity = 0;
+                leadBtn.classList.remove('disabled'); 
+                location.reload();
+            }, 10000);
+        },
+        error: function(a,b,c){
+            alert('Something Went Wrong!');
+            console.log(a,b,c);
+        }
+    });
 }
     
 </script>

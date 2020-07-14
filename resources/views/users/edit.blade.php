@@ -51,16 +51,20 @@
                                         <label class="form-control-label" for="input-password-confirmation">{{ __('Confirm Password') }}</label>
                                         <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="">
                                     </div>
-                                    <!-- Additional settings according to scope -->
-                                    <div class="">
-                                        <label>Leads Allowed</label>
-                                        <input type="number" class="p-1 mt-4" placeholder="50">
-                                        <form action="/">
-                                          <label for="time-set">Select time period:</label>
-                                          <input type="time" id="time-set" name="time-set"> to <input type="time" id="time-set" name="time-set">
-                                            <input type="submit">
-                                        </form>
-
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
+                                        <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="{{ old('leads_allowed', $user->leads_allowed) }}">
+                                    </div>
+                                    <label class="form-control-label" for="time_set_init">{{ __('Select Time Period:') }}</label>
+                                    <div class="row">
+                                        <div class="col-md-6 form-group">
+                                            <label class="form-control-label" for="input-time_set_init">{{ __('Initial') }}</label>
+                                            <input type="time" name="time_set_init" id="time_set_init" class="form-control" placeholder="09:00" value="{{ old('time_set_init', $user->time_set_init) }}">
+                                        </div>
+                                        <div class="col-md-6 form-group">
+                                            <label class="form-control-label" for="input-time_set_final">{{ __('Final') }}</label>
+                                            <input type="time" name="time_set_final" id="time_set_final" class="form-control" placeholder="17:00" value="{{ old('time_set_final', $user->time_set_final) }}">
+                                        </div>
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-default mt-4">{{ __('Save changes') }}</button>
