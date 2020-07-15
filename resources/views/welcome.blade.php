@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-12  box-item my-2">
                         <a target="_blank" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/SCDO/login.jsp">SABRE GDS </a> |
-                        <a href=" https://www.vaxvacationaccess.com">VAX LAND BDS </a> |
+                        <a href=" https://www.vaxvacationaccess.com">VAX LAND GDS </a> |
                         <a target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a> 
                     </div>
                     <div class="col-12  box-item my-2">

@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'priority-management', 'activeButton' => 'laravel', 'title' => 'Light Bootstrap Dashboard Laravel by Creative Tim & UPDIVISION', 'navName' => 'Priorities'])
+@extends('layouts.app', ['activePage' => 'priority-management', 'activeButton' => 'laravel', 'title' => 'Cruiser Travels Leadbox Management System', 'navName' => 'Priorities'])
 
 @section('content')
     <div class="content">
@@ -10,10 +10,8 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">{{ __('Priorities') }}</h3>
-                                    <p class="text-sm mb-0">
-                                        {{ __('Set up the priorities here') }}
-                                    </p>
+                                    <h3 class="mb-0">{{ __('Current List of priorities.') }}</h3>
+                                   
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ route('priorities.create') }}" class="btn btn-sm btn-default">{{ __('Add Priority') }}</a>
@@ -34,8 +32,8 @@
                                 <thead>
                                     <th>{{ __('Title') }}</th>
                                     <th>{{ __('Condition') }}</th>
-                                    <th>{{ __('Send To Specific Agent') }}</th>
-                                    <th>{{ __('Send To Veteran') }}</th>
+                                    <th>{{ __('Send To a Specific Email') }}</th>
+                                    <th>{{ __('Send To a Veteran') }}</th>
                                     <th>{{ __('Priority') }}</th>
                                     <th>{{ __('Actions') }}</th>
                                 </thead>
@@ -59,12 +57,12 @@
                                             <td>{{ ($priority->send_to_veteran ? 'Yes': 'No') }}</td>
                                             <td>{{ $priority->priority }}</td>
                                             <td class="d-flex justify-content-end">
-                                                    <a href="{{ route('priorities.edit', $priority->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit"></i></a>
+                                                    <a href="{{ route('priorities.edit', $priority->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit" title="Edit this priority"></i></a>
 
                                                     <form class="d-inline-block" action="{{ route('priorities.destroy', $priority->id) }}" method="POST">
                                                         @method('delete')
                                                         @csrf
-                                                        <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this priority conditional?') }}') ? this.parentElement.submit() : ''"s><i class="fa fa-times"></i></a>
+                                                        <a title="Delete" class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this priority condition?') }}') ? this.parentElement.submit() : ''"s><i class="fa fa-times"></i></a>
                                                     </form>
                                             </td>
                                         </tr>
