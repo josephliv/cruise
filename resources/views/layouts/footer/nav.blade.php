@@ -7,7 +7,7 @@
                 <script>
                     document.write(new Date().getFullYear())
                 </script>
-                <a href="https://visiontocode.com" target="_blank">{{ __('Cruiser Travels,') }}</a> {{ __(' Leadbox Management System. All rights reserved.') }}
+                <a href="https://www.cruisertravels.com/" target="_blank">{{ __('Cruiser Travels,') }}</a> {{ __(' Leadbox Management System. All rights reserved.') }}
             </div>
             </div>
         </div>

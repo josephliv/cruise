@@ -1,4 +1,4 @@
-@extends('layouts.app', ['activePage' => 'priority-management', 'activeButton' => 'laravel', 'title' => 'Light Bootstrap Dashboard Laravel by Creative Tim & UPDIVISION', 'navName' => 'Priorities'])
+@extends('layouts.app', ['activePage' => 'priority-management', 'activeButton' => 'laravel', 'title' => 'Cruiser Travels Leadbox Management System', 'navName' => 'Priorities'])
 
 @section('content')
     <div class="content">
