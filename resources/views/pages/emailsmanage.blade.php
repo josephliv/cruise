@@ -5,26 +5,6 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 <style type="text/css">
 
-/*table{
-    width: 100%;
-    border-collapse: collapse;
-    table-layout: fixed;
-}
-
-table thead th {
- text-align: left;
-} 
-
-
-table tbody{
-    height: 200px;
-    overflow-y: scroll;
-}
-
- table thead{
-     width:100%;
-     display: table;
- }*/
 
 </style>
 </head>

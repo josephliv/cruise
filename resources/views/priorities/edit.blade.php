@@ -9,10 +9,10 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">{{ __('Set a Priority') }}</h3>
+                                    <h3 class="mb-0">{{ __('Edit a Priority') }}</h3>
                                 </div>
                                 <div class="col-4 text-right">
-                                    <a href="{{ route('priorities.index') }}" class="btn btn-sm btn-default">{{ __('Go Back') }}</a>
+                                    <a href="{{ route('priorities.index') }}" class="btn btn-sm btn-default">{{ __('Cancel') }}</a>
                                 </div>
                             </div>
                         </div>
@@ -24,7 +24,7 @@
 
                                 @include('alerts.success')
                                 @include('alerts.errors' )
-                                <h6 class="heading-small text-muted mb-4">{{ __('Priorities') }}</h6>
+                                <h6 class="heading-small text-muted mb-4">{{ __('Make changes to a set priority.') }}</h6>
                                 <div class="pl-lg-4">
                                     <div class="form-group{{ $errors->has('description') ? ' has-danger' : '' }}">
                                         <label class="form-control-label" for="description">{{ __('Title') }}</label>
@@ -34,11 +34,10 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-3 form-group{{ $errors->has('field') ? ' has-danger' : '' }}">
-                                                <label class="form-control-label" for="condition">{{ __('Field') }}</label>
+                                                <label class="form-control-label" for="condition">{{ __('Filter by') }}</label>
                                                 <select name="field" id="field" class="form-control{{ $errors->has('field') ? ' is-invalid' : '' }}">
                                                     <option value ='1' {{ $priority->field == 1 ? 'selected' : '' }} >Subject Line Contains</option>
                                                     <option value ='2' {{ $priority->field == 2 ? 'selected' : '' }}>Sender</option>
-                                                    <option value ='3' {{ $priority->field == 3 ? 'selected' : '' }}>Msg contains</option>
                                                 </select>
 
                                                 @include('alerts.feedback', ['field' => 'condition'])
@@ -52,7 +51,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-md-9 form-group{{ $errors->has('send_to_email') ? ' has-danger' : '' }}">
-                                            <label class="form-control-label" for="send_to_email">{{ __('Send to a Specific Agent') }}</label>
+                                            <label class="form-control-label" for="send_to_email">{{ __('Send to a Specific Email') }}</label>
                                             <input type="text" name="send_to_email" id="send_to_email" class="form-control{{ $errors->has('send_to_email') ? ' is-invalid' : '' }}" placeholder="{{ __('some@email.com') }}" value="{{ old('send_to_email', $priority->send_to_email) }}" autofocus>
 
                                             @include('alerts.feedback', ['field' => 'send_to_email'])
