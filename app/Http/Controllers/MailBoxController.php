@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\LeadMails;
 use App\Priority;
 use App\Mail\LeadSent;
+use App\Mail\ReportMail;
 use App\User;
 
 class MailBoxController extends Controller
@@ -185,14 +186,16 @@ class MailBoxController extends Controller
                                     ->where('agent_id', 0)
                                     ->orderBy('to_veteran', 'desc')
                                     ->orderBy('priority')
-                                    ->limit($user->leads_allowed)
+                                    ->orderBy('updated_at')
+                                    ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                 } else {
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
                                     ->whereNull('to_veteran')
                                     ->orderBy('priority')
-                                    ->limit($user->leads_allowed)
+                                    ->orderBy('updated_at')
+                                    ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                 }
 
@@ -229,6 +232,50 @@ class MailBoxController extends Controller
     public function getBody($leadId){
         $lead = LeadMails::find($leadId);
         return  json_encode(array('body' => base64_encode($lead->body)));
+    }
+
+    public function report(Request $request, $dateFrom, $dateTo){
+
+        $leads = \DB::select(\DB::raw(
+            "
+            SELECT 	LM.agent_id,
+                    U.name AS agent_name,
+                    COUNT(*) AS leads_count,
+                    SUM(LM.rejected) AS leads_rejected,
+                    MAX(LM.updated_at) AS last_lead
+            FROM lead_mails LM
+                INNER JOIN users U ON
+                    U.id = LM.agent_id
+            WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
+                    LM.updated_at <= '" . $dateTo . " 23:59:59'
+            GROUP BY LM.agent_id, U.name
+            "
+        ));
+
+        return $leads;
+    }
+
+    public function reportEmail(Request $request, $dateFrom, $dateTo){
+
+        $leads = \DB::select(\DB::raw(
+            "
+            SELECT 	LM.agent_id,
+                    U.name AS agent_name,
+                    COUNT(*) AS leads_count,
+                    SUM(LM.rejected) AS leads_rejected,
+                    MAX(LM.updated_at) AS last_lead
+            FROM lead_mails LM
+                INNER JOIN users U ON
+                    U.id = LM.agent_id
+            WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
+                    LM.updated_at <= '" . $dateTo . " 23:59:59'
+            GROUP BY LM.agent_id, U.name
+            "
+        ));
+
+        \Mail::to(\Auth::user()->email)->send(new ReportMail($leads, $dateFrom, $dateTo));
+
+        return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . \Auth::user()->email ));
     }
 
     /**

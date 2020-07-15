@@ -22,6 +22,9 @@ Route::resource('priorities', 'PriorityController');
 Route::get('leads/{leadId}/download', 'MailBoxController@downloadAttachment')->name('leads.download');
 Route::get('leads/{leadId}/body', 'MailBoxController@getBody')->name('leads.body');
 Route::get('leads/{leadId}/delete', 'MailBoxController@destroy')->name('leads.destroy');
+Route::get('leads/{from}/{to}/report', 'MailBoxController@report')->name('leads.report');
+Route::get('leads/{from}/{to}/email', 'MailBoxController@reportEmail')->name('leads.reportemail');
+//Route::get('leads/report/{from}/{to}', 'MailBoxController@report')->name('leads.report');
 
 Route::group(['middleware' => 'auth'], function () {
 	Route::resource('user', 'UserController', ['except' => ['show']]);

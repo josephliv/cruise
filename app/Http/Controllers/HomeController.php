@@ -37,7 +37,7 @@ class HomeController extends Controller
 
                 'total24h' => LeadMails::where('received_date', '>', Carbon::now()->subDay())->count(),
                 'totalSent24h' => LeadMails::where('agent_id', '>', 0)->where('updated_at', '>', Carbon::now()->subDay())->count(),
-                'totalReject24h' => LeadMails::where('agent_id', '=', -1)->where('updated_at', '>', Carbon::now()->subDay())->count(),
+                'totalReject24h' => LeadMails::where('rejected', '=', 1)->where('updated_at', '>', Carbon::now()->subDay())->count(),
             );
         } else {
             $leadMails = array(

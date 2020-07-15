@@ -79,6 +79,42 @@
     @stack('js')
     <script>
       $(document).ready(function () {
+
+        $('#detailedReportBtn').on('click',function(e){
+            e.stopPropagation();
+            $('#detailedReportTable').find('tbody').html('<tr><td colspan="5">Processing...</td><td></td><td></td><td></td><td></td></tr>');
+            $.ajax({
+                url: "/leads/" + $('#from-date').val() +"/" + $('#to-date').val() + "/report/",
+                success: function(result){
+                    res = result;
+                    console.log(res);
+                    $('#detailedReportTable').find('tbody').empty();
+                    for(r in res){
+                      $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-id">' + res[r].agent_id + '</span></td><td><span id="agent-name">' + res[r].agent_name + '</span></td><td><span id="time-sent">' + res[r].last_lead + '</span> </td><td><span id="leads-sent">' + res[r].leads_count + '</span></td><td><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
+                    }
+                },
+                error: function(a,b,c){
+                    alert('Something Went Wrong!');
+                    console.log(a,b,c);
+                }
+            });            
+        });
+
+        $('#detailedEmailBtn').on('click',function(e){
+            e.stopPropagation();
+            $.ajax({
+                url: "/leads/" + $('#from-date').val() +"/" + $('#to-date').val() + "/email/",
+                success: function(result){
+                    res = JSON.parse(result);
+                    console.log(res);
+                    alert(res.message);
+                },
+                error: function(a,b,c){
+                    alert('Something Went Wrong!');
+                    console.log(a,b,c);
+                }
+            });            
+        });
         
         $('.removeLead').on('click', function(e){
             e.stopPropagation();

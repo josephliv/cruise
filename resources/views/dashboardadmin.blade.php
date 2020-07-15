@@ -43,61 +43,21 @@
                             <p class="card-category ">Here you can view the progress of each agent.</p>
                             <div class="p-4">
                                 <label for="time-set">Run the report by dates: </label>
-                                <input type="date" id="from-date" name="from-date"> to <input type="date" id="to-date" name="to-date">
-                                <input type="submit">
+                                <input type="date" id="from-date" name="from-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" >
+                                <a href="#" class="btn btn-primary" id="detailedReportBtn">Submit</a>
+                                <a href="#" class="btn btn-secondary" id="detailedEmailBtn">Send to E-mail</a>
                             </div>
                         </div>
                         <div class="card-body table-full-width table-responsive" >
-                            <table class="table table-hover table-striped" >
+                            <table id="detailedReportTable" class="table table-hover table-striped" >
                                 <thead>
                                     <th>Agent ID</th>
                                     <th>Name</th>
-                                    <th>Leads sent</th>
                                     <th>Most Recent</th>
+                                    <th>Leads</th>
                                     <th>Leads Rejected</th>
-                                  
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><span id="agent-id">agent id</span></td>
-                                        <td><span id="agent-name">agent name</span></td>
-                                        <td><span id="leads-sent">5</span></td>
-                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
-                                        <td><span id="leads-rejected">2</span></td>
-
-                                    </tr> 
-                                    <tr>
-                                        <td><span id="agent-id">agent id</span></td>
-                                        <td><span id="agent-name">agent name</span></td>
-                                        <td><span id="leads-sent">5</span></td>
-                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
-                                        <td><span id="leads-rejected">2</span></td>
-                                        
-                                    </tr> 
-                                    <tr>
-                                        <td><span id="agent-id">agent id</span></td>
-                                        <td><span id="agent-name">agent name</span></td>
-                                        <td><span id="leads-sent">5</span></td>
-                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
-                                        <td><span id="leads-rejected">2</span></td>
-                                        
-                                    </tr> 
-                                    <tr>
-                                        <td><span id="agent-id">agent id</span></td>
-                                        <td><span id="agent-name">Agent name</span></td>
-                                        <td><span id="leads-sent">5</span></td>
-                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
-                                        <td><span id="leads-rejected">2</span></td>
-                                        
-                                    </tr>
-                                    <tr>
-                                        <td><span id="agent-id">agent id</span></td>
-                                        <td><span id="agent-name">Agent name</span></td>
-                                        <td><span id="leads-sent">5</span></td>
-                                        <td><span id="time-sent">3:00PM - Jul/05/20</span> </td>
-                                        <td><span id="leads-rejected">2</span></td>
-                                        
-                                    </tr>     
                                 </tbody>
                             </table>
                         </div>
