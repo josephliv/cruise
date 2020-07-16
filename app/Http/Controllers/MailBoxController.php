@@ -185,7 +185,17 @@ class MailBoxController extends Controller
 
     public function manage(Request $request){
 
-        $leadMails = LeadMails::orderBy('id', 'desc')->paginate(10);
+        if(!count($request->input())){
+            $dateFrom   = \Carbon\Carbon::now()->startOfDay();
+            $dateTo     = \Carbon\Carbon::now()->endOfDay();
+        } else {
+            $dateFrom   = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
+            $dateTo     = \Carbon\Carbon::parse($request->input('to-date'))->endOfDay();
+        }
+
+        $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
+                        ->where('updated_at', '<=', $dateTo)
+                        ->orderBy('id', 'desc')->get();
         return view('pages.emailsmanage', compact('leadMails'));
 
     }
