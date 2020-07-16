@@ -31,7 +31,7 @@ class LeadSent extends Mailable
     public function build()
     {
         $mailable = $this
-                    ->subject($this->lead->subject . '-||' . $this->lead->id)
+                    ->subject($this->lead->subject . ' -||' . $this->lead->id)
                     ->view('mails.leadsent');
 
         if($this->lead->attachment){
