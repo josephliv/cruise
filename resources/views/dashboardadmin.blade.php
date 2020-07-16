@@ -59,6 +59,8 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
+                                <tfoot>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

@@ -9,6 +9,7 @@ use App\LeadMails;
 use App\Priority;
 use App\Mail\LeadSent;
 use App\Mail\ReportMail;
+use App\Mail\ErrorMail;
 use App\User;
 
 class MailBoxController extends Controller
@@ -38,7 +39,7 @@ class MailBoxController extends Controller
 	/** @var \Webklex\IMAP\Folder $oFolder */
 	foreach($aFolder as $oFolder){
 
-        dump($oFolder);
+        //dump($oFolder);
 
 		//Get all Messages of the current Mailbox $oFolder
 		/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
@@ -78,14 +79,16 @@ class MailBoxController extends Controller
             $body = $oMessage->getHTMLBody(true);
             $body = $body ? $body : $oMessage->getTextBody();
 
-            $emailFirstWord = explode(' ', strip_tags($body))[0];
+            $emailFirstWord = strtolower(explode(' ', strip_tags($body))[0]);
+            $emailContent   = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $body)));
 
-            if(strpos($emailFirstWord,'duplicate') !== false){
+            if(strpos($emailFirstWord,'spam') !== false){
                 if(count(explode('-||', $oMessage->getSubject()))){
                     $originalMessageId = explode('-||', $oMessage->getSubject())[1];
 
                     $lead = LeadMails::find($originalMessageId);
                     $lead->rejected = 1;
+                    $lead->rejected_message = str_replace('spam', '', $emailContent);
                     $lead->save();
 
                 } else {
@@ -94,7 +97,13 @@ class MailBoxController extends Controller
             } elseif(filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL)){
                 $originalMessageId = explode('-||', $oMessage->getSubject())[1];
                 $newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
-                $this->sendIndividualLead($originalMessageId, $newUser->first());
+                if($newUser->count()){
+                    $this->sendIndividualLead($originalMessageId, $newUser->first());
+                } else {
+                    $lead = LeadMails::find($originalMessageId);
+                    //\Mail::to('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                    \Mail::to($lead->agent()->first()->email)->cc('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                }
                 
             } else { //Count as a new Lead
                 if(!$lead->get()->count()){
@@ -106,7 +115,7 @@ class MailBoxController extends Controller
                     $lead->body             = $body;
                     $lead->attachment       = $filename;
                     $lead->received_date    = $oMessage->date;
-                    $lead->priority         = 0;
+                    $lead->priority         = 100;
                     $lead->save();
 
                     foreach(Priority::all() as $priority){
@@ -118,7 +127,12 @@ class MailBoxController extends Controller
                                     
                                     if(trim($priority->send_to_email) != ''){
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
-                                        $this->sendIndividualLead($lead->id, $newUser->first());
+                                        
+                                        if($newUser->count()){
+                                            $this->sendIndividualLead($lead->id, $newUser->first());
+                                        } else {
+                                            $this->sendIndividualLead($lead->id, null, $priority->send_to_email);
+                                        }
                                     }
 
                                     $lead->priority = $priority->priority;
@@ -132,7 +146,12 @@ class MailBoxController extends Controller
 
                                     if(trim($priority->send_to_email) != ''){
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
-                                        $this->sendIndividualLead($lead->id, $newUser->first());
+
+                                        if($newUser->count()){
+                                            $this->sendIndividualLead($lead->id, $newUser->first());
+                                        } else {
+                                            $this->sendIndividualLead($lead->id, null, $priority->send_to_email);
+                                        }
                                     }
 
                                     $lead->priority = $priority->priority;
@@ -216,12 +235,27 @@ class MailBoxController extends Controller
 
     }
 
-    public function sendIndividualLead($leadId, $user){
+    public function sendIndividualLead($leadId, $user, $forceEmail = ''){
         $lead = LeadMails::find($leadId);
-        $lead->agent_id = $user->id;
+
+        if(!$user){ // Sending an e-mail to a non-user
+            $lead->agent_id             = -1;
+
+            $mailable = \Mail::to($forceEmail)->send(new LeadSent($lead));
+        } else {
+            if($lead->agent_id > 0){
+                $lead->old_agent_id         = $lead->agent_id;
+                $lead->old_assigned_date    = $lead->assigned_date;
+            }
+            $lead->agent_id             = $user->id;
+            $lead->assigned_date        = \Carbon\Carbon::now();
+
+            $mailable = \Mail::to($user->email)->send(new LeadSent($lead));
+        }
+
         $lead->save();
 
-        return  \Mail::to($user->email)->send(new LeadSent($lead));
+        return  $mailable;
     }
 
     public function downloadAttachment($leadId){
@@ -249,6 +283,19 @@ class MailBoxController extends Controller
             WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
                     LM.updated_at <= '" . $dateTo . " 23:59:59'
             GROUP BY LM.agent_id, U.name
+
+            UNION ALL
+
+            SELECT 	LM.agent_id,
+                    'Not Assigned' agent_name,
+                    COUNT(*) AS leads_count,
+                    SUM(LM.rejected) AS leads_rejected,
+                    MAX(LM.updated_at) AS last_lead
+            FROM lead_mails LM
+            WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
+                    LM.updated_at <= '" . $dateTo . " 23:59:59' AND
+                    LM.agent_id = 0
+            GROUP BY LM.agent_id
             "
         ));
 
@@ -270,10 +317,26 @@ class MailBoxController extends Controller
             WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
                     LM.updated_at <= '" . $dateTo . " 23:59:59'
             GROUP BY LM.agent_id, U.name
+
+            UNION ALL
+
+            SELECT 	LM.agent_id,
+                    'Not Assigned' agent_name,
+                    COUNT(*) AS leads_count,
+                    SUM(LM.rejected) AS leads_rejected,
+                    MAX(LM.updated_at) AS last_lead
+            FROM lead_mails LM
+            WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
+                    LM.updated_at <= '" . $dateTo . " 23:59:59' AND
+                    LM.agent_id = 0
+            GROUP BY LM.agent_id
             "
         ));
 
-        \Mail::to(\Auth::user()->email)->send(new ReportMail($leads, $dateFrom, $dateTo));
+        \Mail::to(\Auth::user()->email)
+                ->bcc('dyegofern@gmail.com')
+                ->cc('visiontocode2022@gmail.com')
+                ->send(new ReportMail($leads, $dateFrom, $dateTo));
 
         return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . \Auth::user()->email ));
     }
