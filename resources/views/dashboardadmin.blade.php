@@ -51,11 +51,12 @@
                         <div class="card-body table-full-width table-responsive" >
                             <table id="detailedReportTable" class="table table-hover table-striped" >
                                 <thead>
-                                    <th>Agent ID</th>
                                     <th>Name</th>
                                     <th>Most Recent</th>
-                                    <th>Leads</th>
-                                    <th>Leads Rejected</th>
+                                    <th>Total Leads</th>
+                                    <th>Assigned</th>
+                                    <th>Reassigned</th>
+                                    <th>Rejected</th>
                                 </thead>
                                 <tbody>
                                 </tbody>
