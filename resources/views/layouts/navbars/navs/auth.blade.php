@@ -27,7 +27,7 @@
                       <a class="dropdown-item" target="_blank" href="https://WWW.CRUISINGPOWER.COM">ROYAL/CELEBRITY/AZAMARA</a>
                       <a class="dropdown-item" target="_blank" href="https://WWW.FIRSTMATES.COM">VIRGIN VOYAGES</a>
                       <a class="dropdown-item" target="_blank" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/SCDO/login.jsp">SABRE GDS </a>
-                      <a class="dropdown-item" href=" https://www.vaxvacationaccess.com">VAX LAND BDS </a>
+                      <a class="dropdown-item" href=" https://www.vaxvacationaccess.com">VAX LAND GDS </a>
                       <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a>
                       <a class="dropdown-item" target="_blank" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a>
                       <a class="dropdown-item" target="_blank" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
