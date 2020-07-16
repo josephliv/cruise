@@ -16,7 +16,6 @@
     @foreach($leads as $lead)
     @if($lead->agent_id == 0)
         <tr>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="agent-id"></span></td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="agent-name">{{$lead->agent_name}}</span></td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="leads-sent">{{$lead->leads_count}}</span></td>
@@ -24,7 +23,6 @@
         </tr>
     @else
         <tr>
-            <td style="@if($i % 2 != 0) {{'background-color:#EEE;'}} @else {{''}} @endif height:28px;border:solid darkgray 1px"><span id="agent-id">{{$lead->agent_id}}</span></td>
             <td style="@if($i % 2 != 0) {{'background-color:#EEE;'}} @else {{''}} @endif height:28px;border:solid darkgray 1px"><span id="agent-name">{{$lead->agent_name}}</span></td>
             <td style="@if($i % 2 != 0) {{'background-color:#EEE;'}} @else {{''}} @endif height:28px;border:solid darkgray 1px"><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
             <td style="@if($i % 2 != 0) {{'background-color:#EEE;'}} @else {{''}} @endif height:28px;border:solid darkgray 1px"><span id="leads-sent">{{$lead->leads_count}}</span></td>
@@ -40,6 +38,6 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="3">TOTAL</th><th>{{$leadsTotal}}</th><th>{{$rejectedTotal}}</th></tr>
+            <th colspan="2">TOTAL</th><th>{{$leadsTotal}}</th><th>{{$rejectedTotal}}</th></tr>
     </tfoot>
 </table>
