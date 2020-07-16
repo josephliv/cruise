@@ -36,7 +36,7 @@
                             <label for="time-set">Run the report by dates: </label>
                             <form method='POST'>
                                 @csrf
-                                <input type="date" id="from-date" name="from-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" >
+                                <input type="date" id="from-date" name="from-date" value="{{explode(' ', $dateFrom)[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', $dateTo)[0]}}" >
                             <form>
                             <button type="submit" class="btn btn-primary">Submit</a>
                         </div>
@@ -93,19 +93,21 @@
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th class="col-md-6">Subject Line </th>
+                                        <th style="width:200px">Subject Line </th>
+                                        <th style="width:200px">Agent</th>
                                         <th>Time/date</th>
                                         <th>Options</th>
                                     </thead>
                                     <tbody>
                                     @foreach ($leadMails as $leadMail)
-                                        @if($leadMail->agent_id != 0)
+                                        @if($leadMail->agent_id > 0)
                                         <tr>
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
-                                            <td class="col-md-6"><span id="mail-subject">{{$leadMail->subject}}</span></td>
+                                            <td>{{$leadMail->subject}}</td>
+                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
                                             
-                                            <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
+                                            <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if($leadMail->attachment)
                                                             <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
@@ -127,7 +129,9 @@
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th class="col-md-6">Subject Line </th>
+                                        <th style="width:200px">Subject Line </th>
+                                        <th style="width:200px">Agent</th>
+                                        <th style="width:200px">Message</th>
                                         <th>Time/date</th>
                                         <th>Options</th>
                                     </thead>
@@ -137,9 +141,11 @@
                                         <tr>
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
-                                            <td class="col-md-6"><span id="mail-subject">{{$leadMail->subject}}</span></td>
+                                            <td>{{$leadMail->subject}}</td>
+                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
+                                            <td >{{explode('On', $leadMail->rejected_message)[0]}}</td>
                                             
-                                            <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
+                                            <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if($leadMail->attachment)
                                                             <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
@@ -161,7 +167,9 @@
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th class="col-md-6">Subject Line </th>
+                                        <th style="width:200px">Subject Line </th>
+                                        <th style="width:200px">Orig. Agent </th>
+                                        <th style="width:200px">Curr. Agent </th>
                                         <th>Time/date</th>
                                         <th>Options</th>
                                     </thead>
@@ -171,9 +179,11 @@
                                         <tr>
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
-                                            <td class="col-md-6"><span id="mail-subject">{{$leadMail->subject}}</span></td>
+                                            <td><span id="mail-subject">{{$leadMail->subject}}</span></td>
+                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
+                                            <td >{{optional(optional($leadMail->old_agent())->first())->name}}</td>
                                             
-                                            <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
+                                            <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if($leadMail->attachment)
                                                             <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>

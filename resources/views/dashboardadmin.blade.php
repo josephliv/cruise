@@ -52,11 +52,10 @@
                             <table id="detailedReportTable" class="table table-hover table-striped" >
                                 <thead>
                                     <th>Name</th>
-                                    <th>Most Recent</th>
-                                    <th>Total Leads</th>
-                                    <th>Assigned</th>
-                                    <th>Reassigned</th>
-                                    <th>Rejected</th>
+                                    <th class="text-center">Most Recent</th>
+                                    <th class="text-center">Leads</th>
+                                    <th class="text-center">Reassigned</th>
+                                    <th class="text-center">Rejected</th>
                                 </thead>
                                 <tbody>
                                 </tbody>

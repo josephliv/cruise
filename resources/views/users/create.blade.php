@@ -46,6 +46,14 @@
                                         <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="">
                                     </div>
                                     <div class="form-group">
+                                        <label class="form-control-label" for="input-user-group">{{ __('User Group') }}</label>
+                                        <select name="user_group" id="input-user_group" class="form-control">
+                                        @foreach($groups as $group)
+                                            <option value="{{$group->id}}">{{$group->name}}</option>
+                                        @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
                                         <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="">
                                     </div>

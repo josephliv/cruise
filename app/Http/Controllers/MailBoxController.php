@@ -186,7 +186,13 @@ class MailBoxController extends Controller
     public function manage(Request $request){
 
         if(!count($request->input())){
-            $dateFrom   = \Carbon\Carbon::now()->startOfDay();
+
+            $leadMails = LeadMails::orderBy('id', 'asc')
+                ->limit(1)
+                ->get()
+                ->first();
+
+            $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
             $dateTo     = \Carbon\Carbon::now()->endOfDay();
         } else {
             $dateFrom   = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
@@ -196,7 +202,7 @@ class MailBoxController extends Controller
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
                         ->orderBy('id', 'desc')->get();
-        return view('pages.emailsmanage', compact('leadMails'));
+        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
 
     }
 
@@ -210,10 +216,10 @@ class MailBoxController extends Controller
 
         if(LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed){
             if($currentTime >= $time_set_init && $currentTime <= $time_set_final){
-                if($user->is_veteran){
+                if($user->user_group){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
-                                    ->orderBy('to_veteran', 'desc')
+                                    ->where('user_group', $user->user_group)
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
                                     ->limit(1)
@@ -285,6 +291,13 @@ class MailBoxController extends Controller
             SELECT 	LM.agent_id,
                     U.name AS agent_name,
                     COUNT(*) AS leads_count,
+                    SUM(CASE
+                            WHEN IFNULL(LM.old_agent_id, 0) > 0 THEN
+                                1
+                            ELSE
+                                0
+                        END
+                    ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,
                     MAX(LM.updated_at) AS last_lead
             FROM lead_mails LM
@@ -299,6 +312,7 @@ class MailBoxController extends Controller
             SELECT 	LM.agent_id,
                     'Not Assigned' agent_name,
                     COUNT(*) AS leads_count,
+                    0 AS leads_rejected,
                     SUM(LM.rejected) AS leads_rejected,
                     MAX(LM.updated_at) AS last_lead
             FROM lead_mails LM
@@ -319,6 +333,13 @@ class MailBoxController extends Controller
             SELECT 	LM.agent_id,
                     U.name AS agent_name,
                     COUNT(*) AS leads_count,
+                    SUM(CASE
+                            WHEN IFNULL(LM.old_agent_id, 0) > 0 THEN
+                                1
+                            ELSE
+                                0
+                        END
+                    ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,
                     MAX(LM.updated_at) AS last_lead
             FROM lead_mails LM
@@ -333,6 +354,7 @@ class MailBoxController extends Controller
             SELECT 	LM.agent_id,
                     'Not Assigned' agent_name,
                     COUNT(*) AS leads_count,
+                    0 AS leads_rejected,
                     SUM(LM.rejected) AS leads_rejected,
                     MAX(LM.updated_at) AS last_lead
             FROM lead_mails LM
