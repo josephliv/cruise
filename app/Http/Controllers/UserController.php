@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $groups = Group::all();
+        $groups = Group::orderBy('order')->get();
         return view('users.create', compact('groups'));
     }
 
@@ -63,7 +63,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $groups = Group::all();
+        $groups = Group::orderBy('order')->get();
         return view('users.edit', compact('user', 'groups'));
     }
 

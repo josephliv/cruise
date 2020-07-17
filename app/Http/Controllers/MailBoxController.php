@@ -98,6 +98,11 @@ class MailBoxController extends Controller
                 $originalMessageId = explode('-||', $oMessage->getSubject())[1];
                 $newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
                 if($newUser->count()){
+
+                    $lead = LeadMails::find($originalMessageId);
+                    $lead->reassigned_message = str_replace(explode(' ', strip_tags($body))[0], '', $emailContent);
+                    $lead->save();
+
                     $this->sendIndividualLead($originalMessageId, $newUser->first());
                 } else {
                     $lead = LeadMails::find($originalMessageId);
@@ -282,6 +287,16 @@ class MailBoxController extends Controller
     public function getBody($leadId){
         $lead = LeadMails::find($leadId);
         return  json_encode(array('body' => base64_encode($lead->body)));
+    }
+
+    public function getReassigned($leadId){
+        $lead = LeadMails::find($leadId);
+        return  json_encode(array('body' => base64_encode(explode('On', $lead->reassigned_message)[0])));
+    }
+
+    public function getRejected($leadId){
+        $lead = LeadMails::find($leadId);
+        return  json_encode(array('body' => base64_encode(explode('On', $lead->rejected_message)[0])));
     }
 
     public function report(Request $request, $dateFrom, $dateTo){

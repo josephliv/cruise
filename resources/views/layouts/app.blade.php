@@ -134,9 +134,13 @@
         });
 
         $('.getbody').on('click', function(e){
-            id = $(this).data('id');
+            id    = $(this).data('id');
+            type  = $(this).data('type');
+
             $('#leadsModalBody').html('Processing');
-            $.ajax({
+
+            if(type == 'body'){
+              $.ajax({
                 url: "/leads/" + id + "/body",
                 success: function(result){
                     res = JSON.parse(result);
@@ -148,6 +152,37 @@
                     console.log(a,b,c);
                 }
             });
+            }
+
+            if(type == 'reassigned'){
+              $.ajax({
+                url: "/leads/" + id + "/reassigned",
+                success: function(result){
+                    res = JSON.parse(result);
+                    //console.log(atob(res.body));
+                    $('#leadsModalBody').html(atob(res.body))
+                },
+                error: function(a,b,c){
+                    alert('Something Went Wrong!');
+                    console.log(a,b,c);
+                }
+            });
+            }
+
+            if(type == 'rejected'){
+              $.ajax({
+                url: "/leads/" + id + "/rejected",
+                success: function(result){
+                    res = JSON.parse(result);
+                    //console.log(atob(res.body));
+                    $('#leadsModalBody').html(atob(res.body))
+                },
+                error: function(a,b,c){
+                    alert('Something Went Wrong!');
+                    console.log(a,b,c);
+                }
+            });
+            }
 
         });
 

@@ -21,6 +21,8 @@ Route::get('/home', 'HomeController@index')->name('dashboard');
 Route::resource('priorities', 'PriorityController');
 Route::get('leads/{leadId}/download', 'MailBoxController@downloadAttachment')->name('leads.download');
 Route::get('leads/{leadId}/body', 'MailBoxController@getBody')->name('leads.body');
+Route::get('leads/{leadId}/reassigned', 'MailBoxController@getReassigned')->name('leads.reassigned');
+Route::get('leads/{leadId}/rejected', 'MailBoxController@getRejected')->name('leads.rejected');
 Route::get('leads/{leadId}/delete', 'MailBoxController@destroy')->name('leads.destroy');
 Route::get('leads/{from}/{to}/report', 'MailBoxController@report')->name('leads.report');
 Route::get('leads/{from}/{to}/email', 'MailBoxController@reportEmail')->name('leads.reportemail');
