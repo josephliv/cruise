@@ -33,7 +33,7 @@
                       <a class="dropdown-item" target="_blank" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a>
                       <a class="dropdown-item" target="_blank" href="http://www.agent.uplift.com ">UPLIFT</a>
                       <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a> 
-                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">MODIFY BOOKING/ADD INSURANCE</a>
+                      <a class="dropdown-item" target="_blank" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">MODIFY BOOKING FORM</a>
                       <a target="_blank" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">SOLD ADD ON FORM</a>
 
                     </div>
