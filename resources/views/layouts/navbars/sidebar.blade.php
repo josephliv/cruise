@@ -36,7 +36,7 @@ Tip 2: you can also add an image using data-image tag
                             </a>
                         </li>
                         
-                        <li class="nav-item @if($activePage == 'user-management') active @endif">
+                        <li class="nav-item @if($activePage == 'leads-management') active @endif">
                             <a class="nav-link" href="{{route('emails.manage')}}">
                                 <i class="nc-icon nc-email-85"></i>
                                 <p>{{ __("Manage Leads") }}</p>
@@ -44,8 +44,8 @@ Tip 2: you can also add an image using data-image tag
                         </li>
                         <li class="nav-item @if($activePage == 'priority-management') active @endif">
                             <a class="nav-link" href="{{route('priorities.index')}}">
-                                <i class="nc-icon nc-email-85"></i>
-                                <p>{{ __("Manage Priorities") }}</p>
+                                <i class="nc-icon nc-preferences-circle-rotate"></i>
+                                <p>{{ __("Rules & Priorities") }}</p>
                             </a>
                         </li>
                     </ul>
