@@ -19,7 +19,7 @@
                         <div class="card-body">
                             <form method="post" action="{{ route('user.store') }}" enctype="multipart/form-data">
                                 @csrf
-                                <h6 class="heading-small text-muted mb-4">{{ __('User informations') }}</h6>
+                                <h6 class="heading-small text-muted mb-4">{{ __('User information') }}</h6>
                                 <div class="pl-lg-4">
                                     <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
                                         <label class="form-control-label" for="input-name">
