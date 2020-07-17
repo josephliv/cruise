@@ -46,19 +46,19 @@
                                         <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="">
                                     </div>
                                     <div class="form-group">
-                                        <label class="form-control-label" for="input-user-group">{{ __('User Group') }}</label>
-                                        <select name="user_group" id="input-user_group" class="form-control">
+                                        <label class="form-control-label" for="input-user-group">{{ __('User Level') }}</label>
+                                        <select name="user_group" id="input-user_group" class="form-control" onchange="groupchange(this)">
                                         @foreach($groups as $group)
-                                            <option value="{{$group->id}}">{{$group->name}}</option>
+                                            <option {{$group->id == 3 ? 'selected' : ''}} value="{{$group->id}}">{{$group->name}}</option>
                                         @endforeach
                                         </select>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="user-attributes form-group">
                                         <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
                                         <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="">
                                     </div>
-                                    <label class="form-control-label" for="time_set_init">{{ __('Select Time Period:') }}</label>
-                                    <div class="row">
+                                    <label class="user-attributes form-control-label" for="time_set_init">{{ __('Select Time Period:') }}</label>
+                                    <div class="user-attributes row">
                                         <div class="col-md-6 form-group">
                                             <label class="form-control-label" for="input-time_set_init">{{ __('Initial') }}</label>
                                             <input type="time" name="time_set_init" id="time_set_init" class="form-control" placeholder="09:00" value="">
@@ -80,4 +80,17 @@
             </div>
         </div>
     </div>
+    <script>
+function groupchange(obj){
+    o = $(obj);
+    if(parseInt(o.val()) == 1 ){
+        $('#input-leads_allowed').val('0');
+        $('#time_set_init').val('00:00');
+        $('#time_set_final').val('00:00');
+        $('.user-attributes').hide();
+    } else {
+        $('.user-attributes').show();
+    }
+}
+</script>
 @endsection

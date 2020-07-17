@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $groups = Groups::all();
+        $groups = Group::all();
         return view('users.create', compact('groups'));
     }
 
@@ -40,7 +40,17 @@ class UserController extends Controller
      */
     public function store(UserRequest $request, User $model)
     {
-        $model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        //$model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
+        $model = new User();
+        $model->name            = $request->get('name');
+        $model->email           = $request->get('email');
+        $model->password        = Hash::make($request->get('password'));
+        $model->is_admin        = (intval($request->get('user_group')) == 1 ? 1 : 0);
+        $model->leads_allowed   = intval($request->get('leads_allowed'));
+        $model->time_set_init   = $request->get('time_set_init');
+        $model->time_set_final  = $request->get('time_set_final');
+        $model->user_group      = intval($request->get('user_group'));
+        $model->save();
 
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
     }
@@ -53,7 +63,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        $groups = Groups::all();
+        $groups = Group::all();
         return view('users.edit', compact('user', 'groups'));
     }
 
@@ -66,10 +76,24 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, User  $user)
     {
+        /*
         $user->update(
             $request->merge(['password' => Hash::make($request->get('password'))])
                 ->except([$request->get('password') ? '' : 'password']
-        ));
+        ));*/
+
+        $model = $user;
+        $model->name            = $request->get('name');
+        $model->email           = $request->get('email');
+        if(trim($request->get('password')) != ''){
+            $model->password        = Hash::make($request->get('password'));
+        }
+        $model->is_admin        = (intval($request->get('user_group')) == 1 ? 1 : 0);
+        $model->leads_allowed   = intval($request->get('leads_allowed'));
+        $model->time_set_init   = $request->get('time_set_init');
+        $model->time_set_final  = $request->get('time_set_final');
+        $model->user_group      = intval($request->get('user_group'));
+        $model->save();        
         
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }
