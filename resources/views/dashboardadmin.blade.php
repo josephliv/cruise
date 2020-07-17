@@ -1,7 +1,48 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
-@section('content')
+@section('content') 
+<style type="text/css">
+    .count {
+    border: 1px solid #ccc;
+}
+#generateLeadBtn {
+    display: grid;
+    align-self: center;
+}
+.btn-primary {
 
+    background-color: #0089BA!important;
+    color: #fff!important;
+    font-size: 1.8em;
+    transition: .5s ease;
+}
+
+.btn-primary:hover {
+    background-color: white!important;
+    color: #0089BA!important;
+}
+
+.cover { 
+    visibility: hidden;
+    position: absolute;
+    opacity: 0;
+    text-shadow: 0 0 5px #555;
+    width: 500px;
+    padding: 50px;
+    text-align: center;
+    font-size: 1.2em;
+    top: -30px;
+    width: 100%;
+   background-color: rgba(9, 87, 170, 0.85);
+   -webkit-transition: opacity 1800ms, visibility 1800ms;
+   transition: opacity 1800ms, visibility 1800ms;
+   color: #fff;
+   border: 2px solid white;
+   box-shadow: 5px 5px 15px #000;
+   border-radius: 8px;
+   z-index: 9999;
+}
+</style>
 <div class="container mt-4">
     <div class="row justify-content-around" >
       <div class="col-12 col-md-4"><h2>Admin Dashboard</h2></div>
@@ -22,7 +63,29 @@
           </ul>
         </div>
       </div>
-        <div class="col-12 col-md-6">
+
+        <div class="col-12 col-md-4">
+          <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+            <ul class="list-group list-group-flush">
+            <li class="list-group-item active"> <h3> Take a lead.</h3>
+              <small>Send a lead to your inbox</small>
+            </li>
+            <li class="list-group-item">
+                <div style="position: relative">
+                        <div  class="cover" title="A new lead has been sent to your inbox.">
+                         A lead has been sent to your email.</div>
+                        <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()" title="Click here to send a lead to your inbox.">
+                        Send a Lead
+                        </a>   
+                    </div> 
+            </div>
+        </li>
+           
+          </ul>
+            
+        </div>
+
+        <div class="col-12 col-md-4">
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item active"> <h3> Total Stats</h3>
@@ -68,4 +131,37 @@
             </div>
   
 </div>
+<script type="text/javascript">
+    const leadBtn = document.querySelector("#generateLeadBtn") ;
+    const cover = document.querySelector(".cover")
+
+
+function lead() {
+
+    cover.innerHTML = 'Processing...';
+    cover.style.visibility = "visible";
+    cover.style.opacity = 1;
+    leadBtn.classList.add('disabled');
+    leadBtn.style.color = "#fff!important";
+    cover.style.cursor = "not-allowed";    
+
+    $.ajax({
+        url: "/leads/get",
+        success: function(result){
+            cover.innerHTML = result.message;
+            setTimeout(() => {
+                cover.style.visibility = "hidden";
+                cover.style.opacity = 0;
+                leadBtn.classList.remove('disabled'); 
+                location.reload();
+            }, 10000);
+        },
+        error: function(a,b,c){
+            alert('Something Went Wrong!');
+            console.log(a,b,c);
+        }
+    });
+}
+    
+</script>
 @endsection
