@@ -1,12 +1,13 @@
 <div style="width:100%; text-align:center"><h4><b>Report From {{\Carbon\Carbon::parse($dateFrom)->format('m/d/Y')}} To {{\Carbon\Carbon::parse($dateTo)->format('m/d/Y')}}</b></h4></div>
 <hr style="border:dashed darkblue 1px"/>
-<table id="detailedReportTable" style="border-collapse:collapse; width:100%" >
+<div align="center">
+<table id="detailedReportTable" style="border-collapse:collapse; max-width:900px; text-align: center;" >
     <thead>
-        <th style="height:38px;border:solid darkgray 1px">Name</th>
-        <th style="height:38px;border:solid darkgray 1px">Most Recent</th>
-        <th style="height:38px;border:solid darkgray 1px">Leads</th>
-        <th style="height:38px;border:solid darkgray 1px">Reassigned</th>
-        <th style="height:38px;border:solid darkgray 1px">Rejected</th>
+        <th style="height:38px;border:solid darkgray 1px;">Name</th>
+        <th style="height:38px;border:solid darkgray 1px;">Most Recent</th>
+        <th style="height:38px;border:solid darkgray 1px;">Leads</th>
+        <th style="height:38px;border:solid darkgray 1px;">Reassigned</th>
+        <th style="height:38px;border:solid darkgray 1px;">Rejected</th>
     </thead>
     <tbody>
     @php
@@ -16,11 +17,11 @@
     @foreach($leads as $lead)
     @if($lead->agent_id == 0)
         <tr>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="agent-name">{{$lead->agent_name}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="leads-sent">{{$lead->leads_count}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px"><span id="leads-rejected">{{$lead->leads_rejected}}</span></td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="agent-name">{{$lead->agent_name}}</span></td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_count}}</span></td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-rejected">{{$lead->leads_rejected}}</span></td>
         </tr>
     @else    
         <tr>
@@ -43,3 +44,4 @@
             <th colspan="2">TOTAL</th><th>{{$leadsTotal}}</th><th>{{$rejectedTotal}}</th></tr>
     </tfoot>
 </table>
+</div>
