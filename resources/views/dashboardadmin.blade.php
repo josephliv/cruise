@@ -154,7 +154,7 @@ function lead() {
                 cover.style.opacity = 0;
                 leadBtn.classList.remove('disabled'); 
                 location.reload();
-            }, 10000);
+            }, 500);
         },
         error: function(a,b,c){
             alert('Something Went Wrong!');
