@@ -19,8 +19,8 @@
         <tr>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="agent-name">{{$lead->agent_name}}</span></td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_count}}</span></td>
+            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
             <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-rejected">{{$lead->leads_rejected}}</span></td>
         </tr>
     @else    
@@ -41,7 +41,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="2">TOTAL</th><th>{{$leadsTotal}}</th><th>{{$rejectedTotal}}</th></tr>
+            <th colspan="2"><b>TOTAL</b></th><th colspan="2" style="text-align:center"><b>{{$leadsTotal}}</b></th><th style="text-align:center"><b>{{$rejectedTotal}}</b></th></tr>
     </tfoot>
 </table>
 </div>

@@ -33,7 +33,7 @@
                                     <th>{{ __('Title') }}</th>
                                     <th>{{ __('Condition') }}</th>
                                     <th>{{ __('Send To a Specific Email') }}</th>
-                                    <th>{{ __('Send To a Veteran') }}</th>
+                                    <th>{{ __('Send To a Group') }}</th>
                                     <th>{{ __('Priority') }}</th>
                                     <th>{{ __('Actions') }}</th>
                                 </thead>
@@ -54,7 +54,7 @@
                                             <td>{{ $priority->description }}</td>
                                             <td>{{ $priority->condition }}</td>
                                             <td>{{ trim($priority->send_to_email) != '' ? $priority->send_to_email : 'No'  }}</td>
-                                            <td>{{ ($priority->send_to_veteran ? 'Yes': 'No') }}</td>
+                                            <td>{{ optional(optional($priority->group())->first())->name }}</td>
                                             <td>{{ $priority->priority }}</td>
                                             <td class="d-flex justify-content-end">
                                                     <a href="{{ route('priorities.edit', $priority->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit" title="Edit this priority"></i></a>

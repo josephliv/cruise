@@ -12,7 +12,7 @@
                                 <div class="col-8">
                                     <h3 class="mb-0">{{ __('Users') }}</h3>
                                     <p class="text-sm mb-0">
-                                        {{ __('This is an example of user management. This is a minimal setup in order to get started fast.') }}
+                                        
                                     </p>
                                 </div>
                                 <div class="col-4 text-right">

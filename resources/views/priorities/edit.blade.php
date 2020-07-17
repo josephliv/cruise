@@ -57,12 +57,14 @@
                                             @include('alerts.feedback', ['field' => 'send_to_email'])
                                         </div>
                                         <div class="col-md-3 form-group{{ $errors->has('send_to_email') ? ' has-danger' : '' }}">
-                                            <label class="form-control-label" for="condition">{{ __('Send only to Veterans') }}</label>
-                                            <select name="send_to_veteran" id="send_to_veteran" class="form-control{{ $errors->has('field') ? ' is-invalid' : '' }}">
-                                                <option value ='1' {{ $priority->send_to_veteran == 1 ? 'selected' : '' }} >Yes</option>
-                                                <option value ='0' {{ $priority->send_to_veteran == 0 ? 'selected' : '' }} >No</option>
+                                            <label class="form-control-label" for="condition">{{ __('Send only to Group') }}</label>
+                                            <select name="user_group" id="user_group" class="form-control{{ $errors->has('user_group') ? ' is-invalid' : '' }}">
+                                            <option value="0">All</option>
+                                            @foreach($groups as $group)
+                                                <option {{ $priority->user_group == $group->id ? 'selected' : '' }} value="{{$group->id}}">{{$group->name}}</option>
+                                            @endforeach
                                             </select>
-                                            @include('alerts.feedback', ['field' => 'condition'])
+                                            @include('alerts.feedback', ['field' => 'user_group'])
                                         </div>
                                     </div>
                                     <div class="form-group{{ $errors->has('priority') ? ' has-danger' : '' }}">

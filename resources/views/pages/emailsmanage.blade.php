@@ -174,7 +174,7 @@
                                     </thead>
                                     <tbody>
                                     @foreach ($leadMails as $leadMail)
-                                        @if($leadMail->old_agent_id != 0)
+                                        @if($leadMail->old_agent_id != 0 && !$leadMail->rejected)
                                         <tr>
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>

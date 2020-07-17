@@ -224,7 +224,7 @@ class MailBoxController extends Controller
                 if($user->user_group){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
-                                    ->where('user_group', $user->user_group)
+                                    ->orderBy('to_group', 'desc')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
                                     ->limit(1)
@@ -252,7 +252,7 @@ class MailBoxController extends Controller
             return array('type' => 'ERROR', 'message' => 'You have reached your 24h leads limit!');
         }
 
-        return array('type' => 'SUCCESS', 'message' => count($leadMails) . ' Leads ' . (count($leadMails) > 1 ? 'have' : 'has') . ' been sent to your e-mail!', 'leads' => count($leadMails));
+        return array('type' => 'SUCCESS', 'message' => count($leadMails) . ' Lead ' . (count($leadMails) > 1 ? 'have' : 'has') . ' been sent to your e-mail!', 'leads' => count($leadMails));
 
     }
 

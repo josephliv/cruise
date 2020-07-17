@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Priority;
+use App\Group;
 use Illuminate\Http\Request;
 
 class PriorityController extends Controller
@@ -24,6 +25,7 @@ class PriorityController extends Controller
             return redirect()->route('dashboard');
         }
 
+        //dd(Priority::paginate(15)->first()->group()->first()->name);
         return view('priorities.index', ['priorities' => Priority::paginate(15)]);
     }
 
@@ -38,7 +40,8 @@ class PriorityController extends Controller
             return redirect()->route('dashboard');
         }
 
-        return view('priorities.create');
+        $groups = Group::orderBy('order')->get();
+        return view('priorities.create', compact('groups'));
     }
 
     /**
@@ -85,8 +88,8 @@ class PriorityController extends Controller
         if(!\Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }        
-
-        return view('priorities.edit', compact('priority'));
+        $groups = Group::orderBy('order')->get();
+        return view('priorities.edit', compact('priority', 'groups'));
     }
 
     /**

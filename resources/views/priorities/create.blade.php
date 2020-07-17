@@ -52,12 +52,14 @@
                                             @include('alerts.feedback', ['field' => 'send_to_email'])
                                         </div>
                                         <div class="col-md-3 form-group{{ $errors->has('send_to_email') ? ' has-danger' : '' }}">
-                                            <label class="form-control-label" for="send_to_veteran">{{ __('Send only to Veterans') }}</label>
-                                            <select name="send_to_veteran" id="send_to_veteran" class="form-control{{ $errors->has('field') ? ' is-invalid' : '' }}">
-                                                <option value ='1'>Yes</option>
-                                                <option value ='0' selected>No</option>
+                                            <label class="form-control-label" for="send_to_veteran">{{ __('Send only to Group') }}</label>
+                                            <select name="to_group" id="to_group" class="form-control{{ $errors->has('to_group') ? ' is-invalid' : '' }}">
+                                            <option value="0">All</option>
+                                            @foreach($groups as $group)
+                                                <option {{$group->id == 3 ? 'selected' : ''}} value="{{$group->id}}">{{$group->name}}</option>
+                                            @endforeach
                                             </select>
-                                            @include('alerts.feedback', ['field' => 'condition'])
+                                            @include('alerts.feedback', ['field' => 'to_group'])
                                         </div>
                                     </div>
                                     <div class="form-group{{ $errors->has('priority') ? ' has-danger' : '' }}">
