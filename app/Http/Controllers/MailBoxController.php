@@ -79,7 +79,7 @@ class MailBoxController extends Controller
             $body = $oMessage->getHTMLBody(true);
             $body = $body ? $body : $oMessage->getTextBody();
 
-            $emailFirstWord = strtolower(explode(' ', strip_tags($body))[0]);
+            $emailFirstWord = trim(strtolower(explode(' ', strip_tags($body))[0]));
             $emailContent   = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $body)));
 
             if(strpos($emailFirstWord,'spam') !== false){
@@ -127,15 +127,20 @@ class MailBoxController extends Controller
 
                         switch($priority->field){
                             case 1: {
-                                if(strpos($lead->subject, $priority->condition)){
+                                dump(array('Subject Line',$priority, array('subject' => $lead->subject, 'cond' => $priority->condition,'conditional' => strpos(strtolower($lead->subject), strtolower($priority->condition)))));
+                                if(strpos(strtolower($lead->subject), strtolower($priority->condition)) !== false){
+                                    dump(array(strtolower($lead->subject), strtolower($priority->condition)));
                                     $lead->priority = $priority->priority;
                                     
                                     if(trim($priority->send_to_email) != ''){
+                                        dump(array('to_email', $priority->send_to_email));
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
                                         
                                         if($newUser->count()){
+                                            dump(array('to_email_user', $newUser));
                                             $this->sendIndividualLead($lead->id, $newUser->first());
                                         } else {
+                                            dump(array('to_email_user', 'not_user'));
                                             $this->sendIndividualLead($lead->id, null, $priority->send_to_email);
                                         }
                                     }
@@ -147,7 +152,8 @@ class MailBoxController extends Controller
                             }
 
                             case 2: {
-                                if($lead->email_from == $priority->condition){
+                                //dump(array($priority->field,$priority));
+                                if(strtolower($lead->email_from) == strtolower($priority->condition)){
 
                                     if(trim($priority->send_to_email) != ''){
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
@@ -162,6 +168,10 @@ class MailBoxController extends Controller
                                     $lead->priority = $priority->priority;
                                     $lead->save();                                    
                                 }
+                                break;
+                            }
+                            default:{
+                                dump(array('default',$priority));
                                 break;
                             }
                         }
@@ -197,7 +207,12 @@ class MailBoxController extends Controller
                 ->get()
                 ->first();
 
-            $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+            if($leadMails){
+                $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+            } else {
+                $dateFrom   = \Carbon\Carbon::now()->startOfDay();
+            }
+            
             $dateTo     = \Carbon\Carbon::now()->endOfDay();
         } else {
             $dateFrom   = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
@@ -221,7 +236,7 @@ class MailBoxController extends Controller
 
         if(LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed){
             if($currentTime >= $time_set_init && $currentTime <= $time_set_final){
-                if($user->user_group){
+                if($user->user_group >= 2){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
                                     ->orderBy('to_group', 'desc')
@@ -232,6 +247,7 @@ class MailBoxController extends Controller
                 } else {
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
+                                    ->where('to_group', 0)
                                     ->whereNull('to_veteran')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')

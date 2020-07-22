@@ -8,7 +8,7 @@ class Priority extends Model
 {
     //
     protected $fillable = [
-        'description', 'field', 'condition', 'send_to_email', 'send_to_veteran', 'priority',
+        'description', 'field', 'condition', 'send_to_email', 'user_group', 'priority',
     ];
 
     public function group(){

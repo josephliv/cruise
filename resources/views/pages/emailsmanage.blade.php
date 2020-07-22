@@ -179,8 +179,8 @@
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
                                             <td><span id="mail-subject">{{$leadMail->subject}}</span></td>
-                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
                                             <td >{{optional(optional($leadMail->old_agent())->first())->name}}</td>
+                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
                                             
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
