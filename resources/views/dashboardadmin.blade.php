@@ -9,7 +9,7 @@
     display: grid;
     align-self: center;
 }
-.btn-primary {
+.btn-primary2 {
 
     background-color: #0089BA!important;
     color: #fff!important;
@@ -17,7 +17,7 @@
     transition: .5s ease;
 }
 
-.btn-primary:hover {
+.btn-primary2:hover {
     background-color: white!important;
     color: #0089BA!important;
 }
@@ -74,7 +74,7 @@
                 <div style="position: relative">
                         <div  class="cover" title="A new lead has been sent to your inbox.">
                          A lead has been sent to your email.</div>
-                        <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()" title="Click here to send a lead to your inbox.">
+                        <a href="#" id="generateLeadBtn" class="btn btn-primary2" onclick="lead()" title="Click here to send a lead to your inbox.">
                         Send a Lead
                         </a>   
                     </div> 
