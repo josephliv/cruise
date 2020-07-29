@@ -11,6 +11,7 @@ use App\Mail\LeadSent;
 use App\Mail\ReportMail;
 use App\Mail\ErrorMail;
 use App\User;
+use Illuminate\Support\Facades\Log;
 
 class MailBoxController extends Controller
 {
@@ -81,6 +82,8 @@ class MailBoxController extends Controller
 
             $emailFirstWord = trim(strtolower(explode(' ', strip_tags($body))[0]));
             $emailContent   = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $body)));
+
+            Log::debug('Lead: ' . $lead->id . ';First Word: ' . $emailFirstWord);
 
             if(strpos($emailFirstWord,'spam') !== false){
                 if(count(explode('-||', $oMessage->getSubject()))){
@@ -330,7 +333,7 @@ class MailBoxController extends Controller
                         END
                     ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,
-                    MAX(LM.updated_at) AS last_lead
+                    MAX(CONVERT_TZ(LM.updated_at, '+00:00', '-05:00')) AS last_lead
             FROM lead_mails LM
                 INNER JOIN users U ON
                     U.id = LM.agent_id
@@ -345,7 +348,7 @@ class MailBoxController extends Controller
                     COUNT(*) AS leads_count,
                     0 AS leads_rejected,
                     SUM(LM.rejected) AS leads_rejected,
-                    MAX(LM.updated_at) AS last_lead
+                    MAX(CONVERT_TZ(LM.updated_at, '+00:00', '-05:00')) AS last_lead
             FROM lead_mails LM
             WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
                     LM.updated_at <= '" . $dateTo . " 23:59:59' AND
@@ -372,7 +375,7 @@ class MailBoxController extends Controller
                         END
                     ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,
-                    MAX(LM.updated_at) AS last_lead
+                    MAX(CONVERT_TZ(LM.updated_at, '+00:00', '-05:00')) AS last_lead
             FROM lead_mails LM
                 INNER JOIN users U ON
                     U.id = LM.agent_id
@@ -387,7 +390,7 @@ class MailBoxController extends Controller
                     COUNT(*) AS leads_count,
                     0 AS leads_rejected,
                     SUM(LM.rejected) AS leads_rejected,
-                    MAX(LM.updated_at) AS last_lead
+                    MAX(CONVERT_TZ(LM.updated_at, '+00:00', '-05:00')) AS last_lead
             FROM lead_mails LM
             WHERE   LM.updated_at >= '" . $dateFrom . " 00:00:00' AND
                     LM.updated_at <= '" . $dateTo . " 23:59:59' AND
