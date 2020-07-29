@@ -80,10 +80,10 @@ class MailBoxController extends Controller
             $body = $oMessage->getHTMLBody(true);
             $body = $body ? $body : $oMessage->getTextBody();
 
-            $emailFirstWord = trim(strtolower(explode(' ', strip_tags($body))[0]));
+            $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $body)))[0]));
             $emailContent   = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $body)));
 
-            Log::debug('Lead: ' . $lead->id . ';First Word: ' . $emailFirstWord);
+            Log::debug('First Word: ' . $emailFirstWord);
 
             if(strpos($emailFirstWord,'spam') !== false){
                 if(count(explode('-||', $oMessage->getSubject()))){
