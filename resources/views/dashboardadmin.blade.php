@@ -13,7 +13,7 @@
 
     background-color: #0089BA!important;
     color: #fff!important;
-    font-size: 1.8em;
+    font-size: 1.2em;
     transition: .5s ease;
 }
 

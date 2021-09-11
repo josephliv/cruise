@@ -14,7 +14,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => env('APP_NAME', 'Cruiser Leadbox Management System'),
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     |
     */
 
-    'debug' => (bool) env('APP_DEBUG', false),
+    'debug' => (bool) env('APP_DEBUG', true),
 
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +53,7 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
+    'url' => env('APP_URL', 'http://cruiser.joesdigitalservices.com/home'),
 
     'asset_url' => env('ASSET_URL', null),
 
@@ -68,7 +68,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC -5',
+    'timezone' => 'UTC',
 
     /*
     |--------------------------------------------------------------------------

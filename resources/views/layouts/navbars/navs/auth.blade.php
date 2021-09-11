@@ -23,7 +23,7 @@
                 
                
                 <div id="collapseTwo" class="collapse dropCustom" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                  <div class="">
+                  <div class="shadow">
                     <ul class="list-group ">
                       <li class="list-group-item"><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">CRUISER TRAVELS</a></li>
                       <li class="list-group-item"><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">REPORT A NEW BOOKING</a></li>

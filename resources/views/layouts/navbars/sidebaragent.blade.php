@@ -11,6 +11,15 @@ Tip 2: you can also add an image using data-image tag
             </a>
         </div>
         <ul class="nav">
+        <li class="nav-item ">
+        <span class="no-icon mr-2 nav-link"> Logged in as: <br> {{ \Auth::user()->name }} </span>
+        </li>
+        <li class="nav-item text-center pb-2">
+        <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                                @csrf
+        <a class="text-danger bg-light p-1 shadow" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> {{ __('Log out') }} </a>
+                    </form>
+        </li>
             <li class="nav-item @if($activePage == 'dashboard') active @endif">
                 <a class="nav-link" href="{{route('dashboard')}}">
                     <i class="nc-icon nc-chart-pie-35"></i>
@@ -18,7 +27,7 @@ Tip 2: you can also add an image using data-image tag
                 </a>
             </li>
             <!-- THIS MAY BE ENABLED AGAIN, LET'S SEE WHAT HE SAYS. -->
-            <!-- <li class="nav-item @if($activePage == 'user') active @endif">
+             <li class="nav-item @if($activePage == 'user') active @endif">
                 <a class="nav-link" href="{{route('profile.edit')}}">
                     <i class="nc-icon nc-single-02"></i>
                     <p>{{ __("My Profile") }}</p>
@@ -54,7 +63,7 @@ Tip 2: you can also add an image using data-image tag
                         <li><a class="nav-link" target="_blank" href="www.agent.uplift.com ">UPLIFT</a></li> 
                     </ul>
                 </div>
-            </li>  -->   
+            </li>   
         </ul>
     </div>
 </div>

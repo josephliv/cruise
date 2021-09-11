@@ -1,6 +1,8 @@
-@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
+@extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 
+'navName' => 'Dashboard', 'activeButton' => 'laravel', ])
 
 @section('content')
+
 <style>
     
 .grid-container {
@@ -79,8 +81,8 @@
   cursor: move;
   z-index: 10;
   background-color: #2196F3;
-  color: #fff;
-}
+  color: #fff; 
+} 
 </style>
 
                 

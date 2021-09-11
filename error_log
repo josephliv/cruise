@@ -1,0 +1,6 @@
+[05-Sep-2021 01:40:30 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function php_info() in /home/visifivk/cruiser.joesdigitalservices.com/index.php:2
+Stack trace:
+#0 {main}
+  thrown in /home/visifivk/cruiser.joesdigitalservices.com/index.php on line 2
+[05-Sep-2021 01:42:21 UTC] PHP Warning:  require(../public/index.php): failed to open stream: No such file or directory in /home/visifivk/cruiser.joesdigitalservices.com/index.php on line 2
+[05-Sep-2021 01:42:21 UTC] PHP Fatal error:  require(): Failed opening required '../public/index.php' (include_path='.:/opt/alt/php74/usr/share/pear') in /home/visifivk/cruiser.joesdigitalservices.com/index.php on line 2

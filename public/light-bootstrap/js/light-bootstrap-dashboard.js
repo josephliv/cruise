@@ -19,15 +19,21 @@ var transparentDemo = true;
 var fixedTop = false;
 
 var navbar_initialized = false;
-var mobile_menu_visible = 0,
-    mobile_menu_initialized = false,
-    toggle_initialized = false,
-    bootstrap_nav_initialized = false,
-    $sidebar,
-    isWindows;
+var mobile_menu_visible = false;
+let mobile_menu_initialized = false;
+let toggle_initialized = false;
+let bootstrap_nav_initialized = false;
+let $sidebar;
+let isWindows;
 
-$(document).ready(function() {
-    window_width = $(window).width();
+let domMobileSideMenu = $('#mobileSideMenu');
+
+let inMobileModeFlag = false;
+
+$(document).ready(function () {
+    let window_width = $(window).width();
+
+    lbd.getTopNavContent(); // Grab the Top Navigation ONCE
 
     // check if there is an image set for the sidebar's background
     lbd.checkSidebarImage();
@@ -59,9 +65,11 @@ $(document).ready(function() {
 
 // activate collapse right menu when the windows is resized
 $(window).resize(function() {
-    if ($(window).width() <= 991) {
-        lbd.initRightMenu();
+    if ($(window).width() >= 991) {
+        inMobileModeFlag = false;
+        domMobileSideMenu.addClass('d-none');
     }
+    lbd.initRightMenu();
 });
 
 lbd = {
@@ -84,105 +92,86 @@ lbd = {
         }
     },
 
-    initRightMenu: function() {
-        $sidebar_wrapper = $('.sidebar-wrapper');
+    getTopNavContent: function () {
+        let sidebar_wrapper = $('.sidebar-wrapper');
+        let navbar = $('nav').find('.navbar-collapse').first().clone(true);
+        let nav_content = '';
+        let mobile_menu_content = '';
 
-        if (!mobile_menu_initialized) {
+        //add the content from the regular header to the mobile menu
+        navbar.children('ul').each(function () {
+            let content_buff = $(this).html();
+            nav_content = nav_content + content_buff;
+        });
+        nav_content = '<ul class="nav nav-mobile-menu">' + nav_content + '</ul>';
 
-            $navbar = $('nav').find('.navbar-collapse').first().clone(true);
+        let navbar_form = $('nav').find('.navbar-form').clone(true);
+        let sidebar_nav = sidebar_wrapper.find(' > .nav');
 
-            nav_content = '';
-            mobile_menu_content = '';
+        // insert the navbar form before the sidebar list
+        // console.log('Code: ' + nav_content);
+        domMobileSideMenu.html(nav_content);
+    },
 
-            //add the content from the regular header to the mobile menu
-            $navbar.children('ul').each(function() {
-
-                content_buff = $(this).html();
-                nav_content = nav_content + content_buff;
-            });
-
-            nav_content = '<ul class="nav nav-mobile-menu">' + nav_content + '</ul>';
-
-            $navbar_form = $('nav').find('.navbar-form').clone(true);
-
-            $sidebar_nav = $sidebar_wrapper.find(' > .nav');
-
-            // insert the navbar form before the sidebar list
-            $nav_content = $(nav_content);
-            $nav_content.insertBefore($sidebar_nav);
-            $navbar_form.insertBefore($nav_content);
-
-            $(".sidebar-wrapper .dropdown .dropdown-menu > li > a").onmouseover(function(event) {
-                event.stopPropagation();
-
-            });
-
-            mobile_menu_initialized = true;
+    /** Simplified Versions */
+    initRightMenu: function (width) {
+        // console.log('initRightMenu');
+        if ($(window).width() > 991) {
+            // Not Mobile
+            // console.log('We are in NOT Mobile Mode');
         } else {
-            console.log('window with:' + $(window).width());
-            if ($(window).width() > 991) {
-                // reset all the additions that we made for the sidebar wrapper only if the screen is bigger than 991px
-                $sidebar_wrapper.find('.navbar-form').remove();
-                $sidebar_wrapper.find('.nav-mobile-menu').remove();
+            if (!inMobileModeFlag) {
+                // console.log('We are in Mobile Mode - First Time');
+                inMobileModeFlag = true;
+                domMobileSideMenu.removeClass('d-none');
 
-                mobile_menu_initialized = false;
+                this.displayRightMenu();
+                // This is Mobile
+            } else {
+               // console.log('We are already in Mobile Mode So dont have to do it again');
             }
         }
+    },
 
+    displayRightMenu: function (){
         if (!toggle_initialized) {
-            $toggle = $('.navbar-toggler');
-
+            let $toggle = $('.navbar-toggler');
             $toggle.click(function() {
-
-                if (mobile_menu_visible == 1) {
+                if (mobile_menu_visible === true) {
                     $('html').removeClass('nav-open');
-
                     $('.close-layer').remove();
                     setTimeout(function() {
                         $toggle.removeClass('toggled');
                     }, 400);
-
-                    mobile_menu_visible = 0;
+                    mobile_menu_visible = false;
                 } else {
                     setTimeout(function() {
                         $toggle.addClass('toggled');
                     }, 430);
-
-
-                    main_panel_height = $('.main-panel')[0].scrollHeight;
+                   let  main_panel_height = $('.main-panel')[0].scrollHeight;
                     $layer = $('<div class="close-layer"></div>');
                     $layer.css('height', main_panel_height + 'px');
                     $layer.appendTo(".main-panel");
-
                     setTimeout(function() {
                         $layer.addClass('visible');
                     }, 100);
-
                     $layer.click(function() {
                         $('html').removeClass('nav-open');
-                        mobile_menu_visible = 0;
-
+                        mobile_menu_visible = false;
                         $layer.removeClass('visible');
-
                         setTimeout(function() {
                             $layer.remove();
                             $toggle.removeClass('toggled');
-
                         }, 400);
                     });
-
                     $('html').addClass('nav-open');
-                    mobile_menu_visible = 1;
-
+                    mobile_menu_visible = true;
                 }
             });
-
             toggle_initialized = true;
         }
-    }
+    },
 }
-
-
 
 // Returns a function, that, as long as it continues to be invoked, will not
 // be triggered. The function will be called after it stops being called for
@@ -201,4 +190,4 @@ function debounce(func, wait, immediate) {
         }, wait);
         if (immediate && !timeout) func.apply(context, args);
     };
-};
+}
