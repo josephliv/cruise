@@ -1,10 +1,10 @@
-/* Dashboard box with links*/ 
+/* Dashboard box with links*/
 .box-of-links {
-    background-color: rgba(55,55,55,0.6); 
+    background-color: rgba(55,55,55,0.6);
     border-radius: 8px;
     padding: 20px;
     border: 1px solid;
-    box-shadow: 0 0 10px #fff;  
+    box-shadow: 0 0 10px #fff;
     width: 80%;
     max-width: 100%;
     margin: 0 auto;
@@ -377,7 +377,7 @@
     -o-transform: translateY(-19%);
     -ms-transform: translateY(-19%);
     transform: translateY(-19%);
-    
+
 }
 
 .places-buttons .btn {
@@ -596,8 +596,8 @@
     .container-fluid {
         z-index: 1;
     }
-   
-  
+
+
 }
 
 
@@ -710,9 +710,23 @@
 .navbar-default.navbar-small .logo-container .brand {
     color: #333333;
 }
+
+@media only screen and (max-width: 375px) {
+    .navbar-brand {
+        font-size: 0.9em !important;
+    }
+}
+
 .dropCustom {
     z-index: 99;
-    position: absolute;  
+    position: absolute;
+    box-shadow: 2px 2px 20px #000;
+    border-radius: 4px;
+    transition: .5s ease-in-out;
+}
+
+.dropCustom li:hover {
+    background:#d0ecf5;
 }
 
 .sharing-area {
