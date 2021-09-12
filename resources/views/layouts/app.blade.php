@@ -28,8 +28,8 @@
         <!-- CSS Files -->
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
-        <!-- CSS Just for demo purpose, don't include it in your project -->
-        <link href="{{ asset('light-bootstrap/css/moreStyles.css') }}" rel="stylesheet" />
+        <!-- CSS mostly for custom changes such as the dropdown menu -->
+        <link href="{{ asset('light-bootstrap/css/custom.css') }}" rel="stylesheet" />
     </head>
 
     <body>
