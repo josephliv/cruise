@@ -727,12 +727,11 @@
     background:#e5e5e5;
 }
 
-      #mobileSideMenu {
- color: #fff!important;
-}
+/* dropdown menu to align better in sidebar on smaller screens. */
 #mobileSideMenu .dropCustom {
     left: 0;
     font-size: .8em;
+    width: 100%;
 }
 
 .sharing-area {

@@ -15,7 +15,7 @@
            
             <li class="nav-item mx-4">
             <a href="#" class="collapsed list-group-item-action mobileLink" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
-                     Links
+            &nbsp&darr;&nbspLinks&nbsp
                     </a>
                 
                
