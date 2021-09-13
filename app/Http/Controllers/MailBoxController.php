@@ -12,6 +12,7 @@ use App\Mail\ReportMail;
 use App\Mail\ErrorMail;
 use App\User;
 use Illuminate\Support\Facades\Log;
+use App\DataTables\LeadsDataTable;
 
 class MailBoxController extends Controller
 {
@@ -201,7 +202,7 @@ class MailBoxController extends Controller
 	}
     }
 
-    public function manage(Request $request){
+    public function manage(Request $request, LeadsDataTable $dataTable){
 
         if(!count($request->input())){
 
@@ -222,10 +223,17 @@ class MailBoxController extends Controller
             $dateTo     = \Carbon\Carbon::parse($request->input('to-date'))->endOfDay();
         }
 
+
+        
+       // dd($leadMails);
+
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
-                        ->orderBy('id', 'desc')->get();
-        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
+                        ->orderBy('id', 'desc')->limit(10)->get();
+        
+        /*return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));*/
+
+        return $dataTable->render('pages.emailsmanagedatatable');
 
     }
 
