@@ -129,12 +129,15 @@ lbd = {
                 this.getTopNavContent();
                 this.displayRightMenu();
                 // This is Mobile
-            } 
+            } else {
+               
+            }
         }
     },
 
     displayRightMenu: function (){
         if (!toggle_initialized) {
+            
             let $toggle = $('.navbar-toggler');
             $toggle.click(function() {
                 if (mobile_menu_visible === true) {
