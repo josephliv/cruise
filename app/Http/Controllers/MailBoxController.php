@@ -32,7 +32,8 @@ class MailBoxController extends Controller
 	//Get all Mailboxes
     /** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
     //$aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('[Gmail]/Spam')];
-    $aFolder = $oClient->getFolders();
+    //$aFolder = $oClient->getFolders();
+    $aFolder[] = $oClient->getFolder('INBOX');
     $aFolder[] = $oClient->getFolder('[Gmail]/Spam');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
     //dump($oFolder);
