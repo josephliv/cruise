@@ -232,4 +232,5 @@
     <script src="{{ mix('js/app.js') }}"></script>
     <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
     <script src="{{ asset('light-bootstrap/js/light-bootstrap-dashboard.js') }}"></script>
+    <script src="{{ asset('light-bootstrap/js/demo.js') }}"></script>
 </html>
