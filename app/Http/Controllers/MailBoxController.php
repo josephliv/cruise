@@ -50,7 +50,8 @@ class MailBoxController extends Controller
 		//Get all Messages of the current Mailbox $oFolder
 		/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
         //$aMessage = $oFolder->messages()->all()->get();
-        $aMessage = $oFolder->query()->unseen()->get();
+        //$aMessage = $oFolder->query()->unseen()->get();
+        $aMessage = $oFolder->query(null)->unseen()->since('14.10.2020')->limit(5,1)->get();
         //$aMessage = $oFolder->query()->since(Carbon::now()->subDays(5))->get();
 		
         /** @var \Webklex\IMAP\Message $oMessage */
