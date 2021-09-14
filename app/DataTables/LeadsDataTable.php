@@ -2,7 +2,7 @@
 
 namespace App\DataTables;
 
-use App\App\Lead;
+use App\LeadMails as Lead;
 use Yajra\DataTables\Html\Button;
 use Yajra\DataTables\Html\Column;
 use Yajra\DataTables\Html\Editor\Editor;

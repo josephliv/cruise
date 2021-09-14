@@ -32,8 +32,12 @@ class MailBoxController extends Controller
 	//Get all Mailboxes
     /** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
     //$aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('[Gmail]/Spam')];
-    $aFolder = $oClient->getFolders();
-    $aFolder[] = $oClient->getFolder('[Gmail]/Spam');
+    //$aFolder = $oClient->getFolders();
+    $aFolder[] = $oClient->getFolder('INBOX');
+    //$oFolder = $oClient->getFolder('Gmail/SPAM');
+    dump($aFolder);
+
+    //$aFolder[] = $oClient->getFolder('[Gmail]/Spam');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
     //dump($oFolder);
 
@@ -46,7 +50,8 @@ class MailBoxController extends Controller
 		//Get all Messages of the current Mailbox $oFolder
 		/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
         //$aMessage = $oFolder->messages()->all()->get();
-        $aMessage = $oFolder->query()->unseen()->get();
+        //$aMessage = $oFolder->query()->unseen()->get();
+        $aMessage = $oFolder->query(null)->unseen()->since('14.10.2020')->limit(5,1)->get();
         //$aMessage = $oFolder->query()->since(Carbon::now()->subDays(5))->get();
 		
         /** @var \Webklex\IMAP\Message $oMessage */
@@ -202,7 +207,8 @@ class MailBoxController extends Controller
 	}
     }
 
-    public function manage(Request $request, LeadsDataTable $dataTable){
+    public function manage(Request $request){
+    //public function manage(LeadsDataTable $dataTable){
 
         if(!count($request->input())){
 
@@ -212,7 +218,9 @@ class MailBoxController extends Controller
                 ->first();
 
             if($leadMails){
-                $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+                //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+
+                $dateFrom   = \Carbon\Carbon::now()->subDays(30)->startOfDay();
             } else {
                 $dateFrom   = \Carbon\Carbon::now()->startOfDay();
             }
@@ -229,12 +237,17 @@ class MailBoxController extends Controller
 
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
-                        ->orderBy('id', 'desc')->limit(10)->get();
-        
-        /*return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));*/
+                        ->orderBy('id', 'desc')->get();
 
-        return $dataTable->render('pages.emailsmanagedatatable');
+        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
 
+//        return $dataTable->render('pages.emailsmanagedatatable');
+
+    }
+
+    public function datatables(LeadsDataTable $dataTable){
+
+        //dataTable($query)
     }
 
     public function sendLeads(Request $request){
