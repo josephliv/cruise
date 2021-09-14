@@ -280,12 +280,13 @@ class MailBoxController extends Controller
                                     ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                     
-                    dd($leadMails->toSql());
+                    //dd($leadMails->toSql());
                 }
 
                 foreach($leadMails as $lead){
                     \Mail::to($user->email)->send(new LeadSent($lead));
-                    $lead->agent_id = $user->id;
+                    $lead->agent_id         = $user->id;
+                    $lead->assigned_date    = \Carbon\Carbon::now();
                     $lead->save();
                 }
 
