@@ -260,9 +260,11 @@ class MailBoxController extends Controller
 
         if(LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed){
             if($currentTime >= $time_set_init && $currentTime <= $time_set_final){
-                if($user->user_group >= 2){
+
+                if($user->user_group == 1){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
+                                    ->where('to_group', $user->user_group)
                                     ->orderBy('to_group', 'desc')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
@@ -271,12 +273,14 @@ class MailBoxController extends Controller
                 } else {
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
-                                    ->where('to_group', 0)
+                                    ->where('to_group', [0,$user->user_group])
                                     ->whereNull('to_veteran')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
                                     ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+                    
+                    dd($leadMails->toSql());
                 }
 
                 foreach($leadMails as $lead){
