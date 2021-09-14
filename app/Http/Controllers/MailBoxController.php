@@ -215,7 +215,7 @@ class MailBoxController extends Controller
             if($leadMails){
                 //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
 
-                $dateFrom   = \Carbon\Carbon::now()->subDays(120)->startOfDay();
+                $dateFrom   = \Carbon\Carbon::now()->subDays(30)->startOfDay();
             } else {
                 $dateFrom   = \Carbon\Carbon::now()->startOfDay();
             }
@@ -232,7 +232,7 @@ class MailBoxController extends Controller
 
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
-                        ->orderBy('id', 'desc')->limit(10)->get();
+                        ->orderBy('id', 'desc')->get();
 
         return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
 
