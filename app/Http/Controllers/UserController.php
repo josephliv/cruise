@@ -88,7 +88,7 @@ class UserController extends Controller
         if(trim($request->get('password')) != ''){
             $model->password        = Hash::make($request->get('password'));
         }
-        $model->is_admin        = (intval($request->get('user_group')) == 1 ? 1 : 0);
+        $model->is_admin        = (intval($request->get('user_group')) == 5 ? 1 : 0);
         $model->leads_allowed   = intval($request->get('leads_allowed'));
         $model->time_set_init   = $request->get('time_set_init');
         $model->time_set_final  = $request->get('time_set_final');
