@@ -129,9 +129,7 @@ lbd = {
                 this.getTopNavContent();
                 this.displayRightMenu();
                 // This is Mobile
-            } else {
-               
-            }
+            } 
         }
     },
 
