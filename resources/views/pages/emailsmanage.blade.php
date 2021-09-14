@@ -55,15 +55,6 @@
                         </li>
                         </ul>
                         <div id="unassigned" class="type" >
-
-                        @section('content')
-                            {{$dataTable->table()}}
-                        @endsection
-
-                        @push('scripts')
-                            {{$dataTable->scripts()}}
-                        @endpush
-
                             <table class="table table-striped">
                                 <thead>
                                     <th>#</th>

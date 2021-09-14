@@ -38,7 +38,5 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('reademail', 'MailBoxController@index');
 	Route::get('leads/get', 'MailBoxController@sendLeads');
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
-
-	
 });
 

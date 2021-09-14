@@ -89,6 +89,7 @@
         return url + '?' + $.param(params);
     };
 
+    /*
     DataTable.ext.buttons.excel = {
         className: 'buttons-excel',
 
@@ -101,7 +102,9 @@
             window.location = url;
         }
     };
+    */
 
+    /*
     DataTable.ext.buttons.postExcel = {
         className: 'buttons-excel',
 
@@ -116,7 +119,9 @@
             _downloadFromUrl(url, params);
         }
     };
+    */
     
+    /*
     DataTable.ext.buttons.postExcelVisibleColumns = {
         className: 'buttons-excel',
 
@@ -131,7 +136,9 @@
             _downloadFromUrl(url, params);
         }
     };
+    */
 
+    /*
     DataTable.ext.buttons.export = {
         extend: 'collection',
 
@@ -254,6 +261,7 @@
         }
     };
 
+
     DataTable.ext.buttons.create = {
         className: 'buttons-create',
 
@@ -265,7 +273,9 @@
             window.location = window.location.href.replace(/\/+$/, "") + '/create';
         }
     };
+*/
 
+/*
     if (typeof DataTable.ext.buttons.copyHtml5 !== 'undefined') {
         $.extend(DataTable.ext.buttons.copyHtml5, {
             text: function (dt) {
@@ -281,4 +291,5 @@
             }
         });
     }
+    */
 })(jQuery, jQuery.fn.dataTable);

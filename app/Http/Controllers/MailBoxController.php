@@ -202,7 +202,8 @@ class MailBoxController extends Controller
 	}
     }
 
-    public function manage(Request $request, LeadsDataTable $dataTable){
+    public function manage(Request $request){
+    //public function manage(LeadsDataTable $dataTable){
 
         if(!count($request->input())){
 
@@ -212,7 +213,9 @@ class MailBoxController extends Controller
                 ->first();
 
             if($leadMails){
-                $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+                //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+
+                $dateFrom   = \Carbon\Carbon::now()->subDays(120)->startOfDay();
             } else {
                 $dateFrom   = \Carbon\Carbon::now()->startOfDay();
             }
@@ -230,11 +233,16 @@ class MailBoxController extends Controller
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
                         ->orderBy('id', 'desc')->limit(10)->get();
-        
-        /*return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));*/
 
-        return $dataTable->render('pages.emailsmanagedatatable');
+        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
 
+//        return $dataTable->render('pages.emailsmanagedatatable');
+
+    }
+
+    public function datatables(LeadsDataTable $dataTable){
+
+        //dataTable($query)
     }
 
     public function sendLeads(Request $request){
