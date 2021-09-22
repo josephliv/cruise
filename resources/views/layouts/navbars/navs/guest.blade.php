@@ -1,5 +1,5 @@
 <nav class="navbar navbar-transparent navbar-absolute">
-<div class="container">
+<div class="container"> 
         <div class="nav-item">
             <a href="/">
                 <img style="border-radius: 4px;"  src="/light-bootstrap/img/logo.jpg">
