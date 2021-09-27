@@ -264,7 +264,7 @@ function openReport(e, report, caller) {
     $('.direct-send-lead-button').on('click', function(e){
         var transferLeadId              = $('#transferLeadId').val();
         var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
-        var transferLeadNewAgent        = $('#transferLeadMewAgent').val();
+        var transferLeadNewAgent        = $('#transferLeadNewAgent').val();
 
         if(transferLeadOriginalAgent != transferLeadNewAgent){
               $.ajax({
