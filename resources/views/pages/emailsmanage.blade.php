@@ -231,12 +231,11 @@
             @endforeach
         </select>
         </div>
-    </div>
-    
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
       </div>
+    </div>
     </div>
 
 <script>
@@ -254,33 +253,5 @@ function openReport(e, report, caller) {
   }
   document.getElementById(report).style.display = "block";
 }
-
-
-    $('.direct-send-lead').on('click', function(e){
-        $('#transferLeadId').val($(this).data('id'));
-        $('#transferLeadOriginalAgent').val($(this).data('original-user'));
-    })
-
-    $('.direct-send-lead-button').on('click', function(e){
-        var transferLeadId              = $('#transferLeadId').val();
-        var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
-        var transferLeadNewAgent        = $('#transferLeadNewAgent').val();
-
-        if(transferLeadOriginalAgent != transferLeadNewAgent){
-              $.ajax({
-                url: "/leads/transfer/" + transferLeadId + "/" + transferLeadOriginalAgent,
-                success: function(result){
-                    res = JSON.parse(result);
-                    console.log(res);
-                },
-                error: function(a,b,c){
-                    alert('Something Went Wrong!');
-                    console.log(a,b,c);
-                }
-            });
-        } else {
-            alert('This lead has already being sent to this user');
-        }
-    })
 </script>
 @endsection
