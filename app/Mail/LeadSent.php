@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
 class LeadSent extends Mailable
 {
@@ -34,8 +35,10 @@ class LeadSent extends Mailable
                     ->subject($this->lead->subject . ' -||' . $this->lead->id)
                     ->view('mails.leadsent');
 
+        Log::debug($this->lead->attachment);
         if($this->lead->attachment){
             $attachment = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $this->lead->attachment);
+            Log::debug($attachment);
             if(is_file($attachment)){
                 $mailable->attach($attachment);
             }

@@ -250,6 +250,12 @@ class MailBoxController extends Controller
         //dataTable($query)
     }
 
+    public function testLeads(Request $request){
+
+        $user = User::where('email', 'dyegofern@gmail.com')->first();
+        $this->sendIndividualLead(3066, $user, $user->email);
+
+    }
     public function sendLeads(Request $request){
 
         $user = \Auth::user();
