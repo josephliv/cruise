@@ -155,6 +155,7 @@ class MailBoxController extends Controller
                                     }
 
                                     $lead->priority = $priority->priority;
+                                    $lead->to_group = $priority->user_group;
                                     $lead->save();
                                 }
                                 break;
@@ -175,6 +176,7 @@ class MailBoxController extends Controller
                                     }
 
                                     $lead->priority = $priority->priority;
+                                    $lead->to_group = $priority->user_group;
                                     $lead->save();                                    
                                 }
                                 break;
