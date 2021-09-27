@@ -79,7 +79,7 @@
                                                         <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                     @endif
                                                     <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="optional($leadMail)->agent" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional($leadMail)->agent}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                     <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                             </td>
@@ -116,7 +116,7 @@
                                                             <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                         @endif
                                                         <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="optional($leadMail)->agent" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional($leadMail)->agent}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                                 </td>
@@ -154,7 +154,7 @@
                                                         @endif
                                                         <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Rejected message"></i></a>
                                                         <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="optional($leadMail)->agent" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional($leadMail)->agent}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                                 </td>
@@ -194,7 +194,7 @@
                                                         @endif
                                                         <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="reassigned" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Reassigned message"></i></a>
                                                         <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="optional($leadMail)->agent" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional($leadMail)->agent}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', $leadMail->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                                 </td>
