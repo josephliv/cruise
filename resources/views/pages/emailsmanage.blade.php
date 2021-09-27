@@ -222,19 +222,21 @@
     <div class="modal fade " id="sendLeadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="sendLeadModalBody" style="border:solid darkgray 1px!important; padding:25px; min-height:400px">
-        Whoops... Error 0x0981234
-        <input type="hidden" id="transferLeadId" value="" />
-        <input type="hidden" id="transferLeadOriginalAgent" value="" />
-        <select class="form-control" id="transferLeadNewAgent">
-            @foreach($users as $user)
-            <option value="{{$user->id}}">{{$user->name}}</option>
-            @endforeach
-        </select>
+            <input type="hidden" id="transferLeadId" value="" />
+            <input type="hidden" id="transferLeadOriginalAgent" value="" />
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Select the user to transfer this lead:</label>
+                <select class="form-control" id="transferLeadNewAgent">
+                    @foreach($users as $user)
+                    <option value="{{$user->id}}">{{$user->name}}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
+            </div>
         </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
-      </div>
     </div>
     </div>
 
