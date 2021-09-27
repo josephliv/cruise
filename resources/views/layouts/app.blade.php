@@ -195,6 +195,7 @@
                         res = JSON.parse(result);
                         console.log(res);
                         alert(res.success);
+                        location.reload();
                     },
                     error: function(a,b,c){
                         alert('Something Went Wrong!');
