@@ -250,12 +250,12 @@ class MailBoxController extends Controller
         //dataTable($query)
     }
 
-    public function testLeads(Request $request, $leadId, $userId){
+    public function transferLead(Request $request, $leadId, $userId){
 
         $user = User::where('id', $userId)->first();
         if($user){
             $lead = $this->sendIndividualLead($leadId, $user, $user->email);
-            return  json_encode(array('lead' => $lead));
+            return  json_encode(array('success' => 'Lead #' . $leadId . ' successfuly transfered to agent: ' . $user->email));
         } else {
             return  json_encode(array('error' => 'User ID: ' . $userId . ' not found'));
         }
