@@ -231,6 +231,8 @@
                     <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </select>
+            </div>
+            <div class="form-group">
                 <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
             </div>
         </div>
