@@ -194,6 +194,7 @@
                     success: function(result){
                         res = JSON.parse(result);
                         console.log(res);
+                        alert(res.success);
                     },
                     error: function(a,b,c){
                         alert('Something Went Wrong!');
