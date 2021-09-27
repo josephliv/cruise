@@ -231,9 +231,6 @@
                     <option value="{{$user->id}}">{{$user->name}}</option>
                     @endforeach
                 </select>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
             </div>
         </div>
