@@ -252,7 +252,7 @@ class MailBoxController extends Controller
 
     public function testLeads(Request $request){
 
-        $user = User::where('email', 'dyegofern@gmail.com')->first();
+        $user = User::where('email', 'chris@cruisertravels.com')->first();
         $this->sendIndividualLead(3066, $user, $user->email);
 
     }
