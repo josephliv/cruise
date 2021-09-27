@@ -30,7 +30,7 @@ let domMobileSideMenu = $('#mobileSideMenu');
 let inMobileModeFlag = false;
 
 $(document).ready(function () {
-    let window_width = $(window).width();
+    let window_width = $(window).width(); 
 
     // lbd.getTopNavContent(); // Grab the Top Navigation ONCE
 
