@@ -33,6 +33,7 @@ class LeadSent extends Mailable
     {
         $mailable = $this
                     ->subject($this->lead->subject . ' -||' . $this->lead->id)
+                    ->replyTo('sales@cruisertravels.com')
                     ->view('mails.leadsent');
 
         Log::debug($this->lead->attachment);
