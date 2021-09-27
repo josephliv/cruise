@@ -190,7 +190,7 @@
 
             if(transferLeadOriginalAgent != transferLeadNewAgent){
                   $.ajax({
-                    url: "/leads/transfer/" + transferLeadId + "/" + transferLeadOriginalAgent,
+                    url: "/leads/transfer/" + transferLeadId + "/" + transferLeadNewAgent,
                     success: function(result){
                         res = JSON.parse(result);
                         console.log(res);
