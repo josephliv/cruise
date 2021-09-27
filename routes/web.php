@@ -37,7 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('emails', ['as' => 'emails.manage2', 'uses' => 'MailBoxController@manage']);
 	Route::get('reademail', 'MailBoxController@index');
 	Route::get('leads/get', 'MailBoxController@sendLeads');
-	Route::get('leads/test', 'MailBoxController@testLeads');
+	Route::get('leads/test/{leadId}', 'MailBoxController@testLeads');
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });
 
