@@ -223,6 +223,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content" id="sendLeadModalBody" style="border:solid darkgray 1px!important; padding:25px; min-height:400px">
         Whoops... Error 0x0981234
+        <select>
+            @foreach($users as $user)
+            <option value="{{$user->id}}">$user->name</option>
+            @endforeach
+        </select>
         </div>
     </div>
     </div>
