@@ -225,13 +225,18 @@
         Whoops... Error 0x0981234
         <input type="hidden" id="transferLeadId" value="" />
         <input type="hidden" id="transferLeadOriginalAgent" value="" />
-        <select>
+        <select class="form-control" id="transferLeadNewAgent">
             @foreach($users as $user)
             <option value="{{$user->id}}">{{$user->name}}</option>
             @endforeach
         </select>
         </div>
     </div>
+    
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
+      </div>
     </div>
 
 <script>
@@ -252,19 +257,30 @@ function openReport(e, report, caller) {
 
 
     $('.direct-send-lead').on('click', function(e){
-        var transferLeadId              = $(this).data('id');
-        var transferLeadOriginalAgent   = $(this).data('original-user');
+        $('#transferLeadId').val($(this).data('id'));
+        $('#transferLeadOriginalAgent').val($(this).data('original-user'));
+    })
 
+    $('.direct-send-lead-button').on('click', function(e){
+        var transferLeadId              = $('#transferLeadId').val();
+        var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
+        var transferLeadNewAgent        = $('#transferLeadMewAgent').val();
+
+        if(transferLeadOriginalAgent != transferLeadNewAgent){
               $.ajax({
                 url: "/leads/transfer/" + transferLeadId + "/" + transferLeadOriginalAgent,
                 success: function(result){
                     res = JSON.parse(result);
+                    console.log(res);
                 },
                 error: function(a,b,c){
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
             });
+        } else {
+            alert('This lead has already being sent to this user');
+        }
     })
 </script>
 @endsection
