@@ -178,6 +178,35 @@
 
         });
 
+        $('.direct-send-lead').on('click', function(e){
+            $('#transferLeadId').val($(this).data('id'));
+            $('#transferLeadOriginalAgent').val($(this).data('original-user'));
+        })
+
+        $('.direct-send-lead-button').on('click', function(e){
+            var transferLeadId              = $('#transferLeadId').val();
+            var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
+            var transferLeadNewAgent        = $('#transferLeadNewAgent').val();
+
+            if(transferLeadOriginalAgent != transferLeadNewAgent){
+                  $.ajax({
+                    url: "/leads/transfer/" + transferLeadId + "/" + transferLeadNewAgent,
+                    success: function(result){
+                        res = JSON.parse(result);
+                        console.log(res);
+                        alert(res.success);
+                        location.reload();
+                    },
+                    error: function(a,b,c){
+                        alert('Something Went Wrong!');
+                        console.log(a,b,c);
+                    }
+                });
+            } else {
+                alert('This lead has already being sent to this user');
+            }
+        })
+
         $('#facebook').sharrre({
           share: {
             facebook: true

@@ -233,15 +233,13 @@ class MailBoxController extends Controller
             $dateTo     = \Carbon\Carbon::parse($request->input('to-date'))->endOfDay();
         }
 
-
-        
-       // dd($leadMails);
+        $users = User::all();
 
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
                         ->orderBy('id', 'desc')->get();
 
-        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
+        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo', 'users'));
 
 //        return $dataTable->render('pages.emailsmanagedatatable');
 
@@ -252,10 +250,15 @@ class MailBoxController extends Controller
         //dataTable($query)
     }
 
-    public function testLeads(Request $request){
+    public function transferLead(Request $request, $leadId, $userId){
 
-        $user = User::where('email', 'chris@cruisertravels.com')->first();
-        $this->sendIndividualLead(3066, $user, $user->email);
+        $user = User::where('id', $userId)->first();
+        if($user){
+            $lead = $this->sendIndividualLead($leadId, $user, $user->email);
+            return  json_encode(array('success' => 'Lead #' . $leadId . ' successfuly transfered to agent: ' . $user->email));
+        } else {
+            return  json_encode(array('error' => 'User ID: ' . $userId . ' not found'));
+        }
 
     }
     public function sendLeads(Request $request){
