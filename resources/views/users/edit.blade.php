@@ -59,7 +59,7 @@
                                         @endforeach
                                         </select>
                                     </div>
-                                    <div class="user-attributes form-group" style="@if($user->user_group == 1) {{'display:none'}} @endif" >
+                                    <div class="user-attributes form-group" style="@if($user->user_group == 5) {{'display:none'}} @endif" >
                                         <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
                                         <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="{{ old('leads_allowed', $user->leads_allowed) }}">
                                     </div>
@@ -86,6 +86,7 @@
             </div>
         </div>
     </div>
+
 <script>
 function groupchange(obj){
     o = $(obj);
