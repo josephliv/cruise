@@ -63,8 +63,8 @@
                                         <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
                                         <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="{{ old('leads_allowed', $user->leads_allowed) }}">
                                     </div>
-                                    <label class="user-attributes form-control-label" for="time_set_init"  style="@if($user->user_group == 1) {{'display:none'}} @endif" >{{ __('Select Time Period:') }}</label>
-                                    <div class="user-attributes row" style="@if($user->user_group == 1) {{'display:none'}} @endif" >
+                                    <label class="user-attributes form-control-label" for="time_set_init"  style="@if($user->user_group == 5) {{'display:none'}} @endif" >{{ __('Select Time Period:') }}</label>
+                                    <div class="user-attributes row" style="@if($user->user_group == 5) {{'display:none'}} @endif" >
                                         <div class="col-md-6 form-group">
                                             <label class="form-control-label" for="input-time_set_init">{{ __('Initial') }}</label>
                                             <input type="time" name="time_set_init" id="time_set_init" class="user-attributes form-control" placeholder="09:00" value="{{ old('time_set_init', $user->time_set_init) }}">
