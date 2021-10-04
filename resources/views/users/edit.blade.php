@@ -90,7 +90,7 @@
 <script>
 function groupchange(obj){
     o = $(obj);
-    if(parseInt(o.val()) == -1 ){
+    if(parseInt(o.val()) == 5 ){
         $('#input-leads_allowed').val('0');
         $('#time_set_init').val('00:00');
         $('#time_set_final').val('00:00');
