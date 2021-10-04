@@ -54,6 +54,14 @@ Tip 2: you can also add an image using data-image tag
                     </ul>
                 </div>
             </li>
+            <li style="position: relative; top: 450px; padding: 20px;">
+                 <?php
+                        echo "The time is " . date("h:i a");
+                    ?>
+            </li>
         </ul>
+        
+       
     </div>
+    
 </div>
