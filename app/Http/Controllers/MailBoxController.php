@@ -284,8 +284,8 @@ class MailBoxController extends Controller
                 } else {
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
-                                    ->whereIn('to_group', [0,$user->user_group])
-                                    ->whereNull('to_veteran')
+                                    ->whereIn('to_group', [null,0,$user->user_group])
+                                    //->whereNull('to_veteran')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
                                     ->limit(1)
