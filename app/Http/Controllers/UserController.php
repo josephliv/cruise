@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Group;
 use App\Http\Requests\UserRequest;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the users
      *
-     * @param User $model
-     * @return View
+     * @param  \App\User  $model
+     * @return \Illuminate\View\View
      */
     public function index(User $model)
     {
@@ -25,7 +23,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new user
      *
-     * @return View
+     * @return \Illuminate\View\View
      */
     public function create()
     {
@@ -36,9 +34,9 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage
      *
-     * @param UserRequest $request
-     * @param User        $model
-     * @return RedirectResponse
+     * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\User  $model
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(UserRequest $request, User $model)
     {
@@ -60,8 +58,8 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified user
      *
-     * @param User $user
-     * @return View
+     * @param  \App\User  $user
+     * @return \Illuminate\View\View
      */
     public function edit(User $user)
     {
@@ -72,9 +70,9 @@ class UserController extends Controller
     /**
      * Update the specified user in storage
      *
-     * @param UserRequest $request
-     * @param User        $user
-     * @return RedirectResponse
+     * @param  \App\Http\Requests\UserRequest  $request
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(UserRequest $request, User  $user)
     {
@@ -90,21 +88,21 @@ class UserController extends Controller
         if(trim($request->get('password')) != ''){
             $model->password        = Hash::make($request->get('password'));
         }
-        $model->is_admin        = (intval($request->get('user_group')) == 1 ? 1 : 0);
+        $model->is_admin        = (intval($request->get('user_group')) == 5 ? 1 : 0);
         $model->leads_allowed   = intval($request->get('leads_allowed'));
         $model->time_set_init   = $request->get('time_set_init');
         $model->time_set_final  = $request->get('time_set_final');
         $model->user_group      = intval($request->get('user_group'));
-        $model->save();
-
+        $model->save();        
+        
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }
 
     /**
      * Remove the specified user from storage
      *
-     * @param User $user
-     * @return RedirectResponse
+     * @param  \App\User  $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function destroy(User  $user)
     {

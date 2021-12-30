@@ -12,6 +12,7 @@ use App\Mail\ReportMail;
 use App\Mail\ErrorMail;
 use App\User;
 use Illuminate\Support\Facades\Log;
+use App\DataTables\LeadsDataTable;
 
 class MailBoxController extends Controller
 {
@@ -31,8 +32,12 @@ class MailBoxController extends Controller
 	//Get all Mailboxes
     /** @var \Webklex\IMAP\Support\FolderCollection $aFolder */
     //$aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('[Gmail]/Spam')];
-    $aFolder = $oClient->getFolders();
-    $aFolder[] = $oClient->getFolder('[Gmail]/Spam');
+    //$aFolder = $oClient->getFolders();
+    $aFolder[] = $oClient->getFolder('INBOX');
+    //$oFolder = $oClient->getFolder('Gmail/SPAM');
+    dump($aFolder);
+
+    //$aFolder[] = $oClient->getFolder('[Gmail]/Spam');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
     //dump($oFolder);
 
@@ -45,9 +50,10 @@ class MailBoxController extends Controller
 		//Get all Messages of the current Mailbox $oFolder
 		/** @var \Webklex\IMAP\Support\MessageCollection $aMessage */
         //$aMessage = $oFolder->messages()->all()->get();
-        $aMessage = $oFolder->query()->unseen()->get();
+        //$aMessage = $oFolder->query()->unseen()->get();
+        $aMessage = $oFolder->query(null)->unseen()->since('14.10.2020')->limit(5,1)->get();
         //$aMessage = $oFolder->query()->since(Carbon::now()->subDays(5))->get();
-		
+
         /** @var \Webklex\IMAP\Message $oMessage */
         $i = 0;
 		foreach($aMessage as $oMessage){
@@ -112,7 +118,7 @@ class MailBoxController extends Controller
                     //\Mail::to('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                     \Mail::to($lead->agent()->first()->email)->cc('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                 }
-                
+
             } else { //Count as a new Lead
                 if(!$lead->get()->count()){
                     $lead = new LeadMails();
@@ -134,11 +140,11 @@ class MailBoxController extends Controller
                                 if(strpos(strtolower($lead->subject), strtolower($priority->condition)) !== false){
                                     dump(array(strtolower($lead->subject), strtolower($priority->condition)));
                                     $lead->priority = $priority->priority;
-                                    
+
                                     if(trim($priority->send_to_email) != ''){
                                         dump(array('to_email', $priority->send_to_email));
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
-                                        
+
                                         if($newUser->count()){
                                             dump(array('to_email_user', $newUser));
                                             $this->sendIndividualLead($lead->id, $newUser->first());
@@ -149,6 +155,7 @@ class MailBoxController extends Controller
                                     }
 
                                     $lead->priority = $priority->priority;
+                                    $lead->to_group = $priority->user_group;
                                     $lead->save();
                                 }
                                 break;
@@ -169,7 +176,8 @@ class MailBoxController extends Controller
                                     }
 
                                     $lead->priority = $priority->priority;
-                                    $lead->save();                                    
+                                    $lead->to_group = $priority->user_group;
+                                    $lead->save();
                                 }
                                 break;
                             }
@@ -185,7 +193,7 @@ class MailBoxController extends Controller
             }
 
 
-            
+
 			//\Illuminate\Support\Facades\Storage::put($path.'/'.$filename, $masked_attachment->getContent());
 
 			//dump($masked_attachment);
@@ -202,6 +210,7 @@ class MailBoxController extends Controller
     }
 
     public function manage(Request $request){
+    //public function manage(LeadsDataTable $dataTable){
 
         if(!count($request->input())){
 
@@ -211,24 +220,47 @@ class MailBoxController extends Controller
                 ->first();
 
             if($leadMails){
-                $dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+                //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
+
+                $dateFrom   = \Carbon\Carbon::now()->subDays(30)->startOfDay();
             } else {
                 $dateFrom   = \Carbon\Carbon::now()->startOfDay();
             }
-            
+
             $dateTo     = \Carbon\Carbon::now()->endOfDay();
         } else {
             $dateFrom   = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
             $dateTo     = \Carbon\Carbon::parse($request->input('to-date'))->endOfDay();
         }
 
+        $users = User::all();
+
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
                         ->where('updated_at', '<=', $dateTo)
                         ->orderBy('id', 'desc')->get();
-        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo'));
+
+        return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo', 'users'));
+
+//        return $dataTable->render('pages.emailsmanagedatatable');
 
     }
 
+    public function datatables(LeadsDataTable $dataTable){
+
+        //dataTable($query)
+    }
+
+    public function transferLead(Request $request, $leadId, $userId){
+
+        $user = User::where('id', $userId)->first();
+        if($user){
+            $lead = $this->sendIndividualLead($leadId, $user, $user->email);
+            return  json_encode(array('success' => 'Lead #' . $leadId . ' successfuly transfered to agent: ' . $user->email));
+        } else {
+            return  json_encode(array('error' => 'User ID: ' . $userId . ' not found'));
+        }
+
+    }
     public function sendLeads(Request $request){
 
         $user = \Auth::user();
@@ -242,6 +274,7 @@ class MailBoxController extends Controller
                 if($user->user_group >= 2){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
+                                    ->where('to_group', $user->user_group)
                                     ->orderBy('to_group', 'desc')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
@@ -250,17 +283,20 @@ class MailBoxController extends Controller
                 } else {
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
-                                    ->where('to_group', 0)
-                                    ->whereNull('to_veteran')
+                                    //->whereIn('to_group', [null,0,$user->user_group])
+                                    //->whereNull('to_veteran')
                                     ->orderBy('priority')
                                     ->orderBy('updated_at')
                                     ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+
+                    //dd($leadMails->toSql());
                 }
 
                 foreach($leadMails as $lead){
                     \Mail::to($user->email)->send(new LeadSent($lead));
-                    $lead->agent_id = $user->id;
+                    $lead->agent_id         = $user->id;
+                    $lead->assigned_date    = \Carbon\Carbon::now();
                     $lead->save();
                 }
 

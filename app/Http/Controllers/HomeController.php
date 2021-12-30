@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use App\LeadMails;
 use Carbon\Carbon;
@@ -22,12 +21,12 @@ class HomeController extends Controller
     /**
      * Show the application dashboard.
      *
-     * @return Renderable
+     * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
 
-
+        
         if(\Auth::user()->is_admin){
             $leadMails = array(
                 'subDay' => Carbon::now()->startOfDay(),
@@ -51,7 +50,7 @@ class HomeController extends Controller
                 'total24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
                 'totalSent24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
                 'totalReject24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('rejected', '=', 1)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
-            );
+            );            
         }
 
         $view = \Auth::user()->is_admin ? view('dashboardadmin', compact('leadMails')) : view('dashboardagent', compact('leadMails')); ;
