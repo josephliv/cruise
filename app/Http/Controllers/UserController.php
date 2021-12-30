@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\User;
 use App\Group;
 use App\Http\Requests\UserRequest;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the users
      *
-     * @param  \App\User  $model
-     * @return \Illuminate\View\View
+     * @param User $model
+     * @return View
      */
     public function index(User $model)
     {
@@ -23,7 +25,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new user
      *
-     * @return \Illuminate\View\View
+     * @return View
      */
     public function create()
     {
@@ -34,9 +36,9 @@ class UserController extends Controller
     /**
      * Store a newly created user in storage
      *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\User  $model
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UserRequest $request
+     * @param User        $model
+     * @return RedirectResponse
      */
     public function store(UserRequest $request, User $model)
     {
@@ -58,8 +60,8 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified user
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\View\View
+     * @param User $user
+     * @return View
      */
     public function edit(User $user)
     {
@@ -70,9 +72,9 @@ class UserController extends Controller
     /**
      * Update the specified user in storage
      *
-     * @param  \App\Http\Requests\UserRequest  $request
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param UserRequest $request
+     * @param User        $user
+     * @return RedirectResponse
      */
     public function update(UserRequest $request, User  $user)
     {
@@ -93,16 +95,16 @@ class UserController extends Controller
         $model->time_set_init   = $request->get('time_set_init');
         $model->time_set_final  = $request->get('time_set_final');
         $model->user_group      = intval($request->get('user_group'));
-        $model->save();        
-        
+        $model->save();
+
         return redirect()->route('user.index')->withStatus(__('User successfully updated.'));
     }
 
     /**
      * Remove the specified user from storage
      *
-     * @param  \App\User  $user
-     * @return \Illuminate\Http\RedirectResponse
+     * @param User $user
+     * @return RedirectResponse
      */
     public function destroy(User  $user)
     {

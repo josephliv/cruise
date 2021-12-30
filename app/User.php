@@ -37,7 +37,16 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     *
+     * @param int $id
+     * @todo user::delete()
+     */
+    public function delete(){
+
+    }
+
     public function agent(){
         return $this->hasOne('App\User', 'id', 'agent_id');
-    }    
+    }
 }
