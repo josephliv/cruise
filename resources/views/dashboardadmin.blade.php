@@ -1,48 +1,7 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
 @section('content') 
-<style type="text/css">
-    .count {
-    border: 1px solid #ccc;
-}
-#generateLeadBtn {
-    display: grid;
-    align-self: center;
-}
-.btn-primary2 {
 
-    background-color: #0089BA!important;
-    color: #fff!important;
-    font-size: 1.2em;
-    transition: .5s ease;
-}
-
-.btn-primary2:hover {
-    background-color: white!important;
-    color: #0089BA!important;
-}
-
-.cover { 
-    visibility: hidden;
-    position: absolute;
-    opacity: 0;
-    text-shadow: 0 0 5px #555;
-    width: 500px;
-    padding: 50px;
-    text-align: center;
-    font-size: 1.2em;
-    top: -30px;
-    width: 100%;
-   background-color: rgba(9, 87, 170, 0.85);
-   -webkit-transition: opacity 1800ms, visibility 1800ms;
-   transition: opacity 1800ms, visibility 1800ms;
-   color: #fff;
-   border: 2px solid white;
-   box-shadow: 5px 5px 15px #000;
-   border-radius: 8px;
-   z-index: 9999;
-}
-</style>
 <div class="container mt-4">
     <div class="row justify-content-around" >
       <div class="col-12 col-md-4"><h2>Admin Dashboard</h2></div>

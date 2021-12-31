@@ -1,8 +1,6 @@
-
-
-
 <nav class="navbar navbar-expand-lg " color-on-scroll="500">
     <a class="navbar-brand" href="/home"> Leadbox Management System </a>
+    
 
     
     <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,13 +15,13 @@
             <ul class="navbar-nav   d-flex align-items-center mr-4">
            
             <li class="nav-item mx-4">
-            <a href="#" class="collapsed list-group-item-action" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
-                     Links
+            <a href="#" class="collapsed list-group-item-action mobileLink" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
+            &nbsp&darr;&nbspLinks&nbsp
                     </a>
                 
                
                 <div id="collapseTwo" class="collapse dropCustom" aria-labelledby="headingTwo" data-parent="#accordionExample">
-                  <div class="shadow">
+                  <div class="">
                     <ul class="list-group ">
                       <li class="list-group-item"><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">CRUISER TRAVELS</a></li>
                       <li class="list-group-item"><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">REPORT A NEW BOOKING</a></li>

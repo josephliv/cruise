@@ -1,8 +1,9 @@
- 
 <nav class="navbar navbar-transparent navbar-absolute">
-<div class="container">
-        <div class="nav-item" href="/">
-            <img style="border-radius: 4px;"  src="/light-bootstrap/img/logo.jpg">
+<div class="container">  
+        <div class="nav-item">
+            <a href="/">
+                <img style="border-radius: 4px;"  src="/light-bootstrap/img/logo.jpg">
+            </a>
         </div>
         <div class="nav-item justify-content-end">
             <a href="{{ route('login') }}" class="nav-link">

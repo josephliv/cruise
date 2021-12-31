@@ -1,4 +1,4 @@
-<!--
+<!-- 
 =========================================================
  Light Bootstrap Dashboard - v2.0.1
 =========================================================
@@ -19,6 +19,7 @@
         <meta charset="utf-8" />
         <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('light-bootstrap/img/apple-icon.png') }}">
         <link rel="icon" type="image/png" href="{{ asset('light-bootstrap/img/favicon.ico') }}">
+
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
         <title>{{ $title }}</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -28,8 +29,8 @@
         <!-- CSS Files -->
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
-        <!-- CSS Just for demo purpose, don't include it in your project -->
-        <link href="{{ asset('light-bootstrap/css/demo.css') }}" rel="stylesheet" />
+        <!-- CSS mostly for custom changes such as the dropdown menu -->
+        <link href="{{ asset('light-bootstrap/css/custom.css') }}" rel="stylesheet" />
     </head>
 
     <body>
@@ -38,7 +39,7 @@
             @if (auth()->check() && request()->route()->getName() != "")
                 @if(auth()->check() && ! \Auth::user()->is_admin)
                 @include('layouts.navbars.sidebaragent')
-
+                
                 @else
                   @include('layouts.navbars.sidebar')
                 @endif
@@ -54,9 +55,7 @@
             </div>
 
         </div>
-
-
-
+       
     </body>
         <!--   Core JS Files   -->
     <script src="{{ asset('light-bootstrap/js/core/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
@@ -66,16 +65,9 @@
     <script src="{{ asset('light-bootstrap/js/plugins/jquery.sharrre.js') }}"></script>
     <!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
     <script src="{{ asset('light-bootstrap/js/plugins/bootstrap-switch.js') }}"></script>
-    <!--  Google Maps Plugin    -->
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-    <!--  Chartist Plugin  -->
-    <script src="{{ asset('light-bootstrap/js/plugins/chartist.min.js') }}"></script>
-    <!--  Notifications Plugin    -->
+    <!-- script src="{{ asset('light-bootstrap/js/plugins/chartist.min.js') }}"></script -->
     <script src="{{ asset('light-bootstrap/js/plugins/bootstrap-notify.js') }}"></script>
-    <!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
-    <script src="{{ asset('light-bootstrap/js/light-bootstrap-dashboard.js?v=2.0.0') }}" type="text/javascript"></script>
-    <!-- Light Bootstrap Dashboard DEMO methods, don't include it in your project! -->
-    <script src="{{ asset('light-bootstrap/js/demo.js') }}"></script>
+
     @stack('js')
     <script>
       $(document).ready(function () {
@@ -109,7 +101,7 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });
+            });            
         });
 
         $('#detailedEmailBtn').on('click',function(e){
@@ -125,9 +117,9 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });
+            });            
         });
-
+        
         $('.removeLead').on('click', function(e){
             e.stopPropagation();
             confirm('You really want to delete this lead?');
@@ -186,35 +178,34 @@
 
         });
 
+        $('.direct-send-lead').on('click', function(e){
+            $('#transferLeadId').val($(this).data('id'));
+            $('#transferLeadOriginalAgent').val($(this).data('original-user'));
+        })
 
-          $('.direct-send-lead').on('click', function(e){
-              $('#transferLeadId').val($(this).data('id'));
-              $('#transferLeadOriginalAgent').val($(this).data('original-user'));
-          })
+        $('.direct-send-lead-button').on('click', function(e){
+            var transferLeadId              = $('#transferLeadId').val();
+            var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
+            var transferLeadNewAgent        = $('#transferLeadNewAgent').val();
 
-          $('.direct-send-lead-button').on('click', function(e){
-              var transferLeadId              = $('#transferLeadId').val();
-              var transferLeadOriginalAgent   = $('#transferLeadOriginalAgent').val();
-              var transferLeadNewAgent        = $('#transferLeadNewAgent').val();
-
-              if(transferLeadOriginalAgent != transferLeadNewAgent){
+            if(transferLeadOriginalAgent != transferLeadNewAgent){
                   $.ajax({
-                      url: "/leads/transfer/" + transferLeadId + "/" + transferLeadNewAgent,
-                      success: function(result){
-                          res = JSON.parse(result);
-                          console.log(res);
-                          alert(res.success);
-                          location.reload();
-                      },
-                      error: function(a,b,c){
-                          alert('Something Went Wrong!');
-                          console.log(a,b,c);
-                      }
-                  });
-              } else {
-                  alert('This lead has already being sent to this user');
-              }
-          })
+                    url: "/leads/transfer/" + transferLeadId + "/" + transferLeadNewAgent,
+                    success: function(result){
+                        res = JSON.parse(result);
+                        console.log(res);
+                        alert(res.success);
+                        location.reload();
+                    },
+                    error: function(a,b,c){
+                        alert('Something Went Wrong!');
+                        console.log(a,b,c);
+                    }
+                });
+            } else {
+                alert('This lead has already being sent to this user');
+            }
+        })
 
         $('#facebook').sharrre({
           share: {
@@ -267,4 +258,8 @@
         });
       });
     </script>
+    <script src="{{ mix('js/app.js') }}"></script>
+    <script src="{{ asset('vendor/datatables/buttons.server-side.js') }}"></script>
+    <script src="{{ asset('light-bootstrap/js/light-bootstrap-dashboard.js') }}"></script>
+    <script src="{{ asset('light-bootstrap/js/demo.js') }}"></script>
 </html>

@@ -12,15 +12,18 @@ Tip 2: you can also add an image using data-image tag
             </a>
         </div>
         <ul class="nav">
+
+            <div id="mobileSideMenu" class="d-none"></div>
+
             <li class="nav-item @if($activePage == 'dashboard') active @endif">
                 <a class="nav-link" href="{{route('dashboard')}}">
                     <i class="nc-icon nc-chart-pie-35"></i>
                     <p>{{ __("Dashboard") }}</p>
                 </a>
             </li>
-           
+
             <li class="nav-item">
-               
+
                 <div class="collapse @if($activeButton =='laravel') show @endif" id="laravelExamples">
                     <ul class="nav">
                         <li class="nav-item @if($activePage == 'user') active @endif">
@@ -35,7 +38,7 @@ Tip 2: you can also add an image using data-image tag
                                 <p>{{ __("Manage Agents") }}</p>
                             </a>
                         </li>
-                        
+
                         <li class="nav-item @if($activePage == 'leads-management') active @endif">
                             <a class="nav-link" href="{{route('emails.manage')}}">
                                 <i class="nc-icon nc-email-85"></i>
@@ -51,6 +54,14 @@ Tip 2: you can also add an image using data-image tag
                     </ul>
                 </div>
             </li>
+            <li style="position: relative; top: 450px; padding: 20px;">
+                 <?php
+                        echo "The time is " . date("h:i a");
+                    ?>
+            </li>
         </ul>
+        
+       
     </div>
+    
 </div>
