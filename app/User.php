@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -42,11 +41,19 @@ class User extends Authenticatable
      * @param int $id
      * @todo user::delete()
      */
-    public function delete(){
+    public function delete() {
 
     }
 
-    public function agent(){
+    /**
+     * @param $params
+     * @return $this
+     */
+//    public function create($params) {
+//        return $this;
+//    }
+
+    public function agent() {
         return $this->hasOne('App\User', 'id', 'agent_id');
     }
 }
