@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -46,8 +47,7 @@ class User extends Authenticatable
     }
 
     /**
-     * @param $params
-     * @return $this
+     * @return HasOne
      */
 //    public function create($params) {
 //        return $this;
