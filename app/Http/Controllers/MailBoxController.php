@@ -35,7 +35,7 @@ class MailBoxController extends Controller
     //$aFolder = $oClient->getFolders();
     $aFolder[] = $oClient->getFolder('INBOX');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
-    dump($aFolder);
+//    dump($aFolder);
 
     //$aFolder[] = $oClient->getFolder('[Gmail]/Spam');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
@@ -56,8 +56,9 @@ class MailBoxController extends Controller
 
         /** @var \Webklex\IMAP\Message $oMessage */
         $i = 0;
+//dump($aMessage);
 		foreach($aMessage as $oMessage){
-            dump($oMessage);
+            //dump($oMessage);
 			echo $oMessage->getSubject().'<br />';
 			echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
 
@@ -106,17 +107,14 @@ class MailBoxController extends Controller
             } elseif(filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL)){
                 $originalMessageId = explode('-||', $oMessage->getSubject())[1];
                 $newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
+                $lead = LeadMails::find($originalMessageId);
                 if($newUser->count()){
-
-                    $lead = LeadMails::find($originalMessageId);
                     $lead->reassigned_message = str_replace(explode(' ', strip_tags($body))[0], '', $emailContent);
                     $lead->save();
-
                     $this->sendIndividualLead($originalMessageId, $newUser->first());
                 } else {
-                    $lead = LeadMails::find($originalMessageId);
                     //\Mail::to('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
-                    \Mail::to($lead->agent()->first()->email)->cc('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                    \Mail::to($lead->agent()->first()->email)->cc('timbrownlawswebsites@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                 }
 
             } else { //Count as a new Lead
@@ -436,7 +434,7 @@ class MailBoxController extends Controller
         ));
 
         \Mail::to(\Auth::user()->email)
-                ->bcc('dyegofern@gmail.com')
+                ->bcc('timbrownlawswebsites@gmail.com')
                 ->cc('visiontocode2022@gmail.com')
                 ->send(new ReportMail($leads, $dateFrom, $dateTo));
 
