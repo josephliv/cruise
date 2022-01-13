@@ -936,28 +936,35 @@
    z-index: 9999;
 }
 .emailRules {
-    width: 350px;
-    height: auto;
+    width: 360px;
+    height: 80vh;
+    overflow-y: scroll;
 }
-#mydiv {
+.tips {
   position: absolute;
   z-index: 9;
   background-color: #f1f1f1;
   text-align: left;
   border: 1px solid #d3d3d3;
-  top: 20%;
- left: 50vw;
+  top: 10vh;
+ left: 60vw;
   box-shadow: 5px 5px 10px #000;
   padding: 5px;
 }
 
-#mydivheader {
+.mydivheader {
   padding: 10px;
   cursor: move;
   z-index: 10;
   background-color: #2196F3;
   color: #fff;
 }
+@media only screen and (max-width: 600px) { 
+    .copyright {
+        display: none;
+    }
+}
+    
 /*  Dashboard styles for Admin */ 
 .count {
     border: 1px solid #ccc;

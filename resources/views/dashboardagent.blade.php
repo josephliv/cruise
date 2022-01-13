@@ -48,25 +48,27 @@
                         Send a Lead
                         </a>   
                     </div> 
-                 
+<div align="center">             
+   <button onclick="openTips()" >email tips</button>
+</div> 
 
 <div id="mydiv" class="tips" style="display: none;">
-  <div id="mydivheader">Email Tips<span class="exitEmailTips" style="position: relative; float: right; cursor: pointer" onclick="closeDragElement()">x</span></div>
-  <div id="emailRules" class="emailRules">
-<p><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Reply to Spam:</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Just reply the message with the word spam and a text after. The message will be marked as rejected and the text after will be the reason why</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#00ff00;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Example: In the body of the email, just put in&hellip;. spam type the reason why here.&nbsp;</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Redirect to Agent:</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">In case a lead is sent to the wrong agent just reply with the correct agent&rsquo;s e-mail, followed by the ! (exclamation mark).</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#00ff00;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Example: agent2@cruisertravels.com! Type your message here.</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:700;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">If redirected to the wrong email:&nbsp;</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#000000;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">If the email doesn&#39;t belong to an agent, a message will return saying that the e-mail doesn&#39;t exist in the system and ask to check the spelling. In this email, just click reply and type the correct agent&rsquo;s email to be redirected to with your message using the same format.&nbsp;</span></p>
-<p dir="ltr" style="line-height:1.38;margin-top:0pt;margin-bottom:0pt;"><span style="font-size:11pt;font-family:Arial;color:#00ff00;background-color:transparent;font-weight:400;font-style:normal;font-variant:normal;text-decoration:none;vertical-align:baseline;white-space:pre;white-space:pre-wrap;">Example: agent2@cruisertravels.com! Type your message here.</span></p>
-                    </div>
+    <div id="mydivheader" class="mydivheader">Email Tips<span class="exitEmailTips" style="position: relative; float: right; cursor: pointer" onclick="closeDragElement()">x</span></div>
+    <div id="emailRules" class="emailRules">
+  <h4>Reply to Spam:</h4>
+  <p >Just reply the message with the word spam and a text after. The message will be marked as rejected and the text after will be the reason why.</p>
+  <strong>Example:</strong>
+  <p> In the body of the email, just put in the word<em> spam </em>followed by the reason.</p>
+  <h4>Redirect to Agent:</h4>
+  <p >In case a lead is sent to the wrong agent just reply with the correct agent&rsquo;s e-mail, followed by the ! (exclamation mark).</p>
+  <strong>Example:</strong>
+  <p> agent2@cruisertravels.com! <em> Type your message here.</em></p>
+  <h4>If redirected to the wrong email:</h4>
+  <p>If the email doesn&#39;t belong to an agent, a message will return saying that the e-mail doesn&#39;t exist in the system and ask to check the spelling. In this email, just click reply and type the correct agent&rsquo;s email to be redirected to with your message using the same format as above.&nbsp;</span></p>
+
 </div>
-<div align="center">             
-<button onclick="openTips()" >email tips</button>
 </div>
+
                     
                 </div>
             </div>
@@ -106,16 +108,18 @@ function lead() {
 }
     
 </script>
-<!-- draggle email tips -->
+<!-- Open the email tips -->
 <script>
     function openTips() {
   let x = document.querySelector(".tips");
-  console.log(x)
+  
   if (x.style.display == "none") {
     x.style.display = "block";
+    
   } else {
     x.style.display = "none";
   }
+
 }
 //Make the DIV element draggagle:
 dragElement(document.getElementById("mydiv"));
