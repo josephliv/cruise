@@ -6,7 +6,6 @@ use App\Priority;
 use App\Group;
 use Illuminate\Http\Request;
 
-
 class PriorityController extends Controller
 {
 
@@ -14,11 +13,11 @@ class PriorityController extends Controller
     {
         $this->middleware('auth');
 
-    }
+    }    
     /**
      * Display a listing of the resource.
      *
-     *
+     * @return \Illuminate\Http\Response
      */
     public function index()
     {
@@ -56,7 +55,7 @@ class PriorityController extends Controller
 
         if(!\Auth::user()->is_admin){
             return redirect()->route('dashboard');
-        }
+        }        
 
         $model = new Priority();
         $input = $request->all();
@@ -88,7 +87,7 @@ class PriorityController extends Controller
 
         if(!\Auth::user()->is_admin){
             return redirect()->route('dashboard');
-        }
+        }        
         $groups = Group::orderBy('order')->get();
         return view('priorities.edit', compact('priority', 'groups'));
     }
@@ -106,13 +105,13 @@ class PriorityController extends Controller
         if(!\Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }
-
+        
         $input = $request->all();
         array_shift($input);
         array_shift($input);
 
         $priority->update($input);
-
+        
         return redirect()->route('priorities.index')->withStatus(__('Priority successfully updated.'));
     }
 
@@ -127,7 +126,7 @@ class PriorityController extends Controller
 
         if(!\Auth::user()->is_admin){
             return redirect()->route('dashboard');
-        }
+        }        
 
         $priority->delete();
 

@@ -45,15 +45,36 @@ return [
     |
     */
     'accounts' => [
+
         'default' => [// account identifier
-            'host'  => env('IMAP_HOST', 'cruiser.joesdigitalservices.com'),
+            'host'  => env('IMAP_HOST', 'localhost'),
             'port'  => env('IMAP_PORT', 993),
             'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
             'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
-            'validate_cert' => env('IMAP_VALIDATE_CERT', false),
-            'username' => env('IMAP_USERNAME', 'sales@cruiser.joesdigitalservices.com'),
-            'password' => env('IMAP_PASSWORD', '~8g)ifIaC)3P'),
+            'validate_cert' => env('IMAP_VALIDATE_CERT', true),
+            'username' => env('IMAP_USERNAME', 'root@example.com'),
+            'password' => env('IMAP_PASSWORD', ''),
+        ],
+
+        /*
+        'gmail' => [ // account identifier
+            'host' => 'imap.gmail.com',
+            'port' => 993,
+            'encryption' => 'ssl',
+            'validate_cert' => true,
+            'username' => 'example@gmail.com',
+            'password' => 'PASSWORD',
+        ],
+
+        'another' => [ // account identifier
+            'host' => '',
+            'port' => 993,
+            'encryption' => false,
+            'validate_cert' => true,
+            'username' => '',
+            'password' => '',
         ]
+        */
     ],
 
     /*

@@ -10,7 +10,5 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-Design/
-logs/
-.idea/
-
+*.zip
+/public/phpmyadmin

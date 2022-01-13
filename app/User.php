@@ -2,7 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -37,23 +37,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    /**
-     *
-     * @param int $id
-     * @todo user::delete()
-     */
-    public function delete() {
-
-    }
-
-    /**
-     * @return HasOne
-     */
-//    public function create($params) {
-//        return $this;
-//    }
-
-    public function agent() {
+    public function agent(){
         return $this->hasOne('App\User', 'id', 'agent_id');
-    }
+    }    
 }

@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Http\Request;
 
-class PageController extends Controller {
+class PageController extends Controller
+{
     /**
      * Display a listing of the resource.
      *
-     * @param $page
-     * @return Application|void
+     * @return \Illuminate\Http\Response
      */
-    public function index($page) {
+    public function index($page)
+    {
         if (view()->exists("pages.{$page}")) {
             return view("pages.{$page}");
         }

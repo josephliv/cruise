@@ -3,11 +3,13 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class LeadSent extends Mailable {
+class LeadSent extends Mailable
+{
     use Queueable, SerializesModels;
 
     public $lead;
@@ -17,7 +19,8 @@ class LeadSent extends Mailable {
      *
      * @return void
      */
-    public function __construct($lead) {
+    public function __construct($lead)
+    {
         $this->lead = $lead;
     }
 
@@ -26,21 +29,22 @@ class LeadSent extends Mailable {
      *
      * @return $this
      */
-    public function build() {
+    public function build()
+    {
         $mailable = $this
-            ->subject($this->lead->subject . ' -||' . $this->lead->id)
-            ->replyTo('sales@cruisertravels.com')
-            ->bcc('timbrownlawswebsites@gmail.com')
-            ->view('mails.leadsent');
+                    ->subject($this->lead->subject . ' -||' . $this->lead->id)
+                    ->replyTo('sales@cruisertravels.com')
+                    ->bcc('dyegofern@gmail.com')
+                    ->view('mails.leadsent');
 
         Log::debug($this->lead->attachment);
-        if ($this->lead->attachment) {
+        if($this->lead->attachment){
             $attachment = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $this->lead->attachment);
             Log::debug($attachment);
-            if (is_file($attachment)) {
+            if(is_file($attachment)){
                 $mailable->attach($attachment);
             }
-        }
+        }        
 
         return $mailable;
     }

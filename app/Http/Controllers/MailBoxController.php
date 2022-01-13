@@ -35,7 +35,7 @@ class MailBoxController extends Controller
     //$aFolder = $oClient->getFolders();
     $aFolder[] = $oClient->getFolder('INBOX');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
-//    dump($aFolder);
+    dump($aFolder);
 
     //$aFolder[] = $oClient->getFolder('[Gmail]/Spam');
     //$oFolder = $oClient->getFolder('Gmail/SPAM');
@@ -53,12 +53,11 @@ class MailBoxController extends Controller
         //$aMessage = $oFolder->query()->unseen()->get();
         $aMessage = $oFolder->query(null)->unseen()->since('14.10.2020')->limit(5,1)->get();
         //$aMessage = $oFolder->query()->since(Carbon::now()->subDays(5))->get();
-
+		
         /** @var \Webklex\IMAP\Message $oMessage */
         $i = 0;
-//dump($aMessage);
 		foreach($aMessage as $oMessage){
-            //dump($oMessage);
+            dump($oMessage);
 			echo $oMessage->getSubject().'<br />';
 			echo 'Attachments: '.$oMessage->getAttachments()->count().'<br />';
 
@@ -107,16 +106,19 @@ class MailBoxController extends Controller
             } elseif(filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL)){
                 $originalMessageId = explode('-||', $oMessage->getSubject())[1];
                 $newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
-                $lead = LeadMails::find($originalMessageId);
                 if($newUser->count()){
+
+                    $lead = LeadMails::find($originalMessageId);
                     $lead->reassigned_message = str_replace(explode(' ', strip_tags($body))[0], '', $emailContent);
                     $lead->save();
+
                     $this->sendIndividualLead($originalMessageId, $newUser->first());
                 } else {
+                    $lead = LeadMails::find($originalMessageId);
                     //\Mail::to('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
-                    \Mail::to($lead->agent()->first()->email)->cc('timbrownlawswebsites@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                    \Mail::to($lead->agent()->first()->email)->cc('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                 }
-
+                
             } else { //Count as a new Lead
                 if(!$lead->get()->count()){
                     $lead = new LeadMails();
@@ -138,11 +140,11 @@ class MailBoxController extends Controller
                                 if(strpos(strtolower($lead->subject), strtolower($priority->condition)) !== false){
                                     dump(array(strtolower($lead->subject), strtolower($priority->condition)));
                                     $lead->priority = $priority->priority;
-
+                                    
                                     if(trim($priority->send_to_email) != ''){
                                         dump(array('to_email', $priority->send_to_email));
                                         $newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
-
+                                        
                                         if($newUser->count()){
                                             dump(array('to_email_user', $newUser));
                                             $this->sendIndividualLead($lead->id, $newUser->first());
@@ -175,7 +177,7 @@ class MailBoxController extends Controller
 
                                     $lead->priority = $priority->priority;
                                     $lead->to_group = $priority->user_group;
-                                    $lead->save();
+                                    $lead->save();                                    
                                 }
                                 break;
                             }
@@ -191,7 +193,7 @@ class MailBoxController extends Controller
             }
 
 
-
+            
 			//\Illuminate\Support\Facades\Storage::put($path.'/'.$filename, $masked_attachment->getContent());
 
 			//dump($masked_attachment);
@@ -224,7 +226,7 @@ class MailBoxController extends Controller
             } else {
                 $dateFrom   = \Carbon\Carbon::now()->startOfDay();
             }
-
+            
             $dateTo     = \Carbon\Carbon::now()->endOfDay();
         } else {
             $dateFrom   = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
@@ -269,7 +271,8 @@ class MailBoxController extends Controller
 
         if(LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed){
             if($currentTime >= $time_set_init && $currentTime <= $time_set_final){
-                if($user->user_group >= 2){
+
+                if($user->user_group == 1){
                     $leadMails = LeadMails::where('rejected', 0)
                                     ->where('agent_id', 0)
                                     ->where('to_group', $user->user_group)
@@ -287,7 +290,7 @@ class MailBoxController extends Controller
                                     ->orderBy('updated_at')
                                     ->limit(1)
                                     ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
-
+                    
                     //dd($leadMails->toSql());
                 }
 
@@ -434,7 +437,7 @@ class MailBoxController extends Controller
         ));
 
         \Mail::to(\Auth::user()->email)
-                ->bcc('timbrownlawswebsites@gmail.com')
+                ->bcc('dyegofern@gmail.com')
                 ->cc('visiontocode2022@gmail.com')
                 ->send(new ReportMail($leads, $dateFrom, $dateTo));
 

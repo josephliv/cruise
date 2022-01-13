@@ -1,6 +1,5 @@
 <?php
-use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -37,5 +37,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::post('emails', ['as' => 'emails.manage2', 'uses' => 'MailBoxController@manage']);
 	Route::get('reademail', 'MailBoxController@index');
 	Route::get('leads/get', 'MailBoxController@sendLeads');
+	Route::get('leads/transfer/{leadId}/{userId}', 'MailBoxController@transferLead');
 	Route::get('{page}', ['as' => 'page.index', 'uses' => 'PageController@index']);
 });
+
