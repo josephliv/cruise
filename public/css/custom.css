@@ -1,3 +1,10 @@
+/* fixing the modal background overlapping the send lead popup box */ 
+.modal-backdrop {display: none;}
+.modal-dialog {
+    box-shadow: 0 0 15px #000;
+    border-radius: 8px;
+}
+
 /* Dashboard box with links*/
 .box-of-links {
     background-color: rgba(55,55,55,0.6);
