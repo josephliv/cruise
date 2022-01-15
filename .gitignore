@@ -12,3 +12,10 @@ npm-debug.log
 yarn-error.log
 *.zip
 /public/phpmyadmin
+public/att*
+/attc*
+Design
+.idea
+public/server.php
+public/files
+
