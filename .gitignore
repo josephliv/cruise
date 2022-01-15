@@ -19,3 +19,5 @@ Design
 public/server.php
 public/files
 
+.phpstorm.meta.php
+_ide_helper.php
