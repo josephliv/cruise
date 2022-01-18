@@ -12,3 +12,5 @@ npm-debug.log
 yarn-error.log
 *.zip
 /public/phpmyadmin
+/logs/error.log
+.lh/
