@@ -1,3 +1,17 @@
+/* fixing the modal background overlapping the send lead popup box */ 
+.modal-dialog {
+    box-shadow: 0 0 15px #000;
+    border-radius: 8px;
+}
+/*The dark backdrop looks good on a largerscreen so this ajustment only works on smaller to remove it. */
+@media (max-width: 990px){
+    .modal-backdrop {display: none;}
+}
+/* Make the paperclip for attachments show blue */
+.fa-paperclip {
+    color: #1D62F0;
+    font-weight: bolder;
+}
 /* Dashboard box with links*/
 .box-of-links {
     background-color: rgba(55,55,55,0.6);
