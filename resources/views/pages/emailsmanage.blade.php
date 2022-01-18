@@ -55,7 +55,7 @@
                         </li>
                         </ul>
                         <div id="unassigned" class="type" >
-                            <table class="table table-striped">
+                            <table class="table table-striped  table-responsive">
                                 <thead>
                                     <th>#</th>
                                     <th>Sender </th>
@@ -90,7 +90,7 @@
                             </table>
                             </div>
                             <div id="assigned" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -127,7 +127,7 @@
                                 </table>
                             </div>
                             <div id="rejected" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -165,7 +165,7 @@
                                 </table>
                             </div>
                             <div id="reassigned" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
