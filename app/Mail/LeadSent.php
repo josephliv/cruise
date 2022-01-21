@@ -27,7 +27,7 @@ class LeadSent extends Mailable
     /**
      * Build the message.
      *
-     * @return $this
+     * @return LeadSent $mailable
      */
     public function build()
     {
@@ -35,6 +35,7 @@ class LeadSent extends Mailable
                     ->subject($this->lead->subject . ' -||' . $this->lead->id)
                     ->replyTo('sales@cruisertravels.com')
                     ->bcc('timbrownlaw@gmail.com')
+                    ->bcc('joesdigitalservices@gmail.com')
                     ->view('mails.leadsent');
 
         Log::debug($this->lead->attachment);
@@ -44,7 +45,7 @@ class LeadSent extends Mailable
             if(is_file($attachment)){
                 $mailable->attach($attachment);
             }
-        }        
+        }
 
         return $mailable;
     }
