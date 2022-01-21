@@ -1,3 +1,7 @@
+.list-group-item-action
+{
+    color:ivory;
+}
 /* fixing the modal background overlapping the send lead popup box */ 
 .modal-dialog {
     box-shadow: 0 0 15px #000;
@@ -951,9 +955,11 @@
 }
 .emailRules {
     width: 360px;
-    height: 80vh;
-    overflow-y: scroll;
+    height: fit-content;
+    
 }
+
+
 .tips {
   position: absolute;
   z-index: 9;
@@ -973,11 +979,8 @@
   background-color: #2196F3;
   color: #fff;
 }
-@media only screen and (max-width: 600px) { 
-    .copyright {
-        display: none;
-    }
-}
+
+ 
     
 /*  Dashboard styles for Admin */ 
 .count {
@@ -1020,3 +1023,5 @@
    border-radius: 8px;
    z-index: 9999;
 }
+/* */
+.footer {display: none;}

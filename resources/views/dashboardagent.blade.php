@@ -48,25 +48,25 @@
                         Send a Lead
                         </a>   
                     </div> 
-<div align="center">             
+                   
+<div align="center" class="open-tips-btn">             
    <button onclick="openTips()" >email tips</button>
+   
 </div> 
 
 <div id="mydiv" class="tips" style="display: none;">
     <div id="mydivheader" class="mydivheader">Email Tips<span class="exitEmailTips" style="position: relative; float: right; cursor: pointer" onclick="closeDragElement()">x</span></div>
-    <div id="emailRules" class="emailRules">
-  <h4>Reply to Spam:</h4>
-  <p >Just reply the message with the word spam and a text after. The message will be marked as rejected and the text after will be the reason why.</p>
-  <strong>Example:</strong>
-  <p> In the body of the email, just put in the word<em> spam </em>followed by the reason.</p>
-  <h4>Redirect to Agent:</h4>
-  <p >In case a lead is sent to the wrong agent just reply with the correct agent&rsquo;s e-mail, followed by the ! (exclamation mark).</p>
-  <strong>Example:</strong>
-  <p> agent2@cruisertravels.com! <em> Type your message here.</em></p>
-  <h4>If redirected to the wrong email:</h4>
-  <p>If the email doesn&#39;t belong to an agent, a message will return saying that the e-mail doesn&#39;t exist in the system and ask to check the spelling. In this email, just click reply and type the correct agent&rsquo;s email to be redirected to with your message using the same format as above.&nbsp;</span></p>
-
-</div>
+    <div id="emailRules" class="emailRules p-2">
+      <h4>Spam emails:</h4>
+      <p >Just hit reply and in the body make sure the first word is spam followed by the message as to why it is spam.</p>
+      <strong>Example:</strong>
+      <p>  spam <em>&nbp;This is advertising.</em></p>
+      <hr>
+      <h4>Send to another Agent:</h4>
+      <p >If you receive a lead that belongs to someone else, hit reply and in the body type their email followed by the exclamation mark(!). No space!</p>
+      <strong>Example:</strong>
+      <p> agent2@cruisertravels.com! </p>
+    </div>
 </div>
 
                     
