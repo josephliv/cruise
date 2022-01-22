@@ -41,36 +41,33 @@
                     </div>
                 </div>
                 <!-- Box that covers the button on click -->  
-                    <div style="position: relative">
-                        <div  class="cover" title="A new lead has been sent to your inbox.">
-                         A lead has been sent to your email.</div>
-                        <a href="#" id="generateLeadBtn" class="btn btn-primary" onclick="lead()" title="Click here to send a lead to your inbox.">
-                        Send a Lead
-                        </a>   
-                    </div> 
-                   
-<div align="center" class="open-tips-btn">             
-   <button onclick="openTips()" >email tips</button>
-   
-</div> 
-
-<div id="mydiv" class="tips" style="display: none;">
-    <div id="mydivheader" class="mydivheader">Email Tips<span class="exitEmailTips" style="position: relative; float: right; cursor: pointer" onclick="closeDragElement()">x</span></div>
-    <div id="emailRules" class="emailRules p-2">
-      <h4>Spam emails:</h4>
-      <p >Just hit reply and in the body make sure the first word is spam followed by the message as to why it is spam.</p>
-      <strong>Example:</strong>
-      <p>  spam <em>&nbp;This is advertising.</em></p>
-      <hr>
-      <h4>Send to another Agent:</h4>
-      <p >If you receive a lead that belongs to someone else, hit reply and in the body type their email followed by the exclamation mark(!). No space!</p>
-      <strong>Example:</strong>
-      <p> agent2@cruisertravels.com! </p>
+<div style="position: relative">
+    <div  class="cover" title="A new lead has been sent to your inbox.">
+      A lead has been sent to your email.
     </div>
-</div>
-
-                    
-                </div>
+    <div class="btn-group dropright">
+  <button type="button" id="generateLeadBtn" class="btn btn-primary btn-lg dropright" onclick="lead()" title="Click here to send a lead to your inbox.">
+    Receive A Lead
+  </button>
+  <button type="button" class="btn btn-primary btn-sm  dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"mtitle="Show Email Tips">
+    <span style="font-size: 14px; line-height: 1px;" class="text-dark font-weight-lighter font-italic">Email<br>Rules</span>
+  </button>
+  <div class="dropdown-menu" >
+      <div class="emailRules p-2">
+        <h4>Spam emails:</h4>
+        <p class="lead">Just hit reply and in the body make sure the first word is spam followed by the message as to why it is spam.</p>
+        <p class="lead">Example:<br>
+        spam <em>&nbsp;This is advertising.</em></p>
+       
+        <h4>Send to another Agent:</h4>
+        <p class="lead">If you receive a lead that belongs to someone else, hit reply and in the body type their email followed by the exclamation mark(!). followed by reason or comment.</p>
+        <p class="lead">Example:<br>
+        agent2@cruisertravels.com! <em>&nbsp;your comment or the reason here.</em></p>
+      </div>
+  </div>
+</div> 
+</div> 
+ </div>
             </div>
         </div>
     </div>

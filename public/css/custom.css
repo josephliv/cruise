@@ -1,3 +1,7 @@
+h1, h2, h3, h4, p, li {
+    font-family: 'Mallanna'!important; 
+}
+
 .list-group-item-action
 {
     color:ivory;
@@ -20,12 +24,12 @@
 .box-of-links {
     background-color: rgba(55,55,55,0.6);
     border-radius: 8px;
-    padding: 20px;
+    padding:  20px;
     border: 1px solid;
     box-shadow: 0 0 10px #fff;
     width: 80%;
     max-width: 100%;
-    margin: 0 auto;
+    margin: auto;
 }
 .box-item {
     color: #888;
@@ -920,19 +924,16 @@
     display: grid;
     align-self: center;
 }
-.btn-primary {
-
-    background-color: #0089BA!important;
-    color: #fff!important;
-    font-size: 1.4em;
-    transition: .5s ease;
+.emailRules {
+    width: 350px;
+    border: 1px solid #555;
+    box-shadow: 0 0 10px #555;
+    border-radius: 8px;
 }
-
-.btn-primary:hover {
-    background-color: white!important;
-    color: #0089BA!important;
+.emailRules h4 {
+    font-weight: bold;
+    
 }
-
 .cover { 
     visibility: hidden;
     position: absolute;
@@ -953,33 +954,6 @@
    border-radius: 8px;
    z-index: 9999;
 }
-.emailRules {
-    width: 360px;
-    height: fit-content;
-    
-}
-
-
-.tips {
-  position: absolute;
-  z-index: 9;
-  background-color: #f1f1f1;
-  text-align: left;
-  border: 1px solid #d3d3d3;
-  top: 10vh;
- left: 60vw;
-  box-shadow: 5px 5px 10px #000;
-  padding: 5px;
-}
-
-.mydivheader {
-  padding: 10px;
-  cursor: move;
-  z-index: 10;
-  background-color: #2196F3;
-  color: #fff;
-}
-
  
     
 /*  Dashboard styles for Admin */ 
@@ -989,18 +963,6 @@
 #generateLeadBtn {
     display: grid;
     align-self: center;
-}
-.btn-primary2 {
-
-    background-color: #0089BA!important;
-    color: #fff!important;
-    font-size: 1.2em;
-    transition: .5s ease;
-}
-
-.btn-primary2:hover {
-    background-color: white!important;
-    color: #0089BA!important;
 }
 
 .cover { 
