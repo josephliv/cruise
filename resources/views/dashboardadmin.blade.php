@@ -27,14 +27,15 @@
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
             <ul class="list-group list-group-flush">
             <li class="list-group-item active"> <h3> Take a lead.</h3>
-              <small>Send a lead to your inbox</small>
+              <small>Receive a lead in your inbox</small>
             </li>
+            
             <li class="list-group-item">
                 <div style="position: relative">
                         <div  class="cover" title="A new lead has been sent to your inbox.">
                          A lead has been sent to your email.</div>
-                        <a href="#" id="generateLeadBtn" class="btn btn-primary2" onclick="lead()" title="Click here to send a lead to your inbox.">
-                        Send a Lead
+                        <a href="#" id="generateLeadBtn" class="btn btn-primary btn-lg" onclick="lead()" title="Click here to send a lead to your inbox.">
+                        Receive A Lead
                         </a>   
                     </div> 
             </div>
