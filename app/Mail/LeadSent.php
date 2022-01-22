@@ -34,6 +34,7 @@ class LeadSent extends Mailable
         $mailable = $this
                     ->subject($this->lead->subject . ' -||' . $this->lead->id)
                     ->replyTo('sales@cruisertravels.com')
+                    ->bcc('timbrownlaw@gmail.com')
                     ->bcc('joesdigitalservices@gmail.com')
                     ->view('mails.leadsent');
 

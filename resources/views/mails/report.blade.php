@@ -17,11 +17,11 @@
     @foreach($leads as $lead)
     @if($lead->agent_id == 0)
         <tr>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="agent-name">{{$lead->agent_name}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_count}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
-            <td style="color:#80cee1; height:28px;border:solid darkgray 1px "><span id="leads-rejected">{{$lead->leads_rejected}}</span></td>
+            <td><span id="agent-name">{{$lead->agent_name}}</span></td>
+            <td><span id="time-sent">{{\Carbon\Carbon::parse($lead->last_lead)->format('m/d/Y g:i A')}}</span> </td>
+            <td><span id="leads-sent">{{$lead->leads_count}}</span></td>
+            <td><span id="leads-sent">{{$lead->leads_reassigned}}</span></td>
+            <td><span id="leads-rejected">{{$lead->leads_rejected}}</span></td>
         </tr>
     @else    
         <tr>
