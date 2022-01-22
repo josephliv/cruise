@@ -116,7 +116,7 @@ class MailBoxController extends Controller
                 } else {
                     $lead = LeadMails::find($originalMessageId);
                     //\Mail::to('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
-                    \Mail::to($lead->agent()->first()->email)->cc('dyegofern@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                    \Mail::to($lead->agent()->first()->email)->bcc('joesdigitalservices@gmail.com','timbrownlaw@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                 }
                 
             } else { //Count as a new Lead
@@ -347,12 +347,12 @@ class MailBoxController extends Controller
 
     public function getReassigned($leadId){
         $lead = LeadMails::find($leadId);
-        return  json_encode(array('body' => base64_encode(explode('On', $lead->reassigned_message)[0])));
+        return  json_encode(array('body' => base64_encode(explode('On', nl2br($lead->reassigned_message))[0])));
     }
 
     public function getRejected($leadId){
         $lead = LeadMails::find($leadId);
-        return  json_encode(array('body' => base64_encode(explode('On', $lead->rejected_message)[0])));
+        return  json_encode(array('body' => base64_encode(explode('On', nl2br($lead->rejected_message))[0])));
     }
 
     public function report(Request $request, $dateFrom, $dateTo){
@@ -437,8 +437,8 @@ class MailBoxController extends Controller
         ));
 
         \Mail::to(\Auth::user()->email)
-                ->bcc('dyegofern@gmail.com')
-                ->cc('visiontocode2022@gmail.com')
+                ->bcc('timbrownlaw@gmail.com')
+                ->bcc('visiontocode2022@gmail.com')
                 ->send(new ReportMail($leads, $dateFrom, $dateTo));
 
         return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . \Auth::user()->email ));
