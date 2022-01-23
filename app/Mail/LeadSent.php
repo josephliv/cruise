@@ -3,9 +3,9 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class LeadSent extends Mailable
@@ -31,13 +31,21 @@ class LeadSent extends Mailable
      */
     public function build()
     {
-        $mailable = $this
-                    ->subject($this->lead->subject . ' -||' . $this->lead->id)
-                    ->replyTo('sales@cruisertravels.com')
-                    ->bcc('timbrownlaw@gmail.com')
-                    ->bcc('joesdigitalservices@gmail.com')
-                    ->view('mails.leadsent');
 
+       if(Config::get('app.env') == 'live_dev_site') {
+           $mailable = $this
+               ->subject($this->lead->subject . ' -||' . $this->lead->id)
+               ->replyTo('sales@cruiser.joesdigitalservices.com')
+               ->bcc('timbrownlaw@gmail.com')
+               ->view('mails.leadsent');
+       } else {
+           $mailable = $this
+               ->subject($this->lead->subject . ' -||' . $this->lead->id)
+               ->replyTo('sales@cruisertravels.com')
+               ->bcc('timbrownlaw@gmail.com')
+               ->bcc('joesdigitalservices@gmail.com')
+               ->view('mails.leadsent');
+       }
         Log::debug($this->lead->attachment);
         if($this->lead->attachment){
             $attachment = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $this->lead->attachment);
