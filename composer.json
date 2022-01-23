@@ -9,15 +9,16 @@
     "license": "MIT",
     "require": {
         "php": "^7.2",
+        "ext-json": "*",
         "fideloper/proxy": "^4.0",
         "laravel-frontend-presets/light-bootstrap": "^1.0",
         "laravel/framework": "^6.2",
         "laravel/tinker": "^2.0",
         "laravel/ui": "1.0",
+        "web64/laravel-cli-colors": "^0.20.0",
         "webklex/laravel-imap": "^1.4",
         "yajra/laravel-datatables-buttons": "^4.13",
-        "yajra/laravel-datatables-oracle": "~9.0",
-      "ext-json": "*"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "2.8",
