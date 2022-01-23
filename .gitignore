@@ -10,7 +10,14 @@ Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
-Design/
-logs/
-.idea/
+*.zip
+/public/phpmyadmin
+public/att*
+/attc*
+Design
+.idea
+public/server.php
+public/files
 
+.phpstorm.meta.php
+_ide_helper.php

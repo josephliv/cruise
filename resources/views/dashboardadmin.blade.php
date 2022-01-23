@@ -1,10 +1,10 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
-@section('content') 
+@section('content')
 
 <div class="container mt-4">
     <div class="row justify-content-around" >
-      <div class="col-12 col-md-4"><h2>Admin Dashboard</h2></div>
+      <div class="col-12 col-md-4"><h2>Admin Dashboard xx</h2></div>
     </div>
 </div>
 <div class="container mt-4">
@@ -18,7 +18,7 @@
             <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total24h']}}</span></li>
             <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent24h']}}</span></li>
             <li class="list-group-item">Emails rejected: <span id="emails-sent">{{$leadMails['totalReject24h']}}</span></li>
-           
+
           </ul>
         </div>
       </div>
@@ -35,13 +35,13 @@
                          A lead has been sent to your email.</div>
                         <a href="#" id="generateLeadBtn" class="btn btn-primary2" onclick="lead()" title="Click here to send a lead to your inbox.">
                         Send a Lead
-                        </a>   
-                    </div> 
+                        </a>
+                    </div>
             </div>
         </li>
-           
+
           </ul>
-            
+
         </div>
 
         <div class="col-12 col-md-4">
@@ -88,7 +88,7 @@
                     </div>
                 </div>
             </div>
-  
+
 </div>
 <script type="text/javascript">
     const leadBtn = document.querySelector("#generateLeadBtn") ;
@@ -102,7 +102,7 @@ function lead() {
     cover.style.opacity = 1;
     leadBtn.classList.add('disabled');
     leadBtn.style.color = "#fff!important";
-    cover.style.cursor = "not-allowed";    
+    cover.style.cursor = "not-allowed";
 
     $.ajax({
         url: "/leads/get",
@@ -111,7 +111,7 @@ function lead() {
             setTimeout(() => {
                 cover.style.visibility = "hidden";
                 cover.style.opacity = 0;
-                leadBtn.classList.remove('disabled'); 
+                leadBtn.classList.remove('disabled');
                 location.reload();
             }, 500);
         },
@@ -121,6 +121,6 @@ function lead() {
         }
     });
 }
-    
+
 </script>
 @endsection

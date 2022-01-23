@@ -15,7 +15,6 @@
 var searchVisible = 0;
 var transparent = true;
 
-var transparentDemo = true;
 var fixedTop = false;
 
 var navbar_initialized = false;
@@ -31,9 +30,9 @@ let domMobileSideMenu = $('#mobileSideMenu');
 let inMobileModeFlag = false;
 
 $(document).ready(function () {
-    let window_width = $(window).width();
+    let window_width = $(window).width(); 
 
-    lbd.getTopNavContent(); // Grab the Top Navigation ONCE
+    // lbd.getTopNavContent(); // Grab the Top Navigation ONCE
 
     // check if there is an image set for the sidebar's background
     lbd.checkSidebarImage();
@@ -68,6 +67,7 @@ $(window).resize(function() {
     if ($(window).width() >= 991) {
         inMobileModeFlag = false;
         domMobileSideMenu.addClass('d-none');
+        domMobileSideMenu.html('');
     }
     lbd.initRightMenu();
 });
@@ -109,32 +109,34 @@ lbd = {
         let sidebar_nav = sidebar_wrapper.find(' > .nav');
 
         // insert the navbar form before the sidebar list
-        // console.log('Code: ' + nav_content);
+       
         domMobileSideMenu.html(nav_content);
     },
 
     /** Simplified Versions */
     initRightMenu: function (width) {
-        // console.log('initRightMenu');
+       
         if ($(window).width() > 991) {
             // Not Mobile
-            // console.log('We are in NOT Mobile Mode');
+           
         } else {
             if (!inMobileModeFlag) {
-                // console.log('We are in Mobile Mode - First Time');
+               
                 inMobileModeFlag = true;
                 domMobileSideMenu.removeClass('d-none');
-
+               
+                this.getTopNavContent();
                 this.displayRightMenu();
                 // This is Mobile
             } else {
-               // console.log('We are already in Mobile Mode So dont have to do it again');
+               
             }
         }
     },
 
     displayRightMenu: function (){
         if (!toggle_initialized) {
+            
             let $toggle = $('.navbar-toggler');
             $toggle.click(function() {
                 if (mobile_menu_visible === true) {

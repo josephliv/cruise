@@ -55,7 +55,7 @@
                         </li>
                         </ul>
                         <div id="unassigned" class="type" >
-                            <table class="table table-striped">
+                            <table class="table table-striped  table-responsive">
                                 <thead>
                                     <th>#</th>
                                     <th>Sender </th>
@@ -74,7 +74,7 @@
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                         <td class="d-flex justify-content-end">
                                                     @if(optional($leadMail)->attachment)
-                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
                                                     @else
                                                         <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                     @endif
@@ -90,7 +90,7 @@
                             </table>
                             </div>
                             <div id="assigned" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -127,7 +127,7 @@
                                 </table>
                             </div>
                             <div id="rejected" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -165,7 +165,7 @@
                                 </table>
                             </div>
                             <div id="reassigned" style="display:none" class="type" >
-                                <table class="table table-striped">
+                                <table class="table table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
