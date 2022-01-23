@@ -1,4 +1,4 @@
-<!-- 
+<!--
 =========================================================
  Light Bootstrap Dashboard - v2.0.1
 =========================================================
@@ -39,7 +39,7 @@
             @if (auth()->check() && request()->route()->getName() != "")
                 @if(auth()->check() && ! \Auth::user()->is_admin)
                 @include('layouts.navbars.sidebaragent')
-                
+
                 @else
                   @include('layouts.navbars.sidebar')
                 @endif
@@ -55,7 +55,7 @@
             </div>
 
         </div>
-       
+
     </body>
         <!--   Core JS Files   -->
     <script src="{{ asset('light-bootstrap/js/core/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
@@ -101,7 +101,7 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });            
+            });
         });
 
         $('#detailedEmailBtn').on('click',function(e){
@@ -117,9 +117,9 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });            
+            });
         });
-        
+
         $('.removeLead').on('click', function(e){
             e.stopPropagation();
             confirm('You really want to delete this lead?');
@@ -136,7 +136,7 @@
                 url: "/leads/" + id + "/body",
                 success: function(result){
                     res = JSON.parse(result);
-                    //console.log(atob(res.body));
+                    console.log(atob(res.body));
                     $('#leadsModalBody').html(atob(res.body))
                 },
                 error: function(a,b,c){
