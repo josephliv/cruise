@@ -536,7 +536,7 @@ class MailBoxController extends Controller {
      * @param $line
      */
     private function echod($color, $text, $line) {
-        Colors::nobr()->blue("Line: " . $line . ' ');
+        Colors::nobr()->yellow("Line: " . $line . ' ');
         Colors::{$color}($text);
 
     }
