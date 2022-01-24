@@ -72,13 +72,13 @@
                             </div>
                         </div>
                         <div class="card-body table-full-width table-responsive" >
-                            <table id="detailedReportTable" class="table table-hover table-striped" >
+                            <table id="detailedReportTable" class="table table-hover table-striped" role="table" >
                                 <thead>
                                     <th>Name</th>
-                                    <th class="text-center">Most Recent</th>
-                                    <th class="text-center">Leads</th>
-                                    <th class="text-center">Reassigned</th>
-                                    <th class="text-center">Rejected</th>
+                                    <th>Most Recent</th>
+                                    <th>Leads</th>
+                                    <th>Reassigned</th>
+                                    <th>Rejected</th>
                                 </thead>
                                 <tbody>
                                 </tbody>
