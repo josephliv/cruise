@@ -1016,7 +1016,7 @@ body {overflow: hidden;}
       display: block;
       transition: 0.3s;
       text-transform: capitalize;
-      line-height: 0.8rem;
+      line-height: 1rem;
   }
 
 .sidenav-menu a:hover {
