@@ -1020,8 +1020,8 @@ body {overflow: hidden;}
   }
 
 .sidenav-menu a:hover {
-    color: #C5A862;
-    border-left: 6px solid #C5A862;
+    color: #f8ec65;
+    /*border-left: 4px solid #f1f1f1;*/
 }
 
 .sidenav .closebtn {
