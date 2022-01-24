@@ -1,4 +1,4 @@
-<!--
+<!-- 
 =========================================================
  Light Bootstrap Dashboard - v2.0.1
 =========================================================
@@ -24,7 +24,11 @@
         <title>{{ $title }}</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
-        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+        <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Mallanna&display=swap" rel="stylesheet">
+
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
         <!-- CSS Files -->
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
@@ -39,7 +43,7 @@
             @if (auth()->check() && request()->route()->getName() != "")
                 @if(auth()->check() && ! \Auth::user()->is_admin)
                 @include('layouts.navbars.sidebaragent')
-
+                
                 @else
                   @include('layouts.navbars.sidebar')
                 @endif
@@ -55,7 +59,7 @@
             </div>
 
         </div>
-
+       
     </body>
         <!--   Core JS Files   -->
     <script src="{{ asset('light-bootstrap/js/core/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
@@ -90,7 +94,7 @@
                       leadsTotal    += parseInt(res[r].leads_count);
                       rejectedTotal += parseInt(res[r].leads_rejected);
                       if(res[r].agent_id == 0){ // This is for unassigned leads
-                        $('#detailedReportTable').find('tbody').append('<tr><td style="color:#80cee1"><span id="agent-name">' + res[r].agent_name + '</span></td><td style="color:#80cee1" class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td style="color:#80cee1" class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td style="color:#80cee1" class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td style="color:#80cee1" class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
+                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td  class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td  class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td  class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td  class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       } else {
                         $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       }
@@ -101,7 +105,7 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });
+            });            
         });
 
         $('#detailedEmailBtn').on('click',function(e){
@@ -117,9 +121,9 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });
+            });            
         });
-
+        
         $('.removeLead').on('click', function(e){
             e.stopPropagation();
             confirm('You really want to delete this lead?');
@@ -136,7 +140,7 @@
                 url: "/leads/" + id + "/body",
                 success: function(result){
                     res = JSON.parse(result);
-                    console.log(atob(res.body));
+                    //console.log(atob(res.body));
                     $('#leadsModalBody').html(atob(res.body))
                 },
                 error: function(a,b,c){

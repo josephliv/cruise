@@ -4,7 +4,7 @@
     <div class="full-page section-image" data-color="black" data-image="{{ asset('light-bootstrap/img/full-screen-image-2.jpg') }}">
         <div class="content pt-5">
             <div class="container mt-5">    
-                <div class="col-md-4 col-sm-6 ml-auto mr-auto">
+                <div class="col-10 col-md-6 ml-auto mr-auto">
                     <form class="form" method="POST" action="{{ route('login') }}">
                         @csrf
                         <div class="card card-login card-hidden">
