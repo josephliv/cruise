@@ -1008,30 +1008,40 @@ body {overflow: hidden;}
   }
 
   .sidenav a, .logged-in-as {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    /*font-size: 25px;*/
-    color: #E6F4F1;
-    display: block;
-    transition: 0.3s;
-    text-transform: capitalize;
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+      /*font-size: 25px;*/
+      font-size: 1.2rem;
+      color: #E6F4F1;
+      display: block;
+      transition: 0.3s;
+      text-transform: capitalize;
+      line-height: 0.8rem;
   }
 
-  .sidenav a:hover {
+.sidenav-menu a:hover {
     color: #C5A862;
     border-left: 6px solid #C5A862;
-  }
+}
 
-  .sidenav .closebtn {
+.sidenav .closebtn {
     position: absolute;
     top: -10px;
     right: 20px;
     font-size: 36px;
     margin-left: 50px;
-    color:#000;
-  }
-  .sidenav .closebtn:hover { border: none;  color: #000;}
-  .highlight {border-left: 6px solid #C5A862; color:#C5A862!important;}
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn:hover {
+    border: none;
+    color: #ff191e;
+}
+
+.highlight {
+    border-left: 6px solid #C5A862;
+    color: #C5A862 !important;
+}
   .usefulLinks a {font-size: 16px;}
   @media screen and (max-width: 650px){
       .fa {font-size: .2rem!important;}
