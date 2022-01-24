@@ -13,7 +13,7 @@
         <div class="card text-center" style="box-shadow: 0 0 5px #555;">
           <ul class="list-group list-group-flush">
             <li class="list-group-item active"> <h3> Today's Stats</h3>
-              <small>This resets every 24 hours</small>
+              <p class="lead">This resets every 24 hours</p>
             </li>
             <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total24h']}}</span></li>
             <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent24h']}}</span></li>
@@ -27,7 +27,7 @@
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
             <ul class="list-group list-group-flush">
             <li class="list-group-item active"> <h3> Take a lead.</h3>
-              <small>Receive a lead in your inbox</small>
+              <p class="lead">Receive a lead in your inbox</p>
             </li>
             
             <li class="list-group-item">
@@ -49,7 +49,7 @@
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item active"> <h3> Total Stats</h3>
-              <small>This shows the total stats.</small>
+              <p class="lead">This shows the total stats.</p>
                 </li>
                 <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total']}}</span></li>
                 <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent']}}</span></li>
@@ -63,10 +63,10 @@
                     <div class="card strpied-tabled-with-hover" style="box-shadow: 0 0 5px #555;">
                         <div class="card-header  text-center">
                             <h3 class="card-title ">Detailed Reports</h3>
-                            <p class="card-category ">Here you can view the progress of each agent.</p>
+                            <p class=" lead">Here you can view the progress of each agent.</p>
                             <div class="p-4">
-                                <label for="time-set">Run the report by dates: </label>
-                                <input type="date" id="from-date" name="from-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" >
+                                <label for="time-set"><p class=" lead">Run the report by dates:</p> </label>
+                                <input class="lead" type="date" id="from-date" name="from-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" > to <input class="lead" type="date" id="to-date" name="to-date" value="{{explode(' ', \Carbon\Carbon::now())[0]}}" >
                                 <a href="#" class="btn btn-primary" id="detailedReportBtn">Submit</a>
                                 <a href="#" class="btn btn-secondary" id="detailedEmailBtn">Send to E-mail</a>
                             </div>
