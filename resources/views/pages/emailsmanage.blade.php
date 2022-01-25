@@ -169,7 +169,6 @@
                                         <th >Subject Line </th>
                                         <th >Agent</th>
                                         <th>Time/date</th>
-                                        <th>Reason</th>
                                         <th>Options</th>
                                     </thead>
                                     <tbody>
@@ -182,7 +181,7 @@
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
                                             
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td><span id="mail-rejected-reason">A reason to go here.</span> </td>
+                                           
                                             <td class="d-flex justify-content-end">
                                                         @if(optional($leadMail)->attachment)
                                                             <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
