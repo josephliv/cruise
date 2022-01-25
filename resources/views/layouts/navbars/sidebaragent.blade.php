@@ -4,16 +4,16 @@
     <a href="{{route('dashboard')}}">
       <img style="border-radius: 4px; " src="/light-bootstrap/img/logo.jpg">
     </a><p></p>
-    <p>Logged in as {{ \Auth::user()->name }}</p>
-    <div class="text-center">
-    <a class="d-flex " href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-      <i class="nc-icon nc-sun-fog-29"></i>&nbsp;{{ __('Log out') }} </a>
-    </div>
+    Logged in as: <br> {{ \Auth::user()->name }}
+  </div>
+  <div class="text-center">
+    <button class="btn-outline-dark text-light"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+      <i class="nc-icon nc-sun-fog-29"></i>&nbsp;{{ __('Log out') }} </button>
   </div>
   <hr style="border-color: #fff; width: 80%; margin: 20px auto;">
   <!-- Nav links -->
   <div class="side-bar-links">
-    <ul class="nav">
+    <ul class="nav" >
       <li class="nav-item">
         <a class="@if($activePage == 'dashboard') highlight @endif" href="{{route('dashboard')}}" title="Return to the dashboard"><i class="nc-icon nc-chart-pie-35"></i>&nbsp;{{ __("Dashboard") }}</a>
       </li>
@@ -23,28 +23,35 @@
      </ul>
   </div>   
      <hr style="border-color: #fff; width: 80%; margin: 10px auto;">
-         <a class="usefulLinks" title="View a list of links" data-toggle="collapse" href="#usefulLinks" @if($activeButton=='laravel') aria-expanded="true" @endif><i class="nc-icon nc-tap-01"></i>&nbsp;{{ __('Useful Links') }}</a>
+     <div class="side-bar-links">
+      <ul class="nav" >
+        <li class="nav-item text-center">
+          <button class="btn-outline-light" title="View a list of links" onclick="openLinks()"><i class="nc-icon nc-tap-01"></i>&nbsp;{{ __('Useful Links') }}</button>
+        </li>
+      </ul>
+    </div>     
       
     
-    <div class="collapse @if($activeButton =='laravel') hidden @endif" id="usefulLinks">
-    <ul class="nav ">
-      <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">CRUISER TRAVELS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">REPORT A NEW BOOKING</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.cruisertravels.com/ta-training.html">TRAINING VIDEOS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.GOCCL.COM">CARNIVAL</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.CRUISINGPOWER.COM">ROYAL/CELEBRITY/AZAMARA</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.FIRSTMATES.COM">VIRGIN VOYAGES</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/SCDO/login.jsp">SABRE GDS </a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://www.vaxvacationaccess.com">VAX LAND GDS </a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.agent.uplift.com ">UPLIFT</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a> </li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">MODIFY BOOKING FORM</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">SOLD ADD ON FORM</a></li>
-    </ul>
-  </div>
+    <div class="panel d-none" id="usefulLinks"> 
+      <ul class="nav ">
+        <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">cruiser travels</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">report a new booking</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="http://www.cruisertravels.com/ta-training.html">training videos</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://www.goccl.com">carnival</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisingpower.com">royal/celebrity/azamara</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://www.firstmates.com">virgin voyages</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/scdo/login.jsp">sabre gds </a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://www.vaxvacationaccess.com">vax land gds </a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/dttroyal">royal transfer link</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/dttcelebrity">celebrity transfer link</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="http://www.americanexpress.com/asdonline">amex platinum perks</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="http://www.agent.uplift.com ">uplift</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">cancellation form in-house</a> </li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">modify booking form</a></li>
+        <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">sold add on form</a></li>
+      </ul>
+      <div id="toTop"></div>
+    </div>
   
 </div>
 
@@ -52,6 +59,13 @@
 
 <span style="margin: 30px;font-size:30px;cursor:pointer;color:#001f8b;" onclick="openNav()">&#9776;</span>
 
+<script>
+  function openLinks() {
+    let panel = document.querySelector(".panel")
+    panel.classList.toggle("d-none");
+    panel.scrollIntoView({behavior: "smooth" });
+  }
+</script>
 <script>
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
