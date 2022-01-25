@@ -931,28 +931,6 @@
 
 }
 
-/*.cover {*/
-/*    visibility: hidden;*/
-/*    position: absolute;*/
-/*    opacity: 0;*/
-/*    text-shadow: 0 0 5px #555;*/
-/*    !*width: 500px;*!*/
-/*    padding: 50px;*/
-/*    text-align: center;*/
-/*    font-size: 1.2em;*/
-/*    top: -30px;*/
-/*    width: 100%;*/
-/*   background-color: rgba(9, 87, 170, 0.85);*/
-/*   -webkit-transition: opacity 1800ms, visibility 1800ms;*/
-/*   transition: opacity 1800ms, visibility 1800ms;*/
-/*   color: #fff;*/
-/*   border: 2px solid white;*/
-/*   box-shadow: 5px 5px 15px #000;*/
-/*   border-radius: 8px;*/
-/*   z-index: 9999;*/
-/*}*/
-
-
 /*  Dashboard styles for Admin */
 .count {
     border: 1px solid #ccc;
@@ -1014,7 +992,6 @@
      
       color: #E6F4F1;
       display: block;
-      transition: 0.3s;
       text-transform: capitalize;
       line-height: 1rem;
   }
@@ -1060,8 +1037,8 @@
   .btn-outline-light, .btn-outline-dark {font-size: 18px; border-radius: 4px;}
   .side-bar-links a {padding: 5px 10px;}
   .side-bar-links a:hover {
-    color: #C5A862;
-    border-left: 6px solid #C5A862;
+    color: gold;
+
   }
   .logged-in-as {text-align: center; color: #C5A862;}
   .sidenav .closebtn {
@@ -1075,7 +1052,7 @@
   .highlight {border-left: 6px solid #C5A862; color:#C5A862!important;}
   .usefulLinks {padding-left: 10px; }
   
-#usefulLinks li { padding: 5px; width: 100%; border-bottom: 1px solid #862; margin: 0 5px; transition: ease-in-out .3s; }
+#usefulLinks li { padding: 5px; width: 100%; border-bottom: 1px solid #862; margin: 0 5px; }
 #usefulLinks li a {color: white; font-size: 14px;}
 #usefulLinks li:hover {background: rgba(0, 0, 0, .3)}
 
