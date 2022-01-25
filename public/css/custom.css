@@ -30,13 +30,14 @@ body {overflow: hidden;}
     margin: auto;
 }
 .box-item {
-    color: #888;
+    color: #888; text-transform: capitalize;
 }
 .box-item a {
     transition: .55s;
     padding: 5px!important;
     font-size: .8em;
     border-radius: 8px;
+    
 }
 .box-item a:hover {
     background-color: #eee;
