@@ -1,18 +1,17 @@
+body {overflow: hidden;}
 
 .list-group-item-action
 {
     color:ivory;
 }
-/* fixing the modal background overlapping the send lead popup box */ 
+/* fixing the modal background overlapping the send lead popup box */
 .modal-dialog {
     box-shadow: 0 0 15px #000;
     border-radius: 8px;
 }
-/*The dark backdrop looks good on a largerscreen so this ajustment only works on smaller to remove it. */
+/*The dark backdrop looks good on a larger screen so this adjustment only works on smaller to remove it. */
 @media (max-width: 990px){
     .modal-backdrop {display: none;}
-    .main-panel {width: 100%!important;}
-    .sidenav {width: 0;}
 }
 /* Make the paperclip for attachments show blue */
 .fa-paperclip {
@@ -282,8 +281,8 @@
     border-radius: 10px;
     background-color: #FFF;
     border: 3px solid #FFF;
-    padding-left: 0;
-    padding-right: 0;
+    /*padding-left: 0;*/
+    /*padding-right: 0;*/
     opacity: 1;
     cursor: pointer;
     display: block;
@@ -314,7 +313,7 @@
 }
 
 .fixed-plugin .btn-social {
-    width: 50%;
+    /*width: 50%;*/
     display: block;
     width: 48%;
     float: left;
@@ -424,7 +423,8 @@
 
 .all-icons .font-icon-detail {
     text-align: center;
-    padding: 45px 0px 30px;
+    /*padding: 45px 0px 30px;*/
+    padding: 45px 0 30px;
     border: 1px solid #e5e5e5;
     border-radius: 0.1875rem;
     margin: 15px 0;
@@ -493,7 +493,8 @@
 
 #buttons .btn,
 #javascriptComponents .btn {
-    margin: 0 0px 10px;
+    /*margin: 0 0px 10px;*/
+    margin: 0 0 10px;
 }
 
 .space-100 {
@@ -736,7 +737,7 @@
     .navbar-brand {
         font-size: 0.9em !important;
     }
-  
+
 }
 
 .dropCustom {
@@ -900,7 +901,7 @@
     color:#fff;
 }
 /* Dashboard styles for agent */
-   
+
 .grid-container {
     height: 80vh;
     display: grid;
@@ -913,7 +914,7 @@
     padding: 20px;
 }
 .dash-logo {
-    margin: 0 auto; 
+    margin: 0 auto;
     width: 200px;
 }
 .count {
@@ -931,11 +932,32 @@
 }
 .emailRules h4 {
     font-weight: bold;
-    
+
 }
 
-    
-/*  Dashboard styles for Admin */ 
+/*.cover {*/
+/*    visibility: hidden;*/
+/*    position: absolute;*/
+/*    opacity: 0;*/
+/*    text-shadow: 0 0 5px #555;*/
+/*    !*width: 500px;*!*/
+/*    padding: 50px;*/
+/*    text-align: center;*/
+/*    font-size: 1.2em;*/
+/*    top: -30px;*/
+/*    width: 100%;*/
+/*   background-color: rgba(9, 87, 170, 0.85);*/
+/*   -webkit-transition: opacity 1800ms, visibility 1800ms;*/
+/*   transition: opacity 1800ms, visibility 1800ms;*/
+/*   color: #fff;*/
+/*   border: 2px solid white;*/
+/*   box-shadow: 5px 5px 15px #000;*/
+/*   border-radius: 8px;*/
+/*   z-index: 9999;*/
+/*}*/
+
+
+/*  Dashboard styles for Admin */
 .count {
     border: 1px solid #ccc;
 }
@@ -944,12 +966,12 @@
     align-self: center;
 }
 
-.cover { 
+.cover {
     visibility: hidden;
     position: absolute;
     opacity: 0;
     text-shadow: 0 0 5px #555;
-    width: 500px;
+    /*width: 500px;*/
     padding: 50px;
     text-align: center;
     font-size: 1.2em;
@@ -977,24 +999,66 @@
     top: 0;
     left: 0;
     background-image: linear-gradient(to right top, #3472f7, #2261d0, #134fab, #083e86, #052e63, #03285c, #022354, #001d4d, #001f5d, #00206d, #00207c, #001f8b);
-    overflow-x: hidden;
+    overflow-y: scroll;
     transition: 0.5s;
     padding-top: 60px;
-    box-shadow: 0 5px 0 0 5px #000;
+    box-shadow: 0 5px 0 5px #000;
+    resize: horizontal;
   }
-  
-  .top-part-side-bar {
-    padding: 8px 8px 8px 32px;
+  .sidenav::-webkit-scrollbar {
+    display: none;
+    -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+
+  .sidenav a, .logged-in-as {
+      padding: 8px 8px 8px 32px;
+      text-decoration: none;
+     
+      color: #E6F4F1;
+      display: block;
+      transition: 0.3s;
+      text-transform: capitalize;
+      line-height: 1rem;
+  }
+
+.sidenav-menu a:hover {
+    color: #f8ec65;
+    /*border-left: 4px solid #f1f1f1;*/
+}
+
+.closebtn {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    font-size: 36px;
+    margin-left: 50px;
+    color: #f1f1f1;
+}
+
+.closebtn:hover {
+    border: none;
+    color: #ff191e;
+}
+.closebtn:hover { border: none;  color: #000;}
+
+.highlight {border-left: 6px solid #C5A862; color:#C5A862!important;}
+.usefulLinks {padding-left: 10px; font-size: 1.5rem; }
+.top-part-side-bar {
+    padding: 8px;
     text-decoration: none;
     color: #E6F4F1;
     text-transform: capitalize;
     text-align: center;
   }
+  
   .side-bar-links li {
       width: 100%;
       font-size: 1.3rem;
       padding: 10px 10px;
   }
+  
   .side-bar-links a {padding-left: 5px;}
   .side-bar-links a:hover {
     color: #C5A862;
@@ -1011,23 +1075,30 @@
   }
   .sidenav .closebtn:hover { border: none;  color: #000;}
   .highlight {border-left: 6px solid #C5A862; color:#C5A862!important;}
-  .usefulLinks {padding-left: 10px; font-size: 1.5rem; }
- 
-  #usefulLinks li {font-size: 14px; padding: 5px; width: 100%; border-bottom: 1px solid #862; margin: 0 5px; transition: ease-in-out .3s; }
-  #usefulLinks li a {color: white; display: block;}
-  #usefulLinks li:hover {background: rgba(0, 0, 0, .3)}
+  .usefulLinks {padding-left: 10px; }
+  
+#usefulLinks li { padding: 5px; width: 100%; border-bottom: 1px solid #862; margin: 0 5px; transition: ease-in-out .3s; }
+#usefulLinks li a {color: white; font-size: 12px;}
+#usefulLinks li:hover {background: rgba(0, 0, 0, .3)}
+
+.highlight {
+    border-left: 6px solid #C5A862;
+    color: #C5A862 !important;
+}
+  .usefulLinks a {font-size: 14px;}
   @media screen and (max-width: 650px){
       .fa {font-size: .2rem!important;}
-      .sidenav {width: 0px;}
+      /*.sidenav {width: 0px;}*/
+      .sidenav {width: 0;}
   }
   @media screen and (max-height: 650px) {
     .sidenav {padding-top: 15px; }
     .sidenav a {font-size: 18px;}
-    
+
   }
 
   label {
-    font-size: 1rem!important; 
+    font-size: 1rem!important;
     color: #000!important;
   }
 

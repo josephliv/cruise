@@ -24,16 +24,12 @@
         <title>{{ $title }}</title>
         <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
         <!--     Fonts and icons     -->
-        <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Mallanna&display=swap" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
-        <!-- CSS Files -->
+        <!-- CSS Files that came with bootstrap -->
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
-        <!-- CSS mostly for custom changes such as the dropdown menu -->
+        <!-- CSS mostly for custom changes such sidebar -->
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" />
     </head>
 
@@ -94,7 +90,7 @@
                       leadsTotal    += parseInt(res[r].leads_count);
                       rejectedTotal += parseInt(res[r].leads_rejected);
                       if(res[r].agent_id == 0){ // This is for unassigned leads
-                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td  class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td  class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td  class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td  class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
+                        $('#detailedReportTable').find('tbody').append('<tr><td style="color:#80cee1"><span id="agent-name">' + res[r].agent_name + '</span></td><td style="color:#80cee1" class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td style="color:#80cee1" class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td style="color:#80cee1" class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td style="color:#80cee1" class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       } else {
                         $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       }

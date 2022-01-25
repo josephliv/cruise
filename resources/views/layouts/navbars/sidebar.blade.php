@@ -1,10 +1,11 @@
 <div id="mySidenav" class="sidenav">
+  <p>
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="top-part-side-bar">
     <a href="{{route('dashboard')}}">
       <img style="border-radius: 4px; " src="/light-bootstrap/img/logo.jpg">
-    </a><p></p>
-    <p>Logged in as {{ \Auth::user()->name }}</p>
+    </a></p>
+    <p>Logged in as: <br> {{ \Auth::user()->name }}</p>
     <div class="text-center">
     <a class="d-flex " href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
       <i class="nc-icon nc-sun-fog-29"></i>&nbsp;{{ __('Log out') }} </a>
