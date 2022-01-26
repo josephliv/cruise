@@ -44,7 +44,7 @@ class MailBoxController extends Controller {
         {
             if (app()->runningInConsole())
             {
-                $this->echod('red', " Running MalBoxController in Console", __LINE__);
+                $this->echod('red', "Running MalBoxController in Console", __LINE__);
             }
         }
 
@@ -81,17 +81,30 @@ class MailBoxController extends Controller {
                 {
                     // Body: Spam <Reason>
                     $subject_array = explode('-||', $oMessage->getSubject());
-                    // Get back an array [0] = xxxxx and [1] 1234
+                    // We might Get back an array [0] = xxxxx and [1] 1234
                     $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
+
                     if ($originalMessageId)
                     {
                         $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
                         $lead->rejected = 1;
                         $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
                         $lead->save($oMessage);
-                    } else {
-                        $this->save_new_lead($oMessage);
+                    } else
+                    {
+                        // We want to find the row we need to save based upon email_imap_id field
+                        // We cannot use find() as it searches only on the Primary Key
+
+                        $lead = LeadMails::where('email_imap_id',$oMessage->message_id)->first();
+                        if (!$lead->count())
+                        {
+                            $this->save_new_lead($oMessage);
+                            $this->echod('white','Save New Leads', __LINE__);
+                        }  else {
+                            $this->echod('white','This Lead already exists', __LINE__);
+                        }
                     }
+
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
                 } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
                 {
@@ -643,8 +656,8 @@ class MailBoxController extends Controller {
     {
         if (config('app.debug'))
         {
-            Colors::nobr()->yellow("Line: " . $line . ' ');
-            Colors::{$color}($text);
+            Colors::nobr()->bgLightYellow("Line: " . $line . ' ');
+            Colors::{$color}(' '.$text);
         } else
         {
             echo $text;
