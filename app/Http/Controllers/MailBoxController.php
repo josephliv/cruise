@@ -35,6 +35,7 @@ class MailBoxController extends Controller {
      * @return void
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
+     * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
      */
     public function index()
     {
@@ -51,11 +52,12 @@ class MailBoxController extends Controller {
         $oClient->connect();
 
         $aFolder[] = $oClient->getFolder('INBOX');
+        $this->echod('yellow', 'Looking Through the Inbox', __LINE__);
         //Loop through the mailbox - We are only checking one folder at the moment
         foreach ($aFolder as $oFolder)
         {
             //Get all Messages from the current Mailbox $oFolder from a day ago
-            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(1))->limit(5, 1)->get();
+            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->limit(5, 1)->get();
 
             foreach ($aMessage as $oMessage)
             {
@@ -65,20 +67,31 @@ class MailBoxController extends Controller {
 
                 $this->save_attachment($oMessage);
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
+
+                // @todo - These need to be tested
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
+                // If an email comes with the first word in the message "Spam"
+                // It could:
+                // 1. Be an existing lead with a message_id where an agent has added the word Spam <some reason>
+                // 2. It is a new Email, and has to be treated as such so admin can deal with it.
+                //
                 if (strpos($emailFirstWord, 'spam') !== FALSE)
                 {
                     // Body: Spam <Reason>
                     $subject_array = explode('-||', $oMessage->getSubject());
                     // Get back an array [0] = xxxxx and [1] 1234
-                    $originalMessageId = $subject_array[1] ?? 0; // Either get a ID or its 0
-                    $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
-                    $lead->rejected = 1;
-                    $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
-                    $lead->save();
-
+                    $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
+                    if ($originalMessageId)
+                    {
+                        $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
+                        $lead->rejected = 1;
+                        $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
+                        $lead->save($oMessage);
+                    } else {
+                        $this->save_new_lead($oMessage);
+                    }
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
                 } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
                 {
