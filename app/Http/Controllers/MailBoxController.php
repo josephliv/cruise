@@ -22,9 +22,6 @@ class MailBoxController extends Controller {
 
     private $attachment_filename;
     private $body;
-    /**
-     * @var User[]|\Illuminate\Database\Eloquent\Builder[]|\Illuminate\Database\Eloquent\Collection
-     */
     private $newUser;
 
     /**
@@ -35,7 +32,6 @@ class MailBoxController extends Controller {
      * @return void
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
-     * @noinspection PhpIssetCanBeReplacedWithCoalesceInspection
      */
     public function index()
     {
@@ -57,11 +53,10 @@ class MailBoxController extends Controller {
         foreach ($aFolder as $oFolder)
         {
             //Get all Messages from the current Mailbox $oFolder from a day ago
-            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->limit(5, 1)->get();
+            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
 
             foreach ($aMessage as $oMessage)
             {
-
                 echo $oMessage->getSubject() . "\r\n";
                 echo 'Attachments: ' . $oMessage->getAttachments()->count() . "\r\n";
 
@@ -95,15 +90,19 @@ class MailBoxController extends Controller {
                         // We want to find the row we need to save based upon email_imap_id field
                         // We cannot use find() as it searches only on the Primary Key
 
-                        $lead = LeadMails::where('email_imap_id',$oMessage->message_id)->first();
-                        if (!$lead->count())
+                        $lead = LeadMails::where('email_imap_id', $oMessage->message_id)->first();
+                        if ( ! ($lead && $lead->count()))
                         {
                             $this->save_new_lead($oMessage);
-                            $this->echod('white','Save New Leads', __LINE__);
-                        }  else {
-                            $this->echod('white','This Lead already exists', __LINE__);
+                            $this->echod('white', 'Save New Leads', __LINE__);
+                        } else
+                        {
+                            $this->echod('white', 'This Lead already exists', __LINE__);
                         }
                     }
+                } elseif (strpos($emailFirstWord, 'test') !== FALSE)
+                {
+                    $this->save_new_lead($oMessage, TRUE);
 
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
                 } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
@@ -160,9 +159,10 @@ class MailBoxController extends Controller {
 
     /**
      * Saves a New Lead
-     * @param $oMessage
+     * @param      $oMessage
+     * @param bool $test
      */
-    private function save_new_lead($oMessage)
+    private function save_new_lead($oMessage, $test = FALSE)
     {
         $lead = new LeadMails();
         $lead->email_imap_id = $oMessage->message_id;
@@ -173,11 +173,21 @@ class MailBoxController extends Controller {
         $lead->attachment = $this->attachment_filename;
         $lead->received_date = $oMessage->date;
         $lead->priority = 100;
+
+        if ($test != FALSE)
+        {
+            $lead->rejected = 1;
+            $lead->rejected_message = "Test Email - IGNORE";
+            $lead->agent_id = 1;
+            $lead->old_agent_id = 1;
+        }
+
         $lead->save();
 
-        $this->apply_rules_and_priorities($lead);
-
-
+        if ($test != FALSE)
+        {
+            $this->apply_rules_and_priorities($lead);
+        }
     }
 
     /**
@@ -657,7 +667,7 @@ class MailBoxController extends Controller {
         if (config('app.debug'))
         {
             Colors::nobr()->bgLightYellow("Line: " . $line . ' ');
-            Colors::{$color}(' '.$text);
+            Colors::{$color}(' ' . $text);
         } else
         {
             echo $text;
@@ -665,8 +675,12 @@ class MailBoxController extends Controller {
 
     }
 
-
-    private function isHTML($string)
+    /**
+     * @param $string
+     * @return bool
+     */
+    private
+    function isHTML($string)
     {
         return ($string != strip_tags($string));
     }

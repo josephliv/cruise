@@ -20,7 +20,7 @@
                         <div class="card-body">
                         @php
                         foreach ($leadMails as $leadMail){
-                                    
+
                                     if(optional($leadMail)->agent_id == 0){
                                         $unassignedTotal++;
                                     } elseif(optional($leadMail)->rejected > 0){
@@ -43,7 +43,7 @@
                         <ul class="nav nav-tabs">
                         <li class="nav-item">
                         <button class="nav-link active" onclick="openReport(event, 'unassigned', this)">Unassigned ({{$unassignedTotal}})</button>
-                        </li> 
+                        </li>
                         <li class="nav-item">
                         <button class="nav-link" onclick="openReport(event, 'assigned', this)">Assigned ({{$assignedTotal}})</button>
                         </li>
@@ -70,7 +70,7 @@
                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                         <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                        
+
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                         <td class="d-flex justify-content-end">
                                                     @if(optional($leadMail)->attachment)
@@ -91,7 +91,7 @@
                              <div class="container text-center" id="mobile-table">
                             @foreach ($leadMails as $leadMail)
                                     @if(optional($leadMail)->agent_id == 0)
-                           
+
                             <ul class="list-group list-group-horizontal mb-4 border-dark">
                                 <li class="list-group-item bg-secondary">#</li>
                                 <li class="list-group-item"><span id="mail-from">{{optional($leadMail)->id}}</span></li>
@@ -133,7 +133,7 @@
                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                         <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                        
+
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                         <td class="d-flex justify-content-end">
                                                     @if(optional($leadMail)->attachment)
@@ -170,7 +170,7 @@
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
                                             <td>{{$leadMail->subject}}</td>
                                             <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if($leadMail->attachment)
@@ -208,9 +208,9 @@
                                             <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                             <td>{{optional($leadMail)->subject}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td><span id="mail-rejected-reason">A reason to go here.</span> </td>
+                                            <td><span id="mail-rejected-reason">{{optional($leadMail)->rejected_message}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if(optional($leadMail)->attachment)
                                                             <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
@@ -249,7 +249,7 @@
                                             <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
                                             <td >{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if(optional($leadMail)->attachment)
@@ -308,14 +308,14 @@
 function openReport(e, report, caller) {
   var i;
   var x = document.getElementsByClassName("type");
-   
+
   e.preventDefault();
 
   $('.nav-link').removeClass('active');
   $(this).addClass('active');
 
   for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none"; 
+    x[i].style.display = "none";
   }
   document.getElementById(report).style.display = "block";
 }
@@ -329,8 +329,8 @@ if(screen.width > 800) {
     mobileTable.classList.add("d-none")
     desktopTable.classList.remove("d-none")
 
-    
-} 
+
+}
 else {
     mobileTable.classList.remove("d-none")
     desktopTable.classList.add("d-none")
