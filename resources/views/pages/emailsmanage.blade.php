@@ -32,29 +32,35 @@
                                     }
                         }
                         @endphp
+                        
                         <div class="p-4 text-center">
                             <label for="time-set">Run the report by dates: </label>
                             <form method='POST'>
                                 @csrf
                                 <input type="date" id="from-date" name="from-date" value="{{explode(' ', $dateFrom)[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', $dateTo)[0]}}" >
                             <form>
-                            <button type="submit" class="btn btn-primary">Submit</a>
+                            <button type="submit" class="btn-outline-primary">Submit</a>
                         </div>
-                        <ul class="nav nav-tabs">
-                        <li class="nav-item">
-                        <button class="nav-link active" onclick="openReport(event, 'unassigned', this)">Unassigned ({{$unassignedTotal}})</button>
-                        </li> 
-                        <li class="nav-item">
-                        <button class="nav-link" onclick="openReport(event, 'assigned', this)">Assigned ({{$assignedTotal}})</button>
-                        </li>
-                        <li class="nav-item">
-                        <button class="nav-link" onclick="openReport(event, 'rejected', this)">Rejected ({{$rejectedTotal}})</button>
-                        </li>
-                        <li class="nav-item">
-                        <button class="nav-link" onclick="openReport(event, 'reassigned', this)">Reassigned ({{$reassignedTotal}})</button>
-                        </li>
-                        </ul>
-                        <div id="unassigned" class="type" >
+                        <!-- Nav tabs -->
+<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item">
+    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#unassigned" role="tab" aria-controls="home" aria-selected="true">Unassigned ({{$unassignedTotal}})</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#assigned" role="tab" aria-controls="profile" aria-selected="false">Assigned ({{$assignedTotal}})</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="messages-tab" data-toggle="tab" href="#rejected" role="tab" aria-controls="messages" aria-selected="false">Rejected ({{$rejectedTotal}})</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" id="settings-tab" data-toggle="tab" href="#reassigned" role="tab" aria-controls="settings" aria-selected="false">Reassigned ({{$reassignedTotal}})</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active" id="unassigned" role="tabpanel" aria-labelledby="home-tab">
+  <div id="unassigned">
                             <table class="table table-bordered table-striped  table-responsive" id="desktop-table">
                                 <thead>
                                     <th>#</th>
@@ -88,43 +94,10 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                           
-
-                            <table class="table table-bordered table-striped  table-responsive d-none">
-                                <thead>
-                                    <th>#</th>
-                                    <th>Sender </th>
-                                    <th class="col-md-6">Subject Line </th>
-                                    <th>Time/date</th>
-                                    <th>Options</th>
-                                </thead>
-                                <tbody>
-                                @foreach ($leadMails as $leadMail)
-                                    @if(optional($leadMail)->agent_id == 0)
-                                    <tr>
-                                        <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                        <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                        <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                        
-                                        <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                        <td class="d-flex justify-content-end">
-                                                    @if(optional($leadMail)->attachment)
-                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
-                                                    @else
-                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                    @endif
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
-
-                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
-                                            </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
-                            </div>
-                            <div id="assigned" style="display:none" class="type" >
+                    </div>
+  </div>
+  <div class="tab-pane" id="assigned" role="tabpanel" aria-labelledby="profile-tab">
+                <div id="assigned">
                                 <table class="table table-bordered table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
@@ -161,7 +134,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="rejected" style="display:none" class="type" >
+  </div>
+  <div class="tab-pane" id="rejected" role="tabpanel" aria-labelledby="messages-tab">
+        <div id="rejected" >
                                 <table class="table table-bordered table-responsive">
                                     <thead>
                                         <th>#</th>
@@ -200,7 +175,9 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="reassigned" style="display:none" class="type" >
+  </div>
+  <div class="tab-pane" id="reassigned" role="tabpanel" aria-labelledby="settings-tab">
+  <div id="reassigned" >
                                 <table class="table table-bordered table-striped  table-responsive">
                                     <thead>
                                         <th>#</th>
@@ -239,6 +216,47 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                            </div>
+  </div>
+</div>
+                       
+                        
+                        <!-- The table below is extra and I dont know what it's for, we can probably convert it to view all the leads. -->
+                           
+
+                            <!-- <table class="table table-bordered table-striped  table-responsive d-none">
+                                <thead>
+                                    <th>#</th>
+                                    <th>Sender </th>
+                                    <th class="col-md-6">Subject Line </th>
+                                    <th>Time/date</th>
+                                    <th>Options</th>
+                                </thead>
+                                <tbody>
+                                @foreach ($leadMails as $leadMail)
+                                    @if(optional($leadMail)->agent_id == 0)
+                                    <tr>
+                                        <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
+                                        <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
+                                        <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                        
+                                        <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
+                                        <td class="d-flex justify-content-end">
+                                                    @if(optional($leadMail)->attachment)
+                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
+                                                    @else
+                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    @endif
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
+                                            </td>
+                                    </tr>
+                                    @endif
+                                @endforeach
+                                </tbody>
+                            </table> -->
                             </div>
                         </div>
                     </div>
@@ -291,20 +309,5 @@ function openReport(e, report, caller) {
   document.getElementById(report).style.display = "block";
 }
 </script>
-<script>
-    mobileTable = document.getElementById("mobile-table")
-    console.log(mobileTable)
-    desktopTable = document.getElementById("desktop-table")
-    console.log(desktopTable)
-if(screen.width > 800) {
-    mobileTable.classList.add("d-none")
-    desktopTable.classList.remove("d-none")
 
-    
-} 
-else {
-    mobileTable.classList.remove("d-none")
-    desktopTable.classList.add("d-none")
-}
-</script>
 @endsection
