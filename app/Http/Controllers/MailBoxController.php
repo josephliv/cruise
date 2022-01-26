@@ -183,15 +183,14 @@ class MailBoxController extends Controller {
         }
 
         $lead->save();
+        $this->apply_rules_and_priorities($lead);
 
-        if ($test != FALSE)
-        {
-            $this->apply_rules_and_priorities($lead);
-        }
     }
 
     /**
      * Apply the Rules and Priorities to each Email
+     *
+     * @todo Is this correct? The code as it stands will allow a match from either Subject or Sender to email the lead directly
      *
      * @param $lead
      */

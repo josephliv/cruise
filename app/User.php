@@ -3,12 +3,12 @@
 namespace App;
 
 use Eloquent;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 /**
  * App\User
@@ -78,7 +78,34 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function agent(){
+    public function agent()
+    {
         return $this->hasOne('App\User', 'id', 'agent_id');
+    }
+
+    /**
+     * Only works if the field name matches the primary key name i.e. group_id and not user_group (Bad Name)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo('App\Group');
+    }
+
+
+    /**
+     * Get the users table (for Manage Agents ) and group_name for each user
+     *
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function get_user()
+    {
+        $rows = DB::table('users')
+            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'groups.name as group_name')
+            ->join('groups', 'groups.id', '=', 'users.user_group')
+            ->paginate(15);
+
+        return $rows;
     }
 }

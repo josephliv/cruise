@@ -27,8 +27,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|Group whereUpdatedAt($value)
  * @mixin Eloquent
  */
-class Group extends Model
-{
+class Group extends Model {
     /**
      * The attributes that are mass assignable.
      *
@@ -37,4 +36,17 @@ class Group extends Model
     protected $fillable = [
         'name', 'default_priority',
     ];
+
+    /**
+     * A way to get a Users Group name although this is another Fetch
+     * ** Tested TB 27th Jan 2022 **
+     * @return Model|\Illuminate\Database\Query\Builder|object|null
+     */
+    public function group_name()
+    {
+        $row = \App\Group::select('groups.*')
+            ->join('users', 'users.user_group', '=', 'groups.id')
+            ->first();
+        return $row;
+    }
 }

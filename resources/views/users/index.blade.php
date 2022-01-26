@@ -12,7 +12,7 @@
                                 <div class="col-8">
                                     <h3 class="mb-0">{{ __('Users') }}</h3>
                                     <p class="text-sm mb-0">
-                                        
+
                                     </p>
                                 </div>
                                 <div class="col-4 text-right">
@@ -35,6 +35,7 @@
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Email') }}</th>
                                     <th>{{ __('Start') }}</th>
+                                    <th>{{ __('Group') }}</th>
                                     <th>{{ __('Actions') }}</th>
                                 </thead>
                                 <tfoot>
@@ -42,17 +43,19 @@
                                         <th>{{ __('Name') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         <th>{{ __('Start') }}</th>
+                                        <th>{{ __('Group') }}</th>
                                         <th>{{ __('Actions') }}</th>
                                     </tr>
                                 </tfoot>
                                 <tbody>
-                                
+
                                     @foreach ($users as $user)
                                         <tr>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->created_at }}</td>
-                                            <td class="d-flex justify-content-end">
+                                            <td>{{ $user->group_name }}</td>
+                                            <td class="d-flex justify-content-left">
                                                 @if ($user->id != auth()->id())
                                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit"></i></a>
 
@@ -61,7 +64,7 @@
                                                         @csrf
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this user?') }}') ? this.parentElement.submit() : ''"s><i class="fa fa-times"></i></a>
                                                     </form>
-                                                @else    
+                                                @else
                                                     <a href="{{ route('profile.edit', $user->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit"></i></a>
                                                 @endif
                                             </td>
