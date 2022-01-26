@@ -38,21 +38,24 @@ class MailBoxController extends Controller {
      */
     public function index()
     {
-
-        if (app()->runningInConsole())
+        // Added for debug
+        if (config('app.debug'))
         {
-            $this->echod('red', " Running MalBoxController in Console", __LINE__);
+            if (app()->runningInConsole())
+            {
+                $this->echod('red', " Running MalBoxController in Console", __LINE__);
+            }
         }
 
         $oClient = Client::account('default');
         $oClient->connect();
-        $aFolder[] = $oClient->getFolder('INBOX');
 
-        //Loop through the mailbox
+        $aFolder[] = $oClient->getFolder('INBOX');
+        //Loop through the mailbox - We are only checking one folder at the moment
         foreach ($aFolder as $oFolder)
         {
-            //Get all Messages from the current Mailbox $oFolder
-            $aMessage = $oFolder->query(NULL)->unseen()->limit(5, 1)->get();
+            //Get all Messages from the current Mailbox $oFolder from a day ago
+            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(1))->limit(5, 1)->get();
 
             foreach ($aMessage as $oMessage)
             {
@@ -70,18 +73,12 @@ class MailBoxController extends Controller {
                     // Body: Spam <Reason>
                     $subject_array = explode('-||', $oMessage->getSubject());
                     // Get back an array [0] = xxxxx and [1] 1234
-                    $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its FALSE
+                    $originalMessageId = $subject_array[1] ?? 0; // Either get a ID or its 0
+                    $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
+                    $lead->rejected = 1;
+                    $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
+                    $lead->save();
 
-                    if ($originalMessageId)
-                    {
-                        $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
-                        $lead->rejected = 1;
-                        $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
-                        $lead->save();
-                    } else
-                    {
-                        //Treat as a new incoming message - we will have to create it as it does not exist in the Database.
-                    }
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
                 } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
                 {
@@ -262,17 +259,17 @@ class MailBoxController extends Controller {
             {
                 //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
 
-                $dateFrom = \Carbon\Carbon::now()->subDays(30)->startOfDay();
+                $dateFrom = Carbon::now()->subDays(30)->startOfDay();
             } else
             {
-                $dateFrom = \Carbon\Carbon::now()->startOfDay();
+                $dateFrom = Carbon::now()->startOfDay();
             }
 
-            $dateTo = \Carbon\Carbon::now()->endOfDay();
+            $dateTo = Carbon::now()->endOfDay();
         } else
         {
-            $dateFrom = \Carbon\Carbon::parse($request->input('from-date'))->startOfDay();
-            $dateTo = \Carbon\Carbon::parse($request->input('to-date'))->endOfDay();
+            $dateFrom = Carbon::parse($request->input('from-date'))->startOfDay();
+            $dateTo = Carbon::parse($request->input('to-date'))->endOfDay();
         }
 
         $users = User::all();
@@ -314,7 +311,7 @@ class MailBoxController extends Controller {
 
         $user = \Auth::user();
 
-        $currentTime = 1 * (explode(':', explode(' ', \Carbon\Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', \Carbon\Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
+        $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
         $time_set_init = 1 * (explode(':', $user->time_set_init)[0] . explode(':', $user->time_set_init)[1]);
         $time_set_final = 1 * (explode(':', $user->time_set_final)[0] . explode(':', $user->time_set_final)[1]);
 
@@ -351,7 +348,7 @@ class MailBoxController extends Controller {
                 {
                     Mail::to($user->email)->send(new LeadSent($lead));
                     $lead->agent_id = $user->id;
-                    $lead->assigned_date = \Carbon\Carbon::now();
+                    $lead->assigned_date = Carbon::now();
                     $lead->save();
                 }
 
@@ -392,7 +389,7 @@ class MailBoxController extends Controller {
                 $lead->old_assigned_date = $lead->assigned_date;
             }
             $lead->agent_id = $user->id;
-            $lead->assigned_date = \Carbon\Carbon::now();
+            $lead->assigned_date = Carbon::now();
 
             // We need to send the attachment as well
             $mailable = Mail::to($user->email)->send(new LeadSent($lead));
@@ -622,14 +619,23 @@ class MailBoxController extends Controller {
     }
 
     /**
+     * If the .env App.debug is True - Show the Fancy Color Command Line
+     * else just show the standard output
+     *
      * @param $color
      * @param $text
      * @param $line
      */
     private function echod($color, $text, $line)
     {
-        Colors::nobr()->yellow("Line: " . $line . ' ');
-        Colors::{$color}($text);
+        if (config('app.debug'))
+        {
+            Colors::nobr()->yellow("Line: " . $line . ' ');
+            Colors::{$color}($text);
+        } else
+        {
+            echo $text;
+        }
 
     }
 
