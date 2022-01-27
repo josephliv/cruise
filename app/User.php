@@ -93,7 +93,6 @@ class User extends Authenticatable
         return $this->belongsTo('App\Group');
     }
 
-
     /**
      * Get the users table (for Manage Agents ) and group_name for each user
      *

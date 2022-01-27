@@ -30,6 +30,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null    $created_at
  * @property Carbon|null    $updated_at
  * @property-read User|null $agent
+ * @property-read User|null $group_name
  * @property-read User|null $old_agent
  * @method static Builder|LeadMails newModelQuery()
  * @method static Builder|LeadMails newQuery()
@@ -60,6 +61,11 @@ class LeadMails extends Model {
 
     public function agent() {
         return $this->hasOne('App\User', 'id', 'agent_id');
+    }
+
+    public function group_name()
+    {
+        return $this->hasOne('App\Group','id','to_group');
     }
 
     public function old_agent() {
