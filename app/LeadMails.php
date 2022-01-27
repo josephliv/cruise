@@ -4,21 +4,22 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Carbon;
 
 /**
  * App\LeadMails
  *
- * @property mixed               to_group
- * @property int                 $id
- * @property string|null         $email_imap_id
- * @property string              $email_from
- * @property int                 $agent_id
- * @property int|null            $old_agent_id
- * @property string              $subject
- * @property string|null         $body
- * @property string|null         $attachment
- * @property string              $received_date
+ * @property mixed          to_group
+ * @property int            $id
+ * @property string|null    $email_imap_id
+ * @property string         $email_from
+ * @property int            $agent_id
+ * @property int|null       $old_agent_id
+ * @property string         $subject
+ * @property string|null    $body
+ * @property string|null    $attachment
+ * @property string         $received_date
  * @property int|null       $priority
  * @property int|null       $rejected
  * @property string|null    $rejected_message
@@ -30,7 +31,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null    $created_at
  * @property Carbon|null    $updated_at
  * @property-read User|null $agent
- * @property-read User|null $group_name
  * @property-read User|null $old_agent
  * @method static Builder|LeadMails newModelQuery()
  * @method static Builder|LeadMails newQuery()
@@ -59,16 +59,29 @@ use Illuminate\Support\Carbon;
  */
 class LeadMails extends Model {
 
-    public function agent() {
+    /**
+     * @return HasOne
+     */
+    public function agent()
+    {
         return $this->hasOne('App\User', 'id', 'agent_id');
     }
 
+    /**
+     * @return HasOne
+     * @todo - minor - PHPStorm not seeing it being used
+     */
     public function group_name()
     {
-        return $this->hasOne('App\Group','id','to_group');
+        return $this->hasOne('App\Group', 'id', 'to_group');
     }
 
-    public function old_agent() {
+    /**
+     * @return HasOne
+     * @todo - minor - PHPStorm not seeing it being used
+     */
+    public function old_agent()
+    {
         return $this->hasOne('App\User', 'id', 'old_agent_id');
     }
 }

@@ -43,27 +43,32 @@ class MailBoxController extends Controller {
                 $this->echod('red', "Running MalBoxController in Console", __LINE__);
             }
         }
-
+        // Connect to IMAP Server
         $oClient = Client::account('default');
         $oClient->connect();
 
         $aFolder[] = $oClient->getFolder('INBOX');
         $this->echod('yellow', 'Looking Through the Inbox', __LINE__);
-        //Loop through the mailbox - We are only checking one folder at the moment
+
+        // Loop through the mailbox - We are only checking one folder at the moment
         foreach ($aFolder as $oFolder)
         {
-            //Get all Messages from the current Mailbox $oFolder from a day ago
+            //Get all Messages from the current Mailbox $oFolder from 2 days ago
             $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
 
+            // Process Each Message
             foreach ($aMessage as $oMessage)
             {
                 echo $oMessage->getSubject() . "\r\n";
                 echo 'Attachments: ' . $oMessage->getAttachments()->count() . "\r\n";
 
+                // Process for PassThrough Email
+
+
                 $this->save_attachment($oMessage);
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
 
-                // @todo - These need to be tested
+                // @todo - 9 - These need to be tested
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
@@ -190,9 +195,9 @@ class MailBoxController extends Controller {
     /**
      * Apply the Rules and Priorities to each Email
      *
-     * @todo Is this correct? The code as it stands will allow a match from either Subject or Sender to email the lead directly
-     *
      * @param $lead
+     * @todo - 5 - Is this correct? The code as it stands will allow a match from either Subject or Sender to email the lead directly
+     *
      */
     private function apply_rules_and_priorities($lead)
     {
@@ -343,10 +348,10 @@ class MailBoxController extends Controller {
 
     /**
      * So this processes the sending of leads based upon the the user_group and the priority
-     * @todo re-enable the non new group checking
-     *
      * @param Request $request
      * @return array|string[]
+     * @todo - 5 - Check-re-enabled the non new group checking
+     *
      */
     public function sendLeads(Request $request)
     {
@@ -372,9 +377,9 @@ class MailBoxController extends Controller {
                         ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                 } else
                 {
-                    //@todo need to check the changes
+                    //@todo - 2 - need to check the changes
                     $leadMails = LeadMails::where('rejected', 0)
-                        ->where('agent_id', '=',0)
+                        ->where('agent_id', '=', 0)
                         ->where('to_group', '<=', $user->user_group)
                         //->whereIn('to_group', [null,0,$user->user_group])
                         //->whereNull('to_veteran')
@@ -421,7 +426,7 @@ class MailBoxController extends Controller {
         { // Sending an e-mail to a non-user
             $lead->agent_id = -1;
             $mailable = Mail::to($forceEmail)->send(new LeadSent($lead));
-            //@todo Fix Logic - What is $forceEmail is not set?
+            //@todo - 3 -Fix Logic - What is $forceEmail is not set?
         } else
         {
             if ($lead->agent_id > 0)
@@ -458,12 +463,6 @@ class MailBoxController extends Controller {
     {
         $lead = LeadMails::find($leadId);
         $content = $this->parseMailBody($lead->body);
-//        //@todo not tested with text email
-//        if ( ! $this->isHTML($content)) {
-//            $content = nl2br($content);
-//        } else {
-//            $content = preg_replace("/\r\n/", "", $content);
-//        }
 
         return json_encode(array('body' => base64_encode($content)));
     }
@@ -492,7 +491,7 @@ class MailBoxController extends Controller {
      */
     private function parseMailBody($content)
     {
-        //@todo not tested with text email
+        //@todo - 2 - not tested with text email
         if ($this->isHTML($content))
         {
             $content = preg_replace("/\r\n/", "", $content);

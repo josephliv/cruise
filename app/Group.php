@@ -39,7 +39,7 @@ class Group extends Model {
 
     /**
      * A way to get a Users Group name although this is another Fetch
-     *
+     * @todo - 10 - rewrite to hasOne in Users
      * ** Tested TB 27th Jan 2022 **
      * @return Model|\Illuminate\Database\Query\Builder|object|null
      */
