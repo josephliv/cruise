@@ -112,87 +112,106 @@
                                                 <li class="list-group-item"><span id="mail-subject">{{optional($leadMail)->subject}}</span></li>
                                                 <li class="list-group-item bg-secondary">Time/date</li>
                                                 <li class="list-group-item"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></li>
-                                <li class="list-group-item bg-secondary">Options</li>
-                                <li class="list-group-item border-bottom ">
-                                @if(optional($leadMail)->attachment)
-                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
+                                                <li class="list-group-item bg-secondary">Options</li>
+                                                <li class="list-group-item border-bottom ">
+                                                    @if(optional($leadMail)->attachment)
+                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i
+                                                                    class="fa fa-paperclip text-primary font-weight-bold"></i></a>
                                                     @else
                                                         <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                     @endif
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"
+                                                                                                                                                                                                                       title="Read full email."></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal"
+                                                       class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
-                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
-                                </li>
-                            </ul>
-                            @endif
-                                @endforeach
-                            </div>
-
-                            <table class="table table-bordered table-striped  table-responsive d-none">
-                                <thead>
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''" s><i
+                                                                class="fa fa-times" title="Delete."></i></a>
+                                                </li>
+                                            </ul>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                <table class="table table-bordered table-striped  table-responsive d-none">
+                                    <thead>
                                     <th>#</th>
-                                    <th>Sender </th>
-                                    <th class="col-md-6">Subject Line </th>
+                                    <th>Sender</th>
+                                    <th class="col-md-6">Subject Line</th>
                                     <th>Time/date</th>
                                     <th>Options</th>
-                                </thead>
-                                <tbody>
-                                @foreach ($leadMails as $leadMail)
-                                    @if(optional($leadMail)->agent_id == 0)
-                                    <tr>
-                                        <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                        <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                        <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-
-                                        <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                        <td class="d-flex justify-content-end">
+                                    </thead>
+                                    <tbody>
+                                    @foreach ($leadMails as $leadMail)
+                                        @if(optional($leadMail)->agent_id == 0)
+                                            <tr>
+                                                <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
+                                                <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
+                                                <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                                @if(config('app.env') == 'local')
+                                                    <td>{{optional(optional($leadMail)->group_name)->name}}</td>
+                                                    <td>{{optional($leadMail)->priority}}</td>
+                                                @endif
+                                                <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
+                                                <td class="d-flex justify-content-end">
                                                     @if(optional($leadMail)->attachment)
-                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
+                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i
+                                                                    class="fa fa-paperclip text-primary font-weight-bold"></i></a>
                                                     @else
                                                         <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                     @endif
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"
+                                                                                                                                                                                                                       title="Read full email."></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal"
+                                                       class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
-                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
-                                            </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table>
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''" s><i
+                                                                class="fa fa-times" title="Delete."></i></a>
+                                                </td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            <div id="assigned" style="display:none" class="type" >
+                            <div id="assigned" style="display:none" class="type">
                                 <table class="table table-bordered table-striped  table-responsive">
                                     <thead>
-                                        <th>#</th>
-                                        <th>Sender </th>
-                                        <th>Subject Line </th>
-                                        <th>Agent</th>
-                                        <th>Time/date</th>
-                                        <th>Options</th>
+                                    <th>#</th>
+                                    <th>Sender</th>
+                                    <th>Subject Line</th>
+                                    <th>Agent</th>
+                                    @if(config('app.env') == 'local')
+                                        <th>Group</th>
+                                        <th>Priority</th>
+                                    @endif
+                                    <th>Time/date</th>
+                                    <th>Options</th>
                                     </thead>
                                     <tbody>
                                     @foreach ($leadMails as $leadMail)
                                         @if($leadMail->agent_id > 0)
-                                        <tr>
-                                            <td><span id="mail-from">{{$leadMail->id}}</span></td>
-                                            <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
-                                            <td>{{$leadMail->subject}}</td>
-                                            <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
+                                            <tr>
+                                                <td><span id="mail-from">{{$leadMail->id}}</span></td>
+                                                <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
+                                                <td>{{$leadMail->subject}}</td>
+                                                <td>{{optional(optional($leadMail->agent())->first())->name}}</td>
+                                                @if(config('app.env') == 'local')
+                                                    <td>{{optional(optional($leadMail)->group_name)->name}}</td>
+                                                    <td>{{optional($leadMail)->priority}}</td>
+                                                @endif
+                                                <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span></td>
+                                                <td class="d-flex justify-content-end">
+                                                    @if($leadMail->attachment)
+                                                        <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                                    @else
+                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    @endif
+                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"
+                                                                                                                                                                                                             title="Read full email."></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal"
+                                                       class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
-                                            <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td class="d-flex justify-content-end">
-                                                        @if($leadMail->attachment)
-                                                            <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
-                                                        @else
-                                                            <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                        @endif
-                                                        <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
-
-                                                        <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
+                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                                 </td>
                                         </tr>
                                         @endif
@@ -200,36 +219,45 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="rejected" style="display:none" class="type" >
+                            <div id="rejected" style="display:none" class="type">
                                 <table class="table table-bordered table-responsive">
                                     <thead>
-                                        <th>#</th>
-                                        <th>Sender </th>
-                                        <th >Subject Line </th>
-                                        <th >Agent</th>
-                                        <th>Time/date</th>
-                                        <th>Reason</th>
-                                        <th>Options</th>
+                                    <th>#</th>
+                                    <th>Sender</th>
+                                    <th>Subject Line</th>
+                                    <th>Agent</th>
+                                    @if(config('app.env') == 'local')
+                                        <th>Group</th>
+                                        <th>Priority</th>
+                                    @endif
+                                    <th>Time/date</th>
+                                    <th>Reason</th>
+                                    <th>Options</th>
                                     </thead>
                                     <tbody>
                                     @foreach ($leadMails as $leadMail)
                                         @if(optional($leadMail)->rejected != 0)
-                                        <tr>
-                                            <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                            <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td>{{optional($leadMail)->subject}}</td>
-                                            <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-
-                                            <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td><span id="mail-rejected-reason">{{optional($leadMail)->rejected_message}}</span> </td>
-                                            <td class="d-flex justify-content-end">
-                                                        @if(optional($leadMail)->attachment)
-                                                            <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
-                                                        @else
-                                                            <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                        @endif
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Rejected message"></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
+                                            <tr>
+                                                <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
+                                                <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
+                                                <td>{{optional($leadMail)->subject}}</td>
+                                                <td>{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
+                                                @if(config('app.env') == 'local')
+                                                    <td>{{optional(optional($leadMail)->group_name)->name}}</td>
+                                                    <td>{{optional($leadMail)->priority}}</td>
+                                                @endif
+                                                <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
+                                                <td><span id="mail-rejected-reason">{{optional($leadMail)->rejected_message}}</span></td>
+                                                <td class="d-flex justify-content-end">
+                                                    @if(optional($leadMail)->attachment)
+                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                                    @else
+                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    @endif
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane"
+                                                                                                                                                                                                                           title="Rejected message"></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"
+                                                                                                                                                                                                                       title="Read full email."></i></a>
                                                         <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
@@ -240,37 +268,47 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div id="reassigned" style="display:none" class="type" >
+                            <div id="reassigned" style="display:none" class="type">
                                 <table class="table table-bordered table-striped  table-responsive">
                                     <thead>
-                                        <th>#</th>
-                                        <th>Sender </th>
-                                        <th>Subject Line </th>
-                                        <th>Orig. Agent </th>
-                                        <th>Curr. Agent </th>
-                                        <th>Time/date</th>
-                                        <th>Options</th>
+                                    <th>#</th>
+                                    <th>Sender</th>
+                                    <th>Subject Line</th>
+                                    <th>Orig. Agent</th>
+                                    <th>Curr. Agent</th>
+                                    @if(config('app.env') == 'local')
+                                        <th>Group</th>
+                                        <th>Priority</th>
+                                    @endif
+                                    <th>Time/date</th>
+                                    <th>Options</th>
                                     </thead>
                                     <tbody>
                                     @foreach ($leadMails as $leadMail)
                                         @if(optional($leadMail)->old_agent_id != 0 && !$leadMail->rejected)
-                                        <tr>
-                                            <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                            <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                            <td >{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
-                                            <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-
-                                            <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td class="d-flex justify-content-end">
-                                                        @if(optional($leadMail)->attachment)
-                                                            <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
-                                                        @else
-                                                            <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                        @endif
-                                                        <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="reassigned" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Reassigned message"></i></a>
-                                                        <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+                                            <tr>
+                                                <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
+                                                <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
+                                                <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                                <td>{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
+                                                <td>{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
+                                                @if(config('app.env') == 'local')
+                                                    <td>{{optional(optional($leadMail)->group_name)->name}}</td>
+                                                    <td>{{optional($leadMail)->priority}}</td>
+                                                @endif
+                                                <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
+                                                <td class="d-flex justify-content-end">
+                                                    @if(optional($leadMail)->attachment)
+                                                        <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                                    @else
+                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                                    @endif
+                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="reassigned" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane"
+                                                                                                                                                                                                                   title="Reassigned message"></i></a>
+                                                    <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file"
+                                                                                                                                                                                                             title="Read full email."></i></a>
+                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal"
+                                                       class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', $leadMail->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
                                                 </td>
