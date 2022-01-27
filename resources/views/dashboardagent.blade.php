@@ -3,25 +3,28 @@
 @section('content')
 
 
-<div class="">
-    <div class="container-fluid">
-        <div class="grid-container">
-            <div class="dash-content text-center" >
-                <div class="dash-logo height: 200px;">
-                    <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4">
-                </div>
+    <div class="">
+        <div class="container-fluid">
+            <div class="grid-container">
+                <div class="dash-content text-center">
+                    <div class="dash-logo height: 200px;">
+                        <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4">
+                    </div>
+                    <?php //For Local Debugging ?>
+                    @if(Config::get('app.env') == 'local')
+                        Group: {{$user['group']['name']}}
+                        <br> User ID: {{$user['group']['user_id']}}
+                    @endif
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <!-- This should show how many leads that are in the database that hasn't been sent to an agents email yet. -->
+                            <div class="card bg-light mb-3" style="max-width: 18rem;">
 
-                Group: {{$user['group']['name']}}
-                <div class="container">
-                    <div class="row justify-content-center">
-                        <!-- This should show how many leads that are in the database that hasn't been sent to an agents email yet. -->
-                        <div class="card bg-light mb-3" style="max-width: 18rem;">
-
-                          <div class="card-body">
-                            <h5 class="card-title">Available Leads:</h5>
-                            <p class="card-text"><span class="amount" id="availableLeads">{{$leadMails['available']}}</span></p>
-                          </div>
-                        </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Available Leads:</h5>
+                                    <p class="card-text"><span class="amount" id="availableLeads">{{$leadMails['available']}}</span></p>
+                                </div>
+                            </div>
 
                         <!-- This should show how many that the logged in agent have generated. -->
                          <div class="card bg-light mb-3" style="max-width: 18rem;">

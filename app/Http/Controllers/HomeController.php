@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\LeadMails;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -26,8 +27,11 @@ class HomeController extends Controller
     {
         // Get an Agents Group Information
         $resultGroups = new \App\Group;
+        // This can be NULL if user_group = 0 or NULL
+        $userGroup = $resultGroups->group_name(Auth::user()->id);
+
         $user = array(
-            'group' => $resultGroups->group_name()
+            'group' => $userGroup
         );
 
         if (\Auth::user()->is_admin)
@@ -45,11 +49,11 @@ class HomeController extends Controller
             );
         } else
         {
-
             $leadMails = array(
                 'subDay'      => Carbon::now()->startOfDay(),
                 'total'       => LeadMails::count(),
-                'available'   => LeadMails::where('agent_id', '=', 0)->count(),
+                // This is where we need to add in any Filtering based upon an Agents Group
+                'available'   => LeadMails::where('agent_id', '=', 0)->where('to_group', '<=', $userGroup['id'])->count(),
                 'totalSent'   => LeadMails::where('agent_id', \Auth::user()->id)->count(),
                 'totalReject' => LeadMails::where('agent_id', \Auth::user()->id)->where('rejected', '=', 1)->count(),
 

@@ -32,7 +32,7 @@ class LeadSent extends Mailable
     public function build()
     {
 
-       if(Config::get('app.env') == 'live_dev_site') {
+       if(Config::get('app.env') == 'local') {
            $mailable = $this
                ->subject($this->lead->subject . ' -||' . $this->lead->id)
                ->replyTo('sales@cruiser.joesdigitalservices.com')
@@ -46,6 +46,7 @@ class LeadSent extends Mailable
                ->bcc('joesdigitalservices@gmail.com')
                ->view('mails.leadsent');
        }
+
         Log::debug($this->lead->attachment);
         if($this->lead->attachment){
             $attachment = storage_path('app' . DIRECTORY_SEPARATOR . 'public' . DIRECTORY_SEPARATOR . $this->lead->attachment);

@@ -102,7 +102,7 @@ class User extends Authenticatable
     public function get_user()
     {
         $rows = DB::table('users')
-            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'groups.name as group_name')
+            ->select('users.id', 'users.name', 'users.email', 'users.created_at', 'groups.name as group_name','groups.id as group_id')
             ->join('groups', 'groups.id', '=', 'users.user_group')
             ->paginate(15);
 

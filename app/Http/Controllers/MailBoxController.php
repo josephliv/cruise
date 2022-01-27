@@ -341,9 +341,15 @@ class MailBoxController extends Controller {
 
     }
 
+    /**
+     * So this processes the sending of leads based upon the the user_group and the priority
+     * @todo re-enable the non new group checking
+     *
+     * @param Request $request
+     * @return array|string[]
+     */
     public function sendLeads(Request $request)
     {
-
         $user = \Auth::user();
 
         $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
@@ -354,7 +360,6 @@ class MailBoxController extends Controller {
         {
             if ($currentTime >= $time_set_init && $currentTime <= $time_set_final)
             {
-
                 if ($user->user_group == 1)
                 {
                     $leadMails = LeadMails::where('rejected', 0)
@@ -367,16 +372,16 @@ class MailBoxController extends Controller {
                         ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                 } else
                 {
+                    //@todo need to check the changes
                     $leadMails = LeadMails::where('rejected', 0)
-                        ->where('agent_id', 0)
+                        ->where('agent_id', '=',0)
+                        ->where('to_group', '<=', $user->user_group)
                         //->whereIn('to_group', [null,0,$user->user_group])
                         //->whereNull('to_veteran')
                         ->orderBy('priority')
                         ->orderBy('updated_at')
                         ->limit(1)
                         ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
-
-                    //dd($leadMails->toSql());
                 }
 
                 foreach ($leadMails as $lead)
@@ -389,7 +394,8 @@ class MailBoxController extends Controller {
 
             } else
             {
-                return array('type' => 'ERROR', 'message' => 'You are not in the Allowed Period!');
+//                return array('type' => 'ERROR', 'message' => 'You are not in the Allowed Period!');
+                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
             }
         } else
         {
