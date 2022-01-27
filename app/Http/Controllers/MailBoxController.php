@@ -478,16 +478,21 @@ class MailBoxController extends Controller {
         return json_encode(array('body' => base64_encode(explode('On', $content)[0])));
     }
 
-
+    /**
+     *
+     *
+     * @param $content
+     * @return string
+     */
     private function parseMailBody($content)
     {
         //@todo not tested with text email
-        if ( ! $this->isHTML($content))
-        {
-            $content = nl2br($content);
-        } else
+        if ($this->isHTML($content))
         {
             $content = preg_replace("/\r\n/", "", $content);
+        } else
+        {
+            $content = nl2br($content);
         }
 
         return $content;
@@ -675,11 +680,12 @@ class MailBoxController extends Controller {
     }
 
     /**
+     *
+     *
      * @param $string
      * @return bool
      */
-    private
-    function isHTML($string)
+    private function isHTML($string)
     {
         return ($string != strip_tags($string));
     }
