@@ -37,8 +37,8 @@
                             <form method='POST'>
                                 @csrf
                                 <input type="date" id="from-date" name="from-date" value="{{explode(' ', $dateFrom)[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', $dateTo)[0]}}" >
-                            <form>
-                            <button type="submit" class="btn btn-primary">Submit</a>
+                            </form>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                         <ul class="nav nav-tabs">
                         <li class="nav-item">
@@ -60,6 +60,9 @@
                                     <th>#</th>
                                     <th>Sender </th>
                                     <th class="col-md-6">Subject Line </th>
+
+                                    <th>Group</th>
+                                    <th>Priority</th>
                                     <th>Time/date</th>
                                     <th>Options</th>
                                 </thead>
@@ -70,6 +73,8 @@
                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                         <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                        <td>{{optional($leadMail)->to_group}}</td>
+                                        <td>{{optional($leadMail)->priority}}</td>
 
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                         <td class="d-flex justify-content-end">
