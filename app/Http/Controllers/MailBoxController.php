@@ -512,10 +512,9 @@ class MailBoxController extends Controller {
             SELECT 	LM.agent_id,
                     U.name AS agent_name,
                     COUNT(*) AS leads_count,
-                    SUM(CASE WHEN IFNULL(LM.old_agent_id, 0) > 0 THEN
-                                1
-                            ELSE
-                                0
+                    SUM(CASE WHEN IFNULL(LM.old_agent_id, 0) > 0 
+                        THEN 1
+                          ELSE 0
                         END
                     ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,

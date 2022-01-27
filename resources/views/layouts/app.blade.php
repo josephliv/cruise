@@ -86,20 +86,22 @@
                     console.log(res);
                     $('#detailedReportTable').find('tbody').empty();
                     $('#detailedReportTable').find('tfoot').empty();
-                    leadsTotal = rejectedTotal = 0;
+                    leadsTotal = rejectedTotal = reassignedTotal = 0;
                     for(r in res){
                       date = new Date(res[r].last_lead);
                       formattedDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
 
                       leadsTotal    += parseInt(res[r].leads_count);
                       rejectedTotal += parseInt(res[r].leads_rejected);
+                      reassignedTotal += parseInt(res[r].leads_reassigned);
+
                       if(res[r].agent_id == 0){ // This is for unassigned leads
                         $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td  class="text-left"><span id="time-sent">' + formattedDate + '</span> </td><td  class="text-left"><span id="leads-sent">' + res[r].leads_count + '</span></td><td  class="text-left"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td  class="text-left"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       } else {
                         $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td class="text-left"><span id="time-sent">' + formattedDate + '</span> </td><td class="text-left"><span id="leads-sent">' + res[r].leads_count + '</span></td><td class="text-left"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td class="text-left"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       }
                     }
-                    $('#detailedReportTable').find('tfoot').append('<tr><th colspan="2">TOTAL</th><th class="text-left">&nbsp;</th><th class="text-left">' + leadsTotal + '</th><th class="text-left">' + rejectedTotal + '</th></tr>');
+                    $('#detailedReportTable').find('tfoot').append('<tr><th colspan="2">TOTAL</th><th class="text-left">' + leadsTotal + '</th><th class="text-left">'+ reassignedTotal +'</th><th class="text-left">' + rejectedTotal + '</th></tr>');
                 },
                 error: function(a,b,c){
                     alert('Something Went Wrong!');
