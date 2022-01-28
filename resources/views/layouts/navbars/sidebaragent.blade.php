@@ -57,7 +57,7 @@
 
 
 
-<span  class="open-nav" style="margin: 0 10px;font-size:30px;cursor:pointer;color:#001f8b; position: fixed;" onclick="openNav()">&#9776;</span>
+<span style="margin: 30px;font-size:30px;cursor:pointer;color:#001f8b;" onclick="openNav()">&#9776;</span>
 
 <script>
   function openLinks() {
@@ -68,14 +68,12 @@
 </script>
 <script>
 function openNav() {
-  document.getElementById("mySidenav").style.width = "260px";
-  document.querySelector(".main-panel").style.width = "calc(100% - 260px)"
-  document.querySelector(".open-nav").style.zIndex = "0"
+  document.getElementById("mySidenav").style.width = "250px";
+  document.querySelector(".main-panel").style.width = "calc(100% - 250px)"
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
   document.querySelector(".main-panel").style.width = "100%"
-  document.querySelector(".open-nav").style.zIndex = "999"
 }
 </script>

@@ -73,8 +73,8 @@ function openNav() {
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
-  document.querySelector(".main-panel").style.width = "100%";
-  document.querySelector(".open-nav").style.zIndex = "999";
+  document.querySelector(".main-panel").style.width = "100%"
+  document.querySelector(".open-nav").style.zIndex = "999"
 }
 
 </script>
