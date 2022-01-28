@@ -11,7 +11,7 @@
                             <div class="row align-items-center">
                                 <div class="col-8">
                                     <h3 class="mb-0">{{ __('Current List of priorities.') }}</h3>
-                                   
+
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ route('priorities.create') }}" class="btn btn-sm btn-default">{{ __('Add Priority') }}</a>
@@ -48,7 +48,7 @@
                                     </tr>
                                  </tfoot>-->
                                 <tbody>
-                                
+
                                     @foreach ($priorities as $priority)
                                         <tr>
                                             <td>{{ $priority->description }}</td>
@@ -78,31 +78,31 @@
 @endsection
 
 @push('js')
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#datatables').DataTable({
-                "pagingType": "full_numbers",
-                "lengthMenu": [
-                    [10, 25, 50, -1],
-                    [10, 25, 50, "All"]
-                ],
-                responsive: true,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search records",
-                }
+{{--    <script type="text/javascript">--}}
+{{--        $(document).ready(function() {--}}
+{{--            $('#datatables').DataTable({--}}
+{{--                "pagingType": "full_numbers",--}}
+{{--                "lengthMenu": [--}}
+{{--                    [10, 25, 50, -1],--}}
+{{--                    [10, 25, 50, "All"]--}}
+{{--                ],--}}
+{{--                responsive: true,--}}
+{{--                language: {--}}
+{{--                    search: "_INPUT_",--}}
+{{--                    searchPlaceholder: "Search records",--}}
+{{--                }--}}
 
-            });
+{{--            });--}}
 
 
-            var table = $('#datatables').DataTable();
+{{--            var table = $('#datatables').DataTable();--}}
 
-            // Delete a record
-            table.on('click', '.remove', function(e) {
-                $tr = $(this).closest('tr');
-                table.row($tr).remove().draw();
-                e.preventDefault();
-            });
-        });
-    </script>
+{{--            // Delete a record--}}
+{{--            table.on('click', '.remove', function(e) {--}}
+{{--                $tr = $(this).closest('tr');--}}
+{{--                table.row($tr).remove().draw();--}}
+{{--                e.preventDefault();--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
 @endpush

@@ -11,7 +11,7 @@
                         <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4">
                     </div>
                     <?php //For Local Debugging ?>
-                    @if(Config::get('app.env') == 'local')
+                    @if(config('app.env') == 'local')
                         Group: {{$user['group']['name']}}
                         <br> User ID: {{$user['group']['user_id']}}
                     @endif
