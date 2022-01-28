@@ -107,4 +107,11 @@ class User extends Authenticatable
 
         return $rows;
     }
+
+    public function get_group()
+    {
+
+        return $this->hasOne('App\Group', 'id','user_group');
+
+    }
 }

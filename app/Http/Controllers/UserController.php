@@ -18,18 +18,7 @@ class UserController extends Controller {
      */
     public function index(User $model)
     {
-
-//        $users = $model->paginate(15);
-//        $users = $model->get_user();
-
-        $usersModel = new \App\User;
-        $users = $usersModel->get_user();
-
-//        echo '<pre>';
-//        echo 'LINE: ' . __LINE__ . ' Module ' . __CLASS__ . '<br>';
-//        var_dump($users);
-//        echo '</pre>';
-//        exit();
+        $users = $model->paginate(15);
 
         return view('users.index', ['users' => $users]);
     }
@@ -42,6 +31,7 @@ class UserController extends Controller {
     public function create()
     {
         $groups = Group::orderBy('order')->get();
+
         return view('users.create', compact('groups'));
     }
 
@@ -56,14 +46,14 @@ class UserController extends Controller {
     {
         //$model->create($request->merge(['password' => Hash::make($request->get('password'))])->all());
         $model = new User();
-        $model->name            = $request->get('name');
-        $model->email           = $request->get('email');
-        $model->password        = Hash::make($request->get('password'));
-        $model->is_admin        = (intval($request->get('user_group')) == 1 ? 1 : 0);
-        $model->leads_allowed   = intval($request->get('leads_allowed'));
-        $model->time_set_init   = $request->get('time_set_init');
-        $model->time_set_final  = $request->get('time_set_final');
-        $model->user_group      = intval($request->get('user_group'));
+        $model->name = $request->get('name');
+        $model->email = $request->get('email');
+        $model->password = Hash::make($request->get('password'));
+        $model->is_admin = (intval($request->get('user_group')) == 1 ? 1 : 0);
+        $model->leads_allowed = intval($request->get('leads_allowed'));
+        $model->time_set_init = $request->get('time_set_init');
+        $model->time_set_final = $request->get('time_set_final');
+        $model->user_group = intval($request->get('user_group'));
         $model->save();
 
         return redirect()->route('user.index')->withStatus(__('User successfully created.'));
@@ -78,6 +68,7 @@ class UserController extends Controller {
     public function edit(User $user)
     {
         $groups = Group::orderBy('order')->get();
+
         return view('users.edit', compact('user', 'groups'));
     }
 
@@ -88,7 +79,7 @@ class UserController extends Controller {
      * @param User                           $user
      * @return RedirectResponse
      */
-    public function update(UserRequest $request, User  $user)
+    public function update(UserRequest $request, User $user)
     {
         /*
         $user->update(
@@ -120,7 +111,7 @@ class UserController extends Controller {
      * @return RedirectResponse
      * @throws Exception
      */
-    public function destroy(User  $user)
+    public function destroy(User $user)
     {
         $user->delete();
 
