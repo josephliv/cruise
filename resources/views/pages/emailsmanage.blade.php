@@ -39,7 +39,7 @@
                                 @csrf
                                 <input type="date" id="from-date" name="from-date" value="{{explode(' ', $dateFrom)[0]}}" > to <input type="date" id="to-date" name="to-date" value="{{explode(' ', $dateTo)[0]}}" >
                             <form>
-                            <button type="submit" class="btn-outline-primary">Submit</a>
+                            <button type="submit" class="btn-outline-primary">Submit</button>
                         </div>
                         <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -137,44 +137,44 @@
   </div>
   <div class="tab-pane" id="rejected" role="tabpanel" aria-labelledby="messages-tab">
         <div id="rejected" >
-                                <table class="table table-bordered table-responsive">
-                                    <thead>
-                                        <th>#</th>
-                                        <th>Sender </th>
-                                        <th >Subject Line </th>
-                                        <th >Agent</th>
-                                        <th>Time/date</th>
-                                        <th>Options</th>
-                                    </thead>
-                                    <tbody>
-                                    @foreach ($leadMails as $leadMail)
-                                        @if(optional($leadMail)->rejected != 0)
-                                        <tr>
-                                            <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                            <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td>{{optional($leadMail)->subject}}</td>
-                                            <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-                                            
-                                            <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                           
-                                            <td class="d-flex justify-content-end">
-                                                        @if(optional($leadMail)->attachment)
-                                                            <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
-                                                        @else
-                                                            <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                        @endif
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Rejected message"></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                        <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
+            <table class="table table-bordered table-responsive">
+                <thead>
+                    <th>#</th>
+                    <th>Sender </th>
+                    <th >Subject Line </th>
+                    <th >Agent</th>
+                    <th>Time/date</th>
+                    <th>Options</th>
+                </thead>
+                <tbody>
+                @foreach ($leadMails as $leadMail)
+                    @if(optional($leadMail)->rejected != 0)
+                    <tr>
+                        <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
+                        <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
+                        <td>{{optional($leadMail)->subject}}</td>
+                        <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
+                        
+                        <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
+                        
+                        <td class="d-flex justify-content-end">
+                                    @if(optional($leadMail)->attachment)
+                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
+                                    @else
+                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
+                                    @endif
+                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Rejected message"></i></a>
+                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
+                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
 
-                                                        <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
-                                                </td>
-                                        </tr>
-                                        @endif
-                                    @endforeach
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
+                            </td>
+                    </tr>
+                    @endif
+                @endforeach
+                </tbody>
+            </table>
+        </div>
   </div>
   <div class="tab-pane" id="reassigned" role="tabpanel" aria-labelledby="settings-tab">
   <div id="reassigned" >
