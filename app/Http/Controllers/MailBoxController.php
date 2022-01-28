@@ -64,7 +64,6 @@ class MailBoxController extends Controller {
 
                 // Process for PassThrough Email
 
-
                 $this->save_attachment($oMessage);
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
 
@@ -110,6 +109,20 @@ class MailBoxController extends Controller {
                     $this->save_new_lead($oMessage, TRUE);
 
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
+                    /**
+                     * Reassignment
+                     * When the email is being sent to the other Agent, we need to include a Message
+                     *
+                     * The two new body headers.
+                     *
+                     * Reassigned: By Admin
+                     *
+                     * aaaa@bbb.com! This is the reason
+                     *
+                     * Reassigned: By Fred Smith <aaaa@bbb.com>
+                     * Reason: < What was gleaned from the Email >
+                     *
+                     */
                 } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
                 {
                     $this->echod('yellow', 'We are here', __LINE__);
@@ -251,6 +264,7 @@ class MailBoxController extends Controller {
                 $this->echod('yellow', 'New User', __LINE__);
             } else
             {
+                // When do we come here?
                 $this->sendIndividualLead($lead->id, NULL, $priority->send_to_email);
             }
         }
@@ -261,14 +275,16 @@ class MailBoxController extends Controller {
     }
 
     /**
-     * Save any attachments
+     * Save a attachment if present
      * Can an email have more than one attachment?
      *  Answer: NO, there is only provision for One Attachment in the Table and Only One is looked for.
      *  Any other attachments will get lost.
      *
+     * The Name is generated from IMAP information and then
+     *
      * @param $oMessage
      * @return void
-     * @prop $attachment_filename - sets this property
+     * @property $attachment_filename
      */
     private function save_attachment($oMessage)
     {
@@ -417,11 +433,15 @@ class MailBoxController extends Controller {
      * @param        $user
      * @param string $forceEmail
      * @return mixed
+     *
+     * @todo What is $forceEmail set to? It is being set in places.
      */
-    public function sendIndividualLead($leadId, $user, $forceEmail = '')
+    public function sendIndividualLead($leadId, $user, string $forceEmail = '')
     {
         $lead = LeadMails::find($leadId);
 
+        // If the user has been removed
+        // How can we get here if the user does not exist???
         if ( ! $user)
         { // Sending an e-mail to a non-user
             $lead->agent_id = -1;
@@ -674,7 +694,7 @@ class MailBoxController extends Controller {
     {
         if (config('app.debug'))
         {
-            Colors::nobr()->bgLightYellow("Line: " . $line . ' ');
+            Colors::nobr()->green("Line: " . $line . ' ');
             Colors::{$color}(' ' . $text);
         } else
         {
