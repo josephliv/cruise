@@ -808,7 +808,7 @@ body>.navbar-collapse[data-color="purple"]:after {
     right: -15px;
 }
 
-.modal.show .modal-dialog {
+/* .modal.show .modal-dialog {
     -webkit-transform: translate(0, 30%);
     -o-transform: translate(0, 30%);
     transform: translate(0, 30%);
@@ -817,9 +817,9 @@ body>.navbar-collapse[data-color="purple"]:after {
 .modal.modal-mini .modal-dialog {
     max-width: 255px;
     margin: 0 auto;
-}
+} */
 
-.modal .modal-content .modal-header {
+/* .modal .modal-content .modal-header {
     border-bottom: none;
     padding-top: 24px;
     padding-right: 24px;
@@ -872,7 +872,7 @@ body>.navbar-collapse[data-color="purple"]:after {
 .modal .modal-content .modal-footer .btn:hover,
 .modal .modal-content .modal-footer .btnfocus {
     text-decoration: none;
-}
+} */
 
 .btn {
     border-width: 2px;
