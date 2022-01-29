@@ -46,7 +46,16 @@ class MailBoxController extends Controller {
 
         $oClient = Client::account('default');
         $oClient->connect();
-        $aFolder[] = $oClient->getFolder('INBOX');
+        //$aFolder = $oClient->getFolder('INBOX');
+	$aFolder = [$oClient->getFolder('INBOX'),$oClient->getFolder('Junk Email')];
+
+//	$aFolder = $oClient->getFolders('INBOX');
+
+//        echo "\r\n";
+//        echo 'LINE: '. __LINE__. ' Module '.__CLASS__."\r\n";
+//        var_dump($aFolder);
+//        echo "\r\n";
+//exit();
 
         //Loop through the mailbox
         foreach ($aFolder as $oFolder)
