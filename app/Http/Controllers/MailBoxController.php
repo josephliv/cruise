@@ -32,6 +32,7 @@ class MailBoxController extends Controller {
      * @return void
      * @throws ConnectionFailedException
      * @throws GetMessagesFailedException
+     * @throws \Webklex\IMAP\Exceptions\MailboxFetchingException
      */
     public function index()
     {
@@ -47,10 +48,30 @@ class MailBoxController extends Controller {
         $oClient = Client::account('default');
         $oClient->connect();
 
-        $aFolder[] = $oClient->getFolder('INBOX');
+        if (strpos(config('app.url'), 'joesdigitalservices') !== FALSE)
+        {
+            // This is for cruiser.joesdigitalservices.com
+            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('INBOX.spam')];
+        } elseif (strpos(config('app.url'), 'cruiserleads') !== FALSE)
+        {
+            // This is for the leads.cruisertravels.com
+            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('Junk Email')];
+        } else
+        {
+            // Fall back to the Base INBOX
+            $aFolder[] = $oClient->getFolder('INBOX');
+        }
+
+// Create an array of Mailbox Folder we want to check
+
+        echo "\r\n";
+        echo 'LINE: ' . __LINE__ . ' Module ' . __CLASS__ . "\r\n";
+        var_dump($aFolder);
+        echo "\r\n";
+
         $this->echod('yellow', 'Looking Through the Inbox', __LINE__);
 
-        // Loop through the mailbox - We are only checking one folder at the moment
+// Loop through the array of mailbox folders
         foreach ($aFolder as $oFolder)
         {
             //Get all Messages from the current Mailbox $oFolder from 2 days ago
