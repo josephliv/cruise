@@ -26,7 +26,7 @@
         <div class="col-12 col-md-4">
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
             <ul class="list-group list-group-flush">
-            <li class="list-group-item active"> <h3> Take a lead.</h3>
+            <li class="list-group-item active"> <h3> Request A lead.</h3>
               <p class="lead">Receive a lead in your inbox</p>
             </li>
             

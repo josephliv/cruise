@@ -47,7 +47,7 @@
     </div>
     <div class="btn-group dropright">
   <button type="button" id="generateLeadBtn" class="btn btn-primary btn-lg dropright" onclick="lead()" title="Click here to send a lead to your inbox.">
-    Receive A Lead
+    Request A Lead
   </button>
   <button style="padding: 0 14px;" type="button" class="btn btn-primary btn-sm dropdown-toggle-split" data-toggle="dropdown" aria-expanded="false"mtitle="Show Email Tips">
     <span style="font-size: 14px; " class="text-dark font-weight-lighter font-italic">Email Rules</span>
