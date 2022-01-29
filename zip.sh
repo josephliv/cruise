@@ -5,13 +5,15 @@
 rm -f zip.lst
 rm -f files_package.zip
 
-#find ./application/config/ -name "config.php" >> zip.lst
-#find ./application/modules/menu -name "*.*" >> zip.lst
-find ./application/modules/widget_member_stats/ -name "*.*" >> zip.lst
-#find ./application/modules/templates -name "*.*" >> zip.lst
-#find ./application/modules/admin/controllers -name "*.php" >> zip.lst
-find ./assets/templates/hfs1/bower_components/chart.js/ -name "*.*" >> zip.lst
+find ./app -name "*.*" >> zip.lst
+find ./config -name "*.*" >> zip.lst
+#
+find ./public/css -name "*.*" >> zip.lst
+find ./public/js -name "*.*" >> zip.lst
+find ./public/light-bootstrap -name "*.*" >> zip.lst
+#
+find ./routes -name "*.*" >> zip.lst
+#
 
-#find ./assets/templates/ -name "*.*" >> zip.lst
-
+find ./ -maxdepth 1 -type f -name "composer.*" >> zip.lst
 cat zip.lst | zip -@ files_package.zip
