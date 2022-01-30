@@ -1,8 +1,11 @@
 @extends('layouts.app', ['activePage' => 'leads-management', 'title' => 'Cruiser Travels Leadbox Management System', 'navName' => 'Leads Management', 'activeButton' => 'laravel'])
 
 @section('content')
+{{-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css"> --}}
     @php
     $unassignedTotal = $assignedTotal = $rejectedTotal = $reassignedTotal = 0;
+    // Me trying to get a count but returned an error "function count() on int"
+    // $totalLeads = $unassignedTotal->count(); 
     @endphp
     <div class="content">
         <div class="container-fluid">
@@ -17,6 +20,8 @@
                             <h3 class="card-title ">Leads</h3>
                             <p class="card-category ">Here you can view or delete the leads.</p>
                         </div>
+                    
+                        
                         <div class="card-body">
                         @php
                         foreach ($leadMails as $leadMail){
@@ -43,6 +48,9 @@
                         </div>
                         <!-- Nav tabs -->
 <ul class="nav nav-tabs" id="myTab" role="tablist">
+    <!-- <li class="nav-item">
+        <a class="nav-link active" id="total" data-toggle="tab" href="#total" role="tab" aria-controls="home" aria-selected="true">Total (1) <?php //This will be added later ?></a>
+    </li> -->
   <li class="nav-item">
     <a class="nav-link active" id="home-tab" data-toggle="tab" href="#unassigned" role="tab" aria-controls="home" aria-selected="true">Unassigned ({{$unassignedTotal}})</a>
   </li>
@@ -60,8 +68,8 @@
 <!-- Tab panes -->
 <div class="tab-content">
   <div class="tab-pane active" id="unassigned" role="tabpanel" aria-labelledby="home-tab">
-  <div id="unassigned">
-                            <table class="table table-bordered table-striped  table-responsive" id="desktop-table">
+    <div id="unassigned">
+                            <table class="table table-bordered table-striped  table-responsive" id="lead-table">
                                 <thead>
                                     <th>#</th>
                                     <th>Sender </th>
@@ -98,7 +106,7 @@
   </div>
   <div class="tab-pane" id="assigned" role="tabpanel" aria-labelledby="profile-tab">
                 <div id="assigned">
-                                <table class="table table-bordered table-striped  table-responsive">
+                                <table class="table table-bordered table-striped  table-responsive" id="lead-table">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -137,7 +145,7 @@
   </div>
   <div class="tab-pane" id="rejected" role="tabpanel" aria-labelledby="messages-tab">
         <div id="rejected" >
-                                <table class="table table-bordered table-responsive">
+                                <table class="table table-bordered table-responsive" id="lead-table">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -178,7 +186,7 @@
   </div>
   <div class="tab-pane" id="reassigned" role="tabpanel" aria-labelledby="settings-tab">
   <div id="reassigned" >
-                                <table class="table table-bordered table-striped  table-responsive">
+                                <table class="table table-bordered table-striped  table-responsive" id="lead-table">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
@@ -217,46 +225,8 @@
                                     </tbody>
                                 </table>
                             </div>
-  </div>
-</div>
-                       
-                        
-                        <!-- The table below is extra and I dont know what it's for, we can probably convert it to view all the leads. -->
-                           
-
-                            <!-- <table class="table table-bordered table-striped  table-responsive d-none">
-                                <thead>
-                                    <th>#</th>
-                                    <th>Sender </th>
-                                    <th class="col-md-6">Subject Line </th>
-                                    <th>Time/date</th>
-                                    <th>Options</th>
-                                </thead>
-                                <tbody>
-                                @foreach ($leadMails as $leadMail)
-                                    @if(optional($leadMail)->agent_id == 0)
-                                    <tr>
-                                        <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
-                                        <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                        <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                        
-                                        <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                        <td class="d-flex justify-content-end">
-                                                    @if(optional($leadMail)->attachment)
-                                                        <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
-                                                    @else
-                                                        <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
-                                                    @endif
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
-                                                    <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
-
-                                                    <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
-                                            </td>
-                                    </tr>
-                                    @endif
-                                @endforeach
-                                </tbody>
-                            </table> -->
+                        </div>
+                    </div>
                             </div>
                         </div>
                     </div>
@@ -292,7 +262,15 @@
         </div>
     </div>
     </div>
+    
+  
 
+
+<script>
+    $(document).ready( function () {
+    $('#lead-table').DataTable();
+} );
+</script>
 <script>
 function openReport(e, report, caller) {
   var i;
