@@ -34,25 +34,26 @@
       </ul>
     </div>  
  
-  <div class="panel d-none" id="usefulLinks">
-    <ul class="nav ">
-      <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">CRUISER TRAVELS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">REPORT A NEW BOOKING</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.cruisertravels.com/ta-training.html">TRAINING VIDEOS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.GOCCL.COM">CARNIVAL</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.CRUISINGPOWER.COM">ROYAL/CELEBRITY/AZAMARA</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://WWW.FIRSTMATES.COM">VIRGIN VOYAGES</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/SCDO/login.jsp">SABRE GDS </a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://www.vaxvacationaccess.com">VAX LAND GDS </a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/DTTRoyal">ROYAL TRANSFER LINK</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/DTTCelebrity">CELEBRITY TRANSFER LINK</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.americanexpress.com/asdonline">AMEX PLATINUM PERKS</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="http://www.agent.uplift.com ">UPLIFT</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">CANCELLATION FORM IN-HOUSE</a> </li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">MODIFY BOOKING FORM</a></li>
-      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">SOLD ADD ON FORM</a></li>
-    </ul>
-  </div>
+    <div class="panel d-none" id="usefulLinks">
+      <ul class="nav ">
+      <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">cruiser travels</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">report a new booking</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="http://www.cruisertravels.com/ta-training.html">training videos</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://www.goccl.com">carnival</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisingpower.com">royal/celebrity/azamara</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://www.firstmates.com">virgin voyages</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://accounts.havail.sabre.com/login/cruises/home?goto=https://cruises.sabre.com/scdo/login.jsp">sabre gds </a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://www.vaxvacationaccess.com">vax land gds </a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/dttroyal">royal transfer link</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="http://rccl.force.com/directtransfers/dttcelebrity">celebrity transfer link</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="http://www.americanexpress.com/asdonline">amex platinum perks</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="http://www.agent.uplift.com ">uplift</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/a7s3a3w83i/index.html">cancellation form in-house</a> </li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/hbuvnb1wg3/index.html">modify booking form</a></li>
+      <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">sold add on form</a></li>
+      </ul>
+    </div>
+      
 
 </div>
 
