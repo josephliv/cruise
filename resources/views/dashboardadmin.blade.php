@@ -4,7 +4,7 @@
 
 <div class="container mt-4">
     <div class="row justify-content-around" >
-      <div class="col-12 col-md-4"><h2>Admin Dashboard</h2></div>
+      <div class="col-12 col-md-4"><h2>Admin Dashboard - New MB</h2></div>
     </div>
 </div>
 <div class="container mt-4">
