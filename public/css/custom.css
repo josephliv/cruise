@@ -1061,8 +1061,8 @@
     color: #C5A862 !important;
 }
 
-  .usefulLinks a {font-size: 14px;}
-  @media screen and (max-width: 450px){
+  .usefulLinks a {font-size: .8rem;}
+  @media screen and (max-width: 650px){
       .fa {font-size: .2rem!important;}
       /*.sidenav {width: 0px;}*/
       .sidenav {width: 0;}
