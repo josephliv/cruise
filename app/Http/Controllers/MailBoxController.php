@@ -16,6 +16,7 @@ use Mail;
 use Web64\Colors\Facades\Colors;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Exceptions\GetMessagesFailedException;
+use Webklex\IMAP\Exceptions\MailboxFetchingException;
 use Webklex\IMAP\Facades\Client;
 
 class MailBoxController extends Controller {
@@ -31,8 +32,6 @@ class MailBoxController extends Controller {
      *
      * @return void
      * @throws ConnectionFailedException
-     * @throws GetMessagesFailedException
-     * @throws \Webklex\IMAP\Exceptions\MailboxFetchingException
      */
     public function index()
     {
@@ -48,33 +47,29 @@ class MailBoxController extends Controller {
         $oClient = Client::account('default');
         $oClient->connect();
 
-        if (strpos(config('app.url'), 'joesdigitalservices') !== FALSE)
-        {
-            // This is for cruiser.joesdigitalservices.com
-            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('INBOX.spam')];
-        } elseif (strpos(config('app.url'), 'cruiserleads') !== FALSE)
+        // Create an array of Mailbox Folder(s) we want to check
+        if (strpos(config('app.url'), 'cruisertravels') !== FALSE)
         {
             // This is for the leads.cruisertravels.com
             $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('Junk Email')];
+        } else if (strpos(config('app.url'), 'joesdigitalservices') !== FALSE)
+        {
+            // This is for cruiser.joesdigitalservices.com
+            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('INBOX.spam')];
         } else
         {
             // Fall back to the Base INBOX
-            $aFolder[] = $oClient->getFolder('INBOX');
+            $aFolder = [$oClient->getFolder('INBOX')];
         }
 
-// Create an array of Mailbox Folder we want to check
-
-        echo "\r\n";
-        echo 'LINE: ' . __LINE__ . ' Module ' . __CLASS__ . "\r\n";
-        var_dump($aFolder);
-        echo "\r\n";
-
-        $this->echod('yellow', 'Looking Through the Inbox', __LINE__);
-
-// Loop through the array of mailbox folders
+        // Process Each Mail Box
         foreach ($aFolder as $oFolder)
         {
-            //Get all Messages from the current Mailbox $oFolder from 2 days ago
+            // Get the Mail Box Name we are processing and display it
+            $mail_box_name = $oFolder->name;
+            $this->echod('yellow', 'Processing: ' . $mail_box_name, __LINE__);
+
+            //Get all Messages from the current Mailbox $oFolder upto 2 days ago from now.
             $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
 
             // Process Each Message
@@ -83,12 +78,10 @@ class MailBoxController extends Controller {
                 echo $oMessage->getSubject() . "\r\n";
                 echo 'Attachments: ' . $oMessage->getAttachments()->count() . "\r\n";
 
-                // Process for PassThrough Email
-
                 $this->save_attachment($oMessage);
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
 
-                // @todo - 9 - These need to be tested
+                // @todo - 9 - These need to be tested as I am unsure as to the reasons this is here.
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
@@ -97,9 +90,11 @@ class MailBoxController extends Controller {
                 // 1. Be an existing lead with a message_id where an agent has added the word Spam <some reason>
                 // 2. It is a new Email, and has to be treated as such so admin can deal with it.
                 //
+                // Body: Spam <Reason>
                 if (strpos($emailFirstWord, 'spam') !== FALSE)
                 {
-                    // Body: Spam <Reason>
+                    // LeadSent Appends -|| <message_id>
+                    // new Emails do not have this
                     $subject_array = explode('-||', $oMessage->getSubject());
                     // We might Get back an array [0] = xxxxx and [1] 1234
                     $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
@@ -127,7 +122,8 @@ class MailBoxController extends Controller {
                     }
                 } elseif (strpos($emailFirstWord, 'test') !== FALSE)
                 {
-                    $this->save_new_lead($oMessage, TRUE);
+                    // This is very basic and will allow duplicates
+                    $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
 
                     // Body:  xxx@yyy.zzz! [Agent Email Address]
                     /**
