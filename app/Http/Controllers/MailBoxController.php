@@ -9,14 +9,16 @@ use App\Mail\LeadSent;
 use App\Mail\ReportMail;
 use App\Priority;
 use App\User;
+use Auth;
 use Carbon\Carbon;
+use Colors;
+use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Mail;
-use Web64\Colors\Facades\Colors;
+
+use Storage;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
-use Webklex\IMAP\Exceptions\GetMessagesFailedException;
-use Webklex\IMAP\Exceptions\MailboxFetchingException;
 use Webklex\IMAP\Facades\Client;
 
 class MailBoxController extends Controller {
@@ -48,6 +50,7 @@ class MailBoxController extends Controller {
         $oClient->connect();
 
         // Create an array of Mailbox Folder(s) we want to check
+
         if (strpos(config('app.url'), 'cruisertravels') !== FALSE)
         {
             // This is for the leads.cruisertravels.com
@@ -197,7 +200,7 @@ class MailBoxController extends Controller {
      * @param      $oMessage
      * @param bool $test
      */
-    private function save_new_lead($oMessage, $test = FALSE)
+    private function save_new_lead($oMessage, bool $test = FALSE)
     {
         $lead = new LeadMails();
         $lead->email_imap_id = $oMessage->message_id;
@@ -312,7 +315,7 @@ class MailBoxController extends Controller {
             $token = implode('-', [$masked_attachment->id, $masked_attachment->getMessage()->getUid(), $masked_attachment->name]);
             $token = 'attc' . str_replace(' ', '_', $token);
             $this->attachment_filename = str_replace("/", "", str_replace("'", "", $token));
-            \Storage::disk('public')->put($this->attachment_filename, $masked_attachment->getContent());
+            Storage::disk('public')->put($this->attachment_filename, $masked_attachment->getContent());
         }
     }
 
@@ -388,7 +391,7 @@ class MailBoxController extends Controller {
      */
     public function sendLeads(Request $request)
     {
-        $user = \Auth::user();
+        $user = Auth::user();
 
         $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
         $time_set_init = 1 * (explode(':', $user->time_set_init)[0] . explode(':', $user->time_set_init)[1]);
@@ -487,7 +490,7 @@ class MailBoxController extends Controller {
     {
         $lead = LeadMails::find($leadId);
 
-        return redirect(\Storage::url($lead->attachment));
+        return redirect(Storage::url($lead->attachment));
     }
 
     /**
@@ -590,12 +593,7 @@ class MailBoxController extends Controller {
             SELECT 	LM.agent_id,
                     U.name AS agent_name,
                     COUNT(*) AS leads_count,
-                    SUM(CASE
-                            WHEN IFNULL(LM.old_agent_id, 0) > 0 THEN
-                                1
-                            ELSE
-                                0
-                        END
+                    SUM(IF(IFNULL(LM.old_agent_id, 0) > 0, 1, 0)
                     ) AS leads_reassigned,
                     SUM(LM.rejected) AS leads_rejected,
                     MAX(CONVERT_TZ(LM.updated_at, '+00:00', '-05:00')) AS last_lead
@@ -622,12 +620,12 @@ class MailBoxController extends Controller {
             "
         ));
 
-        Mail::to(\Auth::user()->email)
+        Mail::to(Auth::user()->email)
             ->bcc('timbrownlaw@gmail.com')
             ->bcc('visiontocode2022@gmail.com')
             ->send(new ReportMail($leads, $dateFrom, $dateTo));
 
-        return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . \Auth::user()->email));
+        return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . Auth::user()->email));
     }
 
     /**
@@ -689,9 +687,10 @@ class MailBoxController extends Controller {
      * Remove the specified resource from storage.
      *
      * @param $leadId
-     * @return Response
+     * @return RedirectResponse
+     * @throws Exception
      */
-    public function destroy($leadId): Response
+    public function destroy($leadId): RedirectResponse
     {
         $lead = LeadMails::find($leadId);
         $lead->delete();
