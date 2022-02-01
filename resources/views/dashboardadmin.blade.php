@@ -22,7 +22,6 @@
           </ul>
         </div>
       </div>
-
         <div class="col-12 col-md-4">
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
             <ul class="list-group list-group-flush">
