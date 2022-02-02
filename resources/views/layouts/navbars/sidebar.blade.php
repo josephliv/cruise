@@ -23,7 +23,7 @@
       <li class="nav-item"><a class="@if($activePage == 'leads-management') highlight @endif" href="{{route('emails.manage')}}" title="View or edit the leads"><i class="nc-icon nc-email-85"></i>&nbsp;{{ __("Manage Leads") }}</a></li>
       <li class="nav-item"><a class="@if($activePage == 'priority-management') highlight @endif" href="{{route('priorities.index')}}" title="View or edit the priorities"><i class="nc-icon nc-preferences-circle-rotate"></i>&nbsp;{{ __("Rules & Priorities") }}</a></li>
      </ul>
-  </div>  
+  </div>
 
   <hr style="border-color: #fff; width: 80%; margin: 10px auto;">
      <div class="side-bar-links">
@@ -32,8 +32,8 @@
           <button class="btn-outline-light" title="View a list of links" onclick="openLinks()"><i class="nc-icon nc-tap-01"></i>&nbsp;{{ __('Useful Links') }}</button>
         </li>
       </ul>
-    </div>  
- 
+    </div>
+
     <div class="panel d-none" id="usefulLinks">
       <ul class="nav ">
       <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">cruiser travels</a></li>
@@ -53,7 +53,7 @@
       <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/dqbz3lajsj/index.html">sold add on form</a></li>
       </ul>
     </div>
-      
+
 
 </div>
 

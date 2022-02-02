@@ -11,13 +11,13 @@ Homestead.yaml
 npm-debug.log
 yarn-error.log
 *.zip
+*.tar.gz
+
 /public/phpmyadmin
 /logs/error.log
 .lh/
 .vscode/
-Z1iUYYoul63g0tqs.cruiser-Jan-28.tar.gz
-cruiser-BK-Jan-28-2022.tar.gz
-cruiser-Jan-28.tar.gz
+
 test-extract/
 Design/
 .sass-cache/*
@@ -27,5 +27,15 @@ _ide_helper.php
 .phpstorm.meta.php
 attc*
 
+public/att*
+/attc*
+Design
 
+public/server.php
+public/files
+
+
+public/light-bootstrap/sass/*
+
+*.lst
 

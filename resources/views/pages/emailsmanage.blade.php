@@ -5,7 +5,7 @@
     @php
     $unassignedTotal = $assignedTotal = $rejectedTotal = $reassignedTotal = 0;
     // Me trying to get a count but returned an error "function count() on int"
-    // $totalLeads = $unassignedTotal->count(); 
+    // $totalLeads = $unassignedTotal->count();
     @endphp
     <div class="content">
         <div class="container-fluid">
@@ -20,12 +20,12 @@
                             <h3 class="card-title ">Leads</h3>
                             <p class="card-category ">Here you can view or delete the leads.</p>
                         </div>
-                    
-                        
+
+
                         <div class="card-body">
                         @php
                         foreach ($leadMails as $leadMail){
-                                    
+
                                     if(optional($leadMail)->agent_id == 0){
                                         $unassignedTotal++;
                                     } elseif(optional($leadMail)->rejected > 0){
@@ -37,7 +37,7 @@
                                     }
                         }
                         @endphp
-                        
+
                         <div class="p-4 text-center">
                             <label for="time-set">Run the report by dates: </label>
                             <form method='POST'>
@@ -84,7 +84,7 @@
                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                         <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                        
+
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                         <td class="d-flex justify-content-end">
                                                     @if(optional($leadMail)->attachment)
@@ -123,7 +123,7 @@
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
                                             <td>{{$leadMail->subject}}</td>
                                             <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if($leadMail->attachment)
@@ -162,9 +162,9 @@
                                             <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                             <td>{{optional($leadMail)->subject}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                           
+
                                             <td class="d-flex justify-content-end">
                                                         @if(optional($leadMail)->attachment)
                                                             <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
@@ -205,7 +205,7 @@
                                             <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
                                             <td >{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-                                            
+
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
                                                         @if(optional($leadMail)->attachment)
@@ -253,7 +253,7 @@
               </button>
             </div>
             <div class="modal-body" id="leadsModalBody" style="max-height: 90vh; overflow-y: scroll;">
-              
+
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -281,8 +281,8 @@
         </div>
     </div>
     </div>
-    
-  
+
+
 
 
 <script>
@@ -294,14 +294,14 @@
 function openReport(e, report, caller) {
   var i;
   var x = document.getElementsByClassName("type");
-   
+
   e.preventDefault();
 
   $('.nav-link').removeClass('active');
   $(this).addClass('active');
 
   for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none"; 
+    x[i].style.display = "none";
   }
   document.getElementById(report).style.display = "block";
 }

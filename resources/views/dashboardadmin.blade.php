@@ -1,6 +1,6 @@
 @extends('layouts.app', ['activePage' => 'dashboard', 'title' => 'Leadbox Management System', 'navName' => 'Dashboard', 'activeButton' => 'laravel'])
 
-@section('content') 
+@section('content')
 
 <div class="container mt-4">
     <div class="row justify-content-around" >
@@ -18,31 +18,30 @@
             <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total24h']}}</span></li>
             <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent24h']}}</span></li>
             <li class="list-group-item">Emails rejected: <span id="emails-sent">{{$leadMails['totalReject24h']}}</span></li>
-           
+
           </ul>
         </div>
       </div>
-
         <div class="col-12 col-md-4">
           <div class="card text-center" style="box-shadow: 0 0 5px #555;">
             <ul class="list-group list-group-flush">
-            <li class="list-group-item active"> <h3> Request A lead.</h3>
+            <li class="list-group-item active"> <h3> Take a lead.</h3>
               <p class="lead">Receive a lead in your inbox</p>
             </li>
-            
+
             <li class="list-group-item">
                 <div style="position: relative">
                         <div  class="cover" title="A new lead has been sent to your inbox.">
                          A lead has been sent to your email.</div>
                         <a href="#" id="generateLeadBtn" class="btn btn-primary btn-lg" onclick="lead()" title="Click here to send a lead to your inbox.">
                         Receive A Lead
-                        </a>   
-                    </div> 
+                        </a>
+                    </div>
             </div>
         </li>
-           
+
           </ul>
-            
+
         </div>
 
         <div class="col-12 col-md-4">
@@ -72,13 +71,13 @@
                             </div>
                         </div>
                         <div class="card-body table-full-width table-responsive" >
-                            <table id="detailedReportTable" class="table table-hover table-striped" >
+                            <table id="detailedReportTable" class="table table-hover table-striped" role="table" >
                                 <thead>
                                     <th>Name</th>
-                                    <th class="text-center">Most Recent</th>
-                                    <th class="text-center">Leads</th>
-                                    <th class="text-center">Reassigned</th>
-                                    <th class="text-center">Rejected</th>
+                                    <th>Most Recent</th>
+                                    <th>Leads</th>
+                                    <th>Reassigned</th>
+                                    <th>Rejected</th>
                                 </thead>
                                 <tbody>
                                 </tbody>
@@ -89,7 +88,7 @@
                     </div>
                 </div>
             </div>
-  
+
 </div>
 <script type="text/javascript">
     const leadBtn = document.querySelector("#generateLeadBtn") ;
@@ -103,7 +102,7 @@ function lead() {
     cover.style.opacity = 1;
     leadBtn.classList.add('disabled');
     leadBtn.style.color = "#fff!important";
-    cover.style.cursor = "not-allowed";    
+    cover.style.cursor = "not-allowed";
 
     $.ajax({
         url: "/leads/get",
@@ -112,7 +111,7 @@ function lead() {
             setTimeout(() => {
                 cover.style.visibility = "hidden";
                 cover.style.opacity = 0;
-                leadBtn.classList.remove('disabled'); 
+                leadBtn.classList.remove('disabled');
                 location.reload();
             }, 500);
         },
@@ -122,6 +121,6 @@ function lead() {
         }
     });
 }
-    
+
 </script>
 @endsection

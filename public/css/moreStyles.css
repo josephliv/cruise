@@ -1,3 +1,29 @@
+/* Dashboard box with links*/ 
+.box-of-links {
+    background-color: rgba(55,55,55,0.6); 
+    border-radius: 8px;
+    padding: 20px 50px;
+    border: 1px solid;
+    box-shadow: 0 0 10px #fff;  
+    width: 60%;
+    margin: 0 auto;
+}
+.box-item {
+    color: #888;
+    border-bottom: 1px solid #888;
+}
+.box-item a {
+    transition: .55s;
+    padding: 5px!important;
+    font-size: .8em;
+    border-radius: 8px;
+}
+.box-item a:hover {
+    background-color: #eee;
+    color: black;
+    transition-timing-function: ease-in;
+}
+
 .tim-row {
     margin-bottom: 20px;
 }
