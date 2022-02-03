@@ -73,7 +73,9 @@ class MailBoxController extends Controller {
             $this->echod('yellow', 'Processing: ' . $mail_box_name, __LINE__);
 
             //Get all Messages from the current Mailbox $oFolder upto 2 days ago from now.
-            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
+//            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
+            // Changed for Site Restore From Inbox
+            $aMessage = $oFolder->query(NULL)->unseen()->limit(5)->since(Carbon::now()->subDays(9))->get();
 
             // Process Each Message
             foreach ($aMessage as $oMessage)
@@ -160,7 +162,11 @@ class MailBoxController extends Controller {
                     {
                         $lead = LeadMails::find($originalMessageId);
                         $this->echod('red', 'Agent Redirect - Not Found', __LINE__);
-                        Mail::to($lead->agent()->first()->email)->bcc('timbrownlaw@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                        if(defined('ENABLE_MAILER') && ENABLE_MAILER)
+                        {
+                            Mail::to($lead->agent()->first()->email)->bcc('timbrownlaw@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                        }
+
                     }
                 } else
                 { //Count as a new Lead
@@ -427,9 +433,12 @@ class MailBoxController extends Controller {
 
                 foreach ($leadMails as $lead)
                 {
-                    Mail::to($user->email)->send(new LeadSent($lead));
-                    $lead->agent_id = $user->id;
-                    $lead->assigned_date = Carbon::now();
+                    if(defined('ENABLE_MAILER') && ENABLE_MAILER)
+                    {
+                        Mail::to($user->email)->send(new LeadSent($lead));
+                        $lead->agent_id = $user->id;
+                        $lead->assigned_date = Carbon::now();
+                    }
                     $lead->save();
                 }
 
@@ -460,12 +469,18 @@ class MailBoxController extends Controller {
     {
         $lead = LeadMails::find($leadId);
 
+        $mailable = '';
+
         // If the user has been removed
         // How can we get here if the user does not exist???
         if ( ! $user)
         { // Sending an e-mail to a non-user
             $lead->agent_id = -1;
-            $mailable = Mail::to($forceEmail)->send(new LeadSent($lead));
+
+            if(defined('ENABLE_MAILER') && ENABLE_MAILER)
+            {
+                $mailable = Mail::to($forceEmail)->send(new LeadSent($lead));
+            }
             //@todo - 3 -Fix Logic - What is $forceEmail is not set?
         } else
         {
@@ -478,7 +493,10 @@ class MailBoxController extends Controller {
             $lead->assigned_date = Carbon::now();
 
             // We need to send the attachment as well
-            $mailable = Mail::to($user->email)->send(new LeadSent($lead));
+            if(defined('ENABLE_MAILER') && ENABLE_MAILER)
+            {
+                $mailable = Mail::to($user->email)->send(new LeadSent($lead));
+            }
         }
 
         $lead->save();
@@ -619,12 +637,13 @@ class MailBoxController extends Controller {
             GROUP BY LM.agent_id
             "
         ));
-
-        Mail::to(Auth::user()->email)
-            ->bcc('timbrownlaw@gmail.com')
-            ->bcc('visiontocode2022@gmail.com')
-            ->send(new ReportMail($leads, $dateFrom, $dateTo));
-
+        if(defined('ENABLE_MAILER') && ENABLE_MAILER)
+        {
+            Mail::to(Auth::user()->email)
+                ->bcc('timbrownlaw@gmail.com')
+                ->bcc('visiontocode2022@gmail.com')
+                ->send(new ReportMail($leads, $dateFrom, $dateTo));
+        }
         return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . Auth::user()->email));
     }
 

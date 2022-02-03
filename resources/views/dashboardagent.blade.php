@@ -2,16 +2,17 @@
 
 @section('content')
 
+    @if(ENABLE_MAILER) {
 
-<div style="overflow: hidden;">
-    <div class="container-fluid">
-        <div class="grid-container">
-            <div class="dash-content text-center" >
-                <div class="dash-logo height: 200px;">
-                    <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4">
-                </div>
+    <div style="overflow: hidden;">
+        <div class="container-fluid">
+            <div class="grid-container">
+                <div class="dash-content text-center">
+                    <div class="dash-logo height: 200px;">
+                        <img src="/light-bootstrap/img/logo.jpg" class="img-thumbnail my-4">
+                    </div>
 
-                <div class="container">
+                    <div class="container">
                     <div class="row justify-content-center">
                         <!-- This should show how many leads that are in the database that hasn't been sent to an agents email yet. -->
                         <div class="card bg-light mb-3" style="max-width: 18rem;">
@@ -96,13 +97,19 @@ function lead() {
                 location.reload();
             }, 10000);
         },
-        error: function(a,b,c){
+        error: function (a, b, c) {
             alert('Something Went Wrong!');
-            console.log(a,b,c);
+            console.log(a, b, c);
         }
     });
 }
 
 </script>
+    @else
+        <div class="text-center">
+            <h1>The Site is undergoing Maintenance.</h1>
+            <h2>It will be available again as soon as possible!</h2>
+        </div>
+    @endif
 
 @endsection

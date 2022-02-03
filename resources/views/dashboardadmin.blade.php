@@ -2,50 +2,59 @@
 
 @section('content')
 
-<div class="container mt-4">
-    <div class="row justify-content-around" >
-      <div class="col-12 col-md-4"><h2>Admin Dashboard</h2></div>
-    </div>
-</div>
-<div class="container mt-4">
-    <div class="row justify-content-around" >
-      <div class="col-12 col-md-4">
-        <div class="card text-center" style="box-shadow: 0 0 5px #555;">
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item active"> <h3> Today's Stats</h3>
-              <p class="lead">This resets every 24 hours</p>
-            </li>
-            <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total24h']}}</span></li>
-            <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent24h']}}</span></li>
-            <li class="list-group-item">Emails rejected: <span id="emails-sent">{{$leadMails['totalReject24h']}}</span></li>
+    <div class="container mt-4">
+        @if(!ENABLE_MAILER)
+            <h2 class="text-center" style="background:yellow;font-size:2em;font-weight:bold;">
+                If this message is showing - We are still working on the site!
+            </h2>
+        @endif
 
-          </ul>
-        </div>
-      </div>
-        <div class="col-12 col-md-4">
-          <div class="card text-center" style="box-shadow: 0 0 5px #555;">
-            <ul class="list-group list-group-flush">
-            <li class="list-group-item active"> <h3> Take a lead.</h3>
-              <p class="lead">Receive a lead in your inbox</p>
-            </li>
-
-            <li class="list-group-item">
-                <div style="position: relative">
-                        <div  class="cover" title="A new lead has been sent to your inbox.">
-                         A lead has been sent to your email.</div>
-                        <a href="#" id="generateLeadBtn" class="btn btn-primary btn-lg" onclick="lead()" title="Click here to send a lead to your inbox.">
-                        Receive A Lead
-                        </a>
-                    </div>
+        <div class="row justify-content-around">
+            <div class="col-12 col-md-4">
+                <h2>Admin Dashboard</h2>
             </div>
-        </li>
-
-          </ul>
-
         </div>
+    </div>
+    <div class="container mt-4">
+        <div class="row justify-content-around">
+            <div class="col-12 col-md-4">
+                <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item active"><h3> Today's Stats</h3>
+                            <p class="lead">This resets every 24 hours</p>
+                        </li>
+                        <li class="list-group-item">Emails Received: <span id="emails-sent">{{$leadMails['total24h']}}</span></li>
+                        <li class="list-group-item">Emails Sent: <span id="emails-sent">{{$leadMails['totalSent24h']}}</span></li>
+                        <li class="list-group-item">Emails rejected: <span id="emails-sent">{{$leadMails['totalReject24h']}}</span></li>
 
-        <div class="col-12 col-md-4">
-          <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+                    </ul>
+                </div>
+            </div>
+            <div class="col-12 col-md-4">
+                <div class="card text-center" style="box-shadow: 0 0 5px #555;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item active"><h3> Take a lead.</h3>
+                            <p class="lead">Receive a lead in your inbox</p>
+                        </li>
+
+                        <li class="list-group-item">
+                            <div style="position: relative">
+                                <div class="cover" title="A new lead has been sent to your inbox.">
+                                    A lead has been sent to your email.
+                                </div>
+                                <a href="#" id="generateLeadBtn" class="btn btn-primary btn-lg" onclick="lead()" title="Click here to send a lead to your inbox.">
+                                    Receive A Lead
+                                </a>
+                            </div>
+                </div>
+                </li>
+
+                </ul>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+                <div class="card text-center" style="box-shadow: 0 0 5px #555;">
               <ul class="list-group list-group-flush">
                 <li class="list-group-item active"> <h3> Total Stats</h3>
               <p class="lead">This shows the total stats.</p>

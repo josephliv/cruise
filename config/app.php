@@ -1,5 +1,7 @@
 <?php
 
+// Used for testing.
+defined('ENABLE_MAILER') || define('ENABLE_MAILER', TRUE);
 
 return [
 
