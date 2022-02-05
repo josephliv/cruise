@@ -35,7 +35,7 @@
     padding: 5px!important;
     font-size: .8em;
     border-radius: 8px;
-    
+
 }
 .box-item a:hover {
     background-color: #eee;
@@ -286,7 +286,7 @@
     cursor: pointer;
     display: block;
     max-height: 100px;
-    
+
     padding: 0;
 }
 
@@ -527,7 +527,7 @@
 }
 
 .logo-container .logo {
-    
+
     border-radius: 50%;
     border: 1px solid #333333;
     width: 50px;
@@ -596,7 +596,7 @@
 
 .parallax .parallax-image {
     width: 100%;
-    
+
     position: absolute;
 }
 
@@ -608,7 +608,7 @@
     .parallax .parallax-image {
         width: 100%;
         height: 640px;
-        
+
     }
     .parallax .parallax-image img {
         height: 100%;
@@ -629,7 +629,7 @@
 
 .img-container {
     width: 100%;
-    
+
 }
 
 .img-container img {
@@ -989,7 +989,7 @@
   .sidenav a, .logged-in-as {
       padding: 8px 8px 8px 32px;
       text-decoration: none;
-     
+
       color: #E6F4F1;
       display: block;
       text-transform: capitalize;
@@ -1026,7 +1026,7 @@
     text-transform: capitalize;
     text-align: center;
   }
-  
+
   .side-bar-links li {
       width: 100%;
       font-size: 1.3rem;
@@ -1051,7 +1051,7 @@
   .sidenav .closebtn:hover { border: none;  color: #000;}
   .highlight {border-left: 6px solid #C5A862; color:#C5A862!important;}
   .usefulLinks {padding-left: 10px; }
-  
+
 #usefulLinks li { padding: 5px; width: 100%; border-bottom: 1px solid #862; margin: 0 5px; }
 #usefulLinks li a {color: white; font-size: 14px;}
 #usefulLinks li:hover {background: rgba(0, 0, 0, .3)}

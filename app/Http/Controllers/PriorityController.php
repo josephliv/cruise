@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Priority;
 use App\Group;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class PriorityController extends Controller
 {
@@ -21,22 +23,23 @@ class PriorityController extends Controller
      */
     public function index()
     {
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }
 
         //dd(Priority::paginate(15)->first()->group()->first()->name);
-        return view('priorities.index', ['priorities' => Priority::paginate(15)]);
+//        return view('priorities.index', ['priorities' => Priority::paginate(15)]);
+        return view('priorities.index', ['priorities' => Priority::get()]);
     }
 
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function create()
     {
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }
 
@@ -47,13 +50,13 @@ class PriorityController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return Response
      */
     public function store(Request $request)
     {
 
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }        
 
@@ -68,8 +71,8 @@ class PriorityController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Priority  $priority
-     * @return \Illuminate\Http\Response
+     * @param Priority $priority
+     * @return Response
      */
     public function show(Priority $priority)
     {
@@ -79,13 +82,13 @@ class PriorityController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Priority  $priority
-     * @return \Illuminate\Http\Response
+     * @param Priority $priority
+     * @return Response
      */
     public function edit(Priority $priority)
     {
 
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }        
         $groups = Group::orderBy('order')->get();
@@ -95,14 +98,14 @@ class PriorityController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Priority  $priority
-     * @return \Illuminate\Http\Response
+     * @param Request  $request
+     * @param Priority $priority
+     * @return Response
      */
     public function update(Request $request, Priority $priority)
     {
 
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }
         
@@ -118,13 +121,13 @@ class PriorityController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Priority  $priority
-     * @return \Illuminate\Http\Response
+     * @param Priority $priority
+     * @return Response
      */
     public function destroy(Priority $priority)
     {
 
-        if(!\Auth::user()->is_admin){
+        if(! Auth::user()->is_admin){
             return redirect()->route('dashboard');
         }        
 

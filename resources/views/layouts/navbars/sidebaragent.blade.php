@@ -21,7 +21,7 @@
         <a class="@if($activePage == 'user') highlight @endif" href="{{route('profile.edit')}}" title="View or edit your profile"><i class="nc-icon nc-single-02"></i>&nbsp;{{ __("My Profile") }}</a>
       </li>
      </ul>
-  </div>   
+  </div>
      <hr style="border-color: #fff; width: 80%; margin: 10px auto;">
      <div class="side-bar-links">
       <ul class="nav" >
@@ -29,10 +29,10 @@
           <button class="btn-outline-light" title="View a list of links" onclick="openLinks()"><i class="nc-icon nc-tap-01"></i>&nbsp;{{ __('Useful Links') }}</button>
         </li>
       </ul>
-    </div>     
-      
-    
-    <div class="panel d-none" id="usefulLinks"> 
+    </div>
+
+
+    <div class="panel d-none" id="usefulLinks">
       <ul class="nav ">
         <li ><a target="_blank" rel=”noreferrer" href="https://www.cruisertravels.com">cruiser travels</a></li>
         <li ><a target="_blank" rel=”noreferrer" href="https://fs8.formsite.com/loundo1/s5qym0uua9/index.html">report a new booking</a></li>
@@ -52,7 +52,7 @@
       </ul>
       <div id="toTop"></div>
     </div>
-  
+
 </div>
 
 

@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg d-none" color-on-scroll="500" style="display: none;">
+<nav class="navbar navbar-expand-lg " color-on-scroll="500" style="display: none;">
     <a class="navbar-brand" href="/home"> Leadbox Management System </a>
     
 
