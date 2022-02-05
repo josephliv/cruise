@@ -234,15 +234,6 @@
         </div>
     </div>
 
-
-    <!-- <div class="modal fade " id="leadsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="leadsModalBody" style="border:solid darkgray 1px!important; padding:25px; min-height:400px">
-
-        ...
-        </div>
-    </div>
-    </div> -->
     <div class="modal fade" id="leadsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -252,7 +243,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body" id="leadsModalBody" style="max-height: 90vh; overflow-y: scroll;">
+            <div class="modal-body" id="leadsModalBody" style="max-height: 70vh; overflow-y: scroll;">
 
             </div>
             <div class="modal-footer">
@@ -262,13 +253,20 @@
         </div>
       </div>
 
-    <div class="modal fade " id="sendLeadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content" id="sendLeadModalBody" style="border:solid darkgray 1px!important; padding:25px; min-height:400px">
-            <input type="hidden" id="transferLeadId" value="" />
+      <div class="modal fade" id="sendLeadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+            <div class="modal-header" style="background: #ccc;">
+              <h5 class="modal-title lead">Select the user to transfer this lead:</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body" id="leadsModalBody" style="max-height: 70vh; overflow-y: scroll;">
+                <input type="hidden" id="transferLeadId" value="" />
             <input type="hidden" id="transferLeadOriginalAgent" value="" />
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Select the user to transfer this lead:</label>
+            <div class="form-group mt-4">
+                <!-- <label for="exampleFormControlInput1">Select the user to transfer this lead:</label> -->
                 <select class="form-control" id="transferLeadNewAgent">
                     @foreach($users as $user)
                     <option value="{{$user->id}}">{{$user->name}}</option>
@@ -278,13 +276,14 @@
             <div class="form-group">
                 <button type="button" class="btn btn-primary direct-send-lead-button">Send Lead</button>
             </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
         </div>
-    </div>
-    </div>
-
-
-
-
+      </div>
+  
 <script>
     $(document).ready( function () {
     $('#lead-table').DataTable();
