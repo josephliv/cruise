@@ -1080,7 +1080,7 @@
     color: #000!important;
   }
 
-  .table>thead>tr>th {font-size: 14px!important; color: rgb(0, 0, 0);}
-  .table i {font-size: 12px!important;}
+  .table>thead>tr>th {font-size: 14px!important; color: rgb(0, 0, 0); border-bottom: none!important;}
+  .table-responsive i {font-size: 12px!important;}
   .btn {font-size: 1.2rem!important; transition: 0.3s;}
   .btn:hover {background:#dcdff0!important;}

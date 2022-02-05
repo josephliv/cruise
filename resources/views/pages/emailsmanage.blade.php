@@ -69,11 +69,11 @@
 <div class="tab-content">
   <div class="tab-pane active" id="unassigned" role="tabpanel" aria-labelledby="home-tab">
     <div id="unassigned">
-                            <table class="table table-bordered table-striped  table-responsive" id="lead-table">
+                            <table class="table-striped table-responsive" id="lead-table1">
                                 <thead>
                                     <th>#</th>
                                     <th>Sender </th>
-                                    <th class="col-md-6">Subject Line </th>
+                                    <th class="col-12 col-md-6">Subject Line </th>
                                     <th>Time/date</th>
                                     <th>Options</th>
                                 </thead>
@@ -83,10 +83,10 @@
                                     <tr>
                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                        <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                        <td class="col-12 col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
 
                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                        <td class="d-flex justify-content-end">
+                                        <td class="d-flex justify-content-center">
                                                     @if(optional($leadMail)->attachment)
                                                         <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip text-primary font-weight-bold"></i></a>
                                                     @else
@@ -106,11 +106,11 @@
   </div>
   <div class="tab-pane" id="assigned" role="tabpanel" aria-labelledby="profile-tab">
                 <div id="assigned">
-                                <table class="table table-bordered table-striped  table-responsive" id="lead-table">
+                                <table class="table-striped table-responsive" id="lead-table2">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th>Subject Line </th>
+                                        <th class="col-12 col-md-6">Subject Line </th>
                                         <th>Agent</th>
                                         <th>Time/date</th>
                                         <th>Options</th>
@@ -121,7 +121,7 @@
                                         <tr>
                                             <td><span id="mail-from">{{$leadMail->id}}</span></td>
                                             <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
-                                            <td>{{$leadMail->subject}}</td>
+                                            <td class="col-12 col-md-6">{{$leadMail->subject}}</td>
                                             <td >{{optional(optional($leadMail->agent())->first())->name}}</td>
 
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span> </td>
@@ -145,11 +145,11 @@
   </div>
   <div class="tab-pane" id="rejected" role="tabpanel" aria-labelledby="messages-tab">
         <div id="rejected" >
-                                <table class="table table-bordered table-responsive" id="lead-table">
+                                <table class="table-striped table-responsive" id="lead-table3">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th >Subject Line </th>
+                                        <th class="col-12 col-md-6" >Subject Line </th>
                                         <th >Agent</th>
                                         <th>Time/date</th>
                                         <th>Options</th>
@@ -160,12 +160,12 @@
                                         <tr>
                                             <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                             <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td>{{optional($leadMail)->subject}}</td>
+                                            <td class="col-12 col-md-6">{{optional($leadMail)->subject}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
 
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
 
-                                            <td class="d-flex justify-content-end">
+                                            <td class="d-flex justify-content-center">
                                                         @if(optional($leadMail)->attachment)
                                                             <a href="{{route('leads.download', optional($leadMail)->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
                                                         @else
@@ -186,11 +186,11 @@
   </div>
   <div class="tab-pane" id="reassigned" role="tabpanel" aria-labelledby="settings-tab">
   <div id="reassigned" >
-                                <table class="table table-bordered table-striped  table-responsive" id="lead-table">
+                                <table class="table-striped table-responsive" id="lead-table4">
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
-                                        <th>Subject Line </th>
+                                        <th class="col-12 col-md-6">Subject Line </th>
                                         <th>Orig. Agent </th>
                                         <th>Curr. Agent </th>
                                         <th>Time/date</th>
@@ -202,12 +202,12 @@
                                         <tr>
                                             <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                             <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                            <td class="col-12 col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
                                             <td >{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
                                             <td >{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
 
                                             <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
-                                            <td class="d-flex justify-content-end">
+                                            <td class="d-flex justify-content-center">
                                                         @if(optional($leadMail)->attachment)
                                                             <a href="{{route('leads.download', $leadMail->id)}}" target="_blank" class="btn btn-link btn-warning edit d-inline-block" title="Attachment available."><i class="fa fa-paperclip"></i></a>
                                                         @else
@@ -284,11 +284,7 @@
         </div>
       </div>
   
-<script>
-    $(document).ready( function () {
-    $('#lead-table').DataTable();
-} );
-</script>
+
 <script>
 function openReport(e, report, caller) {
   var i;
