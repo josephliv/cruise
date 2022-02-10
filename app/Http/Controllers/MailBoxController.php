@@ -108,15 +108,12 @@ class MailBoxController extends Controller {
                     }
                 } else { //Count as a new Lead
                     // Where we have no subject line Message ID so check it against all known Imap Ids
-                    $lead = LeadMails::where('email_imap_id', $oMessage->message_id);
-                    if ( ! $lead->get()->count()) {
                         $this->save_new_lead($oMessage);
                         $this->echod('white', 'New Lead Saved', __LINE__);
                     }
                 }
             }
         }
-    }
 
 
     /**
