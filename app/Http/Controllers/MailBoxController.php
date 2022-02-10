@@ -13,10 +13,11 @@ use Auth;
 use Carbon\Carbon;
 use Colors;
 use Exception;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Mail;
-
 use Storage;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
 use Webklex\IMAP\Facades\Client;
@@ -28,6 +29,15 @@ class MailBoxController extends Controller {
     private $newUser;
 
     /**
+     * @var LeadMails[]|Builder[]|Collection
+     */
+    private $lead;
+
+    public function __construct() {
+        $this->lead = new LeadMails();
+    }
+
+    /**
      * This is called by the schedule:run setup in CRONTAB
      *
      * This performs the handling of any emails in the IMAP Inbox
@@ -35,145 +45,71 @@ class MailBoxController extends Controller {
      * @return void
      * @throws ConnectionFailedException
      */
-    public function index()
-    {
-        // Added for debug
-        if (config('app.debug'))
-        {
-            if (app()->runningInConsole())
-            {
-                $this->echod('red', "Running MalBoxController in Console", __LINE__);
-            }
-        }
-        // Connect to IMAP Server
-        $oClient = Client::account('default');
-        $oClient->connect();
+    public function index() {
+        $this->detect_console_command();
 
+        $this->echod('red',"Processing Mailboxes - Version 2.0", __LINE__);
+
+        $oClient = $this->connect_to_imap_server();
         // Create an array of Mailbox Folder(s) we want to check
-
-        if (strpos(config('app.url'), 'cruisertravels') !== FALSE)
-        {
-            // This is for the leads.cruisertravels.com
-            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('Junk Email')];
-        } else if (strpos(config('app.url'), 'joesdigitalservices') !== FALSE)
-        {
-            // This is for cruiser.joesdigitalservices.com
-            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('INBOX.spam')];
-        } else
-        {
-            // Fall back to the Base INBOX
-            $aFolder = [$oClient->getFolder('INBOX')];
-        }
-
+        $aFolder = $this->determine_mailboxes($oClient);
         // Process Each Mail Box
-        foreach ($aFolder as $oFolder)
-        {
-            // Get the Mail Box Name we are processing and display it
-            $mail_box_name = $oFolder->name;
-            $this->echod('yellow', 'Processing: ' . $mail_box_name, __LINE__);
-
-            //Get all Messages from the current Mailbox $oFolder upto 2 days ago from now.
-//            $aMessage = $oFolder->query(NULL)->unseen()->since(Carbon::now()->subDays(2))->get();
-            // Changed for Site Restore From Inbox
+        foreach ($aFolder as $oFolder) {
+            $this->echod('yellow', 'Processing: ' . $oFolder->name, __LINE__);
             $aMessage = $oFolder->query(NULL)->unseen()->limit(5)->since(Carbon::now()->subDays(9))->get();
 
             // Process Each Message
-            foreach ($aMessage as $oMessage)
-            {
-                echo $oMessage->getSubject() . "\r\n";
-                echo 'Attachments: ' . $oMessage->getAttachments()->count() . "\r\n";
+            foreach ($aMessage as $oMessage) {
+                $subject_array = explode('-||', $oMessage->getSubject());
+                $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
 
-                $this->save_attachment($oMessage);
+                if ($originalMessageId) {
+                    $this->lead = LeadMails::find($originalMessageId);
+                } else {
+                    $this->lead = LeadMails::where('email_imap_id', $oMessage->message_id)->first();
+                }
+
+                if ($this->lead && $this->lead->attachment) {
+                    $this->attachment_filename = $this->lead->attachment;
+                } else {
+                    $this->save_attachment($oMessage);
+                }
+
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
-
-                // @todo - 9 - These need to be tested as I am unsure as to the reasons this is here.
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
-                // If an email comes with the first word in the message "Spam"
-                // It could:
-                // 1. Be an existing lead with a message_id where an agent has added the word Spam <some reason>
-                // 2. It is a new Email, and has to be treated as such so admin can deal with it.
-                //
-                // Body: Spam <Reason>
-                if (strpos($emailFirstWord, 'spam') !== FALSE)
-                {
-                    // LeadSent Appends -|| <message_id>
-                    // new Emails do not have this
-                    $subject_array = explode('-||', $oMessage->getSubject());
-                    // We might Get back an array [0] = xxxxx and [1] 1234
-                    $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
+                $isMessageSpam = strpos($emailFirstWord, 'spam') !== FALSE;
+                $isMessageTest = strpos($emailFirstWord, 'test') !== FALSE;
+                $isMessageReassignment = filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL);
+                $isExistingLead = $this->lead && $this->lead->count();
 
-                    if ($originalMessageId)
-                    {
-                        $lead = LeadMails::find($originalMessageId); // The Primary Key so we are passing in the value for ID in this case
-                        $lead->rejected = 1;
-                        $lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $lead->body);
-                        $lead->save($oMessage);
-                    } else
-                    {
-                        // We want to find the row we need to save based upon email_imap_id field
-                        // We cannot use find() as it searches only on the Primary Key
-
-                        $lead = LeadMails::where('email_imap_id', $oMessage->message_id)->first();
-                        if ( ! ($lead && $lead->count()))
-                        {
-                            $this->save_new_lead($oMessage);
-                            $this->echod('white', 'Save New Leads', __LINE__);
-                        } else
-                        {
-                            $this->echod('white', 'This Lead already exists', __LINE__);
+                if ($isExistingLead) {
+                    if ($isMessageSpam) {
+                        $this->lead->rejected = 1;
+                        $this->lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $this->lead->body);
+                        // Need to save
+                        $this->lead->save();
+                    } elseif ($isMessageTest) {
+                        $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
+                    } elseif ($isMessageReassignment) {
+                        $this->newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
+                        $isValidAgentEmail = $this->newUser->count();
+                        if ($isValidAgentEmail) {
+                            $this->lead->reassigned_message = str_replace(explode(' ', strip_tags($this->body))[0], '', $emailContent);
+                            $this->lead->save();
+                            $this->sendIndividualLead($this->newUser->first());
+                        } else {
+                            if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
+                                // @todo - 1 - ErrorMail Class does not attach the attachment
+                                Mail::to($this->lead->agent()->first()->email)->bcc('timbrownlaw@gmail.com')->send(new ErrorMail($this->lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
+                            }
                         }
                     }
-                } elseif (strpos($emailFirstWord, 'test') !== FALSE)
-                {
-                    // This is very basic and will allow duplicates
-                    $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
-
-                    // Body:  xxx@yyy.zzz! [Agent Email Address]
-                    /**
-                     * Reassignment
-                     * When the email is being sent to the other Agent, we need to include a Message
-                     *
-                     * The two new body headers.
-                     *
-                     * Reassigned: By Admin
-                     *
-                     * aaaa@bbb.com! This is the reason
-                     *
-                     * Reassigned: By Fred Smith <aaaa@bbb.com>
-                     * Reason: < What was gleaned from the Email >
-                     *
-                     */
-                } elseif (filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL))
-                {
-                    $this->echod('yellow', 'We are here', __LINE__);
-                    $originalMessageId = explode('-||', $oMessage->getSubject())[1];
-                    $this->newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
-                    if ($this->newUser->count())
-                    {
-                        $this->echod('yellow', 'We are here', __LINE__);
-                        $lead = LeadMails::find($originalMessageId);
-                        $lead->reassigned_message = str_replace(explode(' ', strip_tags($this->body))[0], '', $emailContent);
-                        $lead->save();
-                        $this->echod('green', 'Agent Redirect - Found', __LINE__);
-                        $this->sendIndividualLead($originalMessageId, $this->newUser->first());
-                    } else
-                    {
-                        $lead = LeadMails::find($originalMessageId);
-                        $this->echod('red', 'Agent Redirect - Not Found', __LINE__);
-                        if(defined('ENABLE_MAILER') && ENABLE_MAILER)
-                        {
-                            Mail::to($lead->agent()->first()->email)->bcc('timbrownlaw@gmail.com')->send(new ErrorMail($lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
-                        }
-
-                    }
-                } else
-                { //Count as a new Lead
+                } else { //Count as a new Lead
                     // Where we have no subject line Message ID so check it against all known Imap Ids
                     $lead = LeadMails::where('email_imap_id', $oMessage->message_id);
-                    if ( ! $lead->get()->count())
-                    {
+                    if ( ! $lead->get()->count()) {
                         $this->save_new_lead($oMessage);
                         $this->echod('white', 'New Lead Saved', __LINE__);
                     }
@@ -182,6 +118,7 @@ class MailBoxController extends Controller {
         }
     }
 
+
     /**
      * Extract any added text to the beginning of an existing string
      *
@@ -189,8 +126,7 @@ class MailBoxController extends Controller {
      * @param $dbBody
      * @return string
      */
-    private function extract_rejected_message_from_body($sBody, $dbBody)
-    {
+    private function extract_rejected_message_from_body($sBody, $dbBody) {
         $dbBody = trim($dbBody);
         $sBody = trim($sBody);
         $dbBodyLength = strlen($dbBody);
@@ -206,61 +142,54 @@ class MailBoxController extends Controller {
      * @param      $oMessage
      * @param bool $test
      */
-    private function save_new_lead($oMessage, bool $test = FALSE)
-    {
-        $lead = new LeadMails();
-        $lead->email_imap_id = $oMessage->message_id;
-        $lead->email_from = $oMessage->getFrom()[0]->mail; // @TB Correct
-        $lead->agent_id = 0;
-        $lead->subject = $oMessage->getSubject();
-        $lead->body = $this->body;
-        $lead->attachment = $this->attachment_filename;
-        $lead->received_date = $oMessage->date;
-        $lead->priority = 100;
+    private function save_new_lead($oMessage, bool $test = FALSE) {
+        $this->lead->email_imap_id = $oMessage->message_id;
+        $this->lead->email_from = $oMessage->getFrom()[0]->mail; // @TB Correct
+        $this->lead->agent_id = 0;
+        $this->lead->subject = $oMessage->getSubject();
+        $this->lead->body = $this->body;
+        $this->lead->attachment = $this->attachment_filename;
+        $this->lead->received_date = $oMessage->date;
+        $this->lead->priority = 100;
 
-        if ($test != FALSE)
-        {
-            $lead->rejected = 1;
-            $lead->rejected_message = "Test Email - IGNORE";
-            $lead->agent_id = 1;
-            $lead->old_agent_id = 1;
+        if ($test != FALSE) {
+            $this->lead->rejected = 1;
+            $this->lead->rejected_message = "Test Email - IGNORE";
+            $this->lead->agent_id = 1;
+            $this->lead->old_agent_id = 1;
         }
 
-        $lead->save();
-        $this->apply_rules_and_priorities($lead);
+        $this->lead->save();
+        $this->apply_rules_and_priorities();
 
     }
 
     /**
      * Apply the Rules and Priorities to each Email
      *
-     * @param $lead
-     * @todo - 5 - Is this correct? The code as it stands will allow a match from either Subject or Sender to email the lead directly
      *
      */
-    private function apply_rules_and_priorities($lead)
-    {
-        foreach (Priority::all() as $priority)
-        {
-            echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
-            switch ($priority->field)
-            {
+    private function apply_rules_and_priorities() {
+        foreach (Priority::all() as $priority) {
+            switch ($priority->field) {
                 case 1: // Subject
                 {
-                    if (strpos(strtolower($lead->subject), strtolower($priority->condition)) !== FALSE)
-                    {
-                        $this->send_lead_to_destination($lead, $priority);
-                        $this->echod('green', 'P Subject: ' . $lead->subject . ' - ' . $priority->condition, __LINE__);
+                    if (strpos(strtolower($this->lead->subject), strtolower($priority->condition)) !== FALSE) {
+                        echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
+                        $this->echod('green', 'P Subject: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
+
+                        $this->send_lead_to_destination($this->lead, $priority);
                         break 2;
                     }
                     break;
                 }
                 case 2: // From Email Address
                 {
-                    if (strtolower($lead->email_from) == strtolower($priority->condition))
-                    {
-                        $this->send_lead_to_destination($lead, $priority);
-                        $this->echod('green', 'P Email: ' . $lead->subject . ' - ' . $priority->condition, __LINE__);
+                    if (strtolower($this->lead->email_from) == strtolower($priority->condition)) {
+                        echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
+                        $this->echod('green', 'P Email: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
+
+                        $this->send_lead_to_destination($this->lead, $priority);
                         break 2;
                     }
                     break;
@@ -276,28 +205,24 @@ class MailBoxController extends Controller {
     /**
      * Send Email as set in rules
      *
-     * @param $lead
      * @param $priority
      */
-    private function send_lead_to_destination($lead, $priority)
-    {
-        if (trim($priority->send_to_email) != '')
-        {
+    private function send_lead_to_destination($priority) {
+        if (trim($priority->send_to_email) != '') {
             $this->newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
-            if ($this->newUser->count())
-            {
-                $this->sendIndividualLead($lead->id, $this->newUser->first());
-                $this->echod('yellow', 'New User', __LINE__);
-            } else
-            {
+            if ($this->newUser->count()) {
+                $this->sendIndividualLead($this->newUser->first());
+                $this->echod('yellow', 'Send Lead to: ' . $priority->send_to_email, __LINE__);
+            } else {
                 // When do we come here?
-                $this->sendIndividualLead($lead->id, NULL, $priority->send_to_email);
+                $this->sendIndividualLead(NULL, $priority->send_to_email);
+                $this->echod('yellow', 'Send Lead to: ' . $priority->send_to_email, __LINE__);
             }
         }
 
-        $lead->priority = $priority->priority;
-        $lead->to_group = $priority->user_group;
-        $lead->save();
+        $this->lead->priority = $priority->priority;
+        $this->lead->to_group = $priority->user_group;
+        $this->lead->save();
     }
 
     /**
@@ -308,81 +233,68 @@ class MailBoxController extends Controller {
      *
      * The Name is generated from IMAP information and then
      *
-     * @param $oMessage
+     * @param    $oMessage
      * @return void
      * @property $attachment_filename
      */
-    private function save_attachment($oMessage)
-    {
-        if ($oMessage->getAttachments()->count())
-        {
+    private
+    function save_attachment($oMessage) {
+
+        if ($oMessage->getAttachments()->count()) {
             $attachment = $oMessage->getAttachments()->first();
             $masked_attachment = $attachment->mask();
             $token = implode('-', [$masked_attachment->id, $masked_attachment->getMessage()->getUid(), $masked_attachment->name]);
             $token = 'attc' . str_replace(' ', '_', $token);
             $this->attachment_filename = str_replace("/", "", str_replace("'", "", $token));
             Storage::disk('public')->put($this->attachment_filename, $masked_attachment->getContent());
+            $this->echod('white', 'Attachment Saved: ' . $this->attachment_filename, __LINE__);
         }
     }
 
-    public function manage(Request $request)
-    {
-        //public function manage(LeadsDataTable $dataTable){
-
-        if ( ! count($request->input()))
-        {
-
+    public function manage($request) {
+        if ( ! count($request->input())) {
             $leadMails = LeadMails::orderBy('id', 'asc')
-                ->limit(1)
-                ->get()
-                ->first();
-
-            if ($leadMails)
-            {
-                //$dateFrom   = \Carbon\Carbon::parse($leadMails->created_at)->startOfDay();
-
+                                  ->limit(1)
+                                  ->get()
+                                  ->first();
+            if ($leadMails) {
                 $dateFrom = Carbon::now()->subDays(30)->startOfDay();
-            } else
-            {
+            } else {
                 $dateFrom = Carbon::now()->startOfDay();
             }
 
             $dateTo = Carbon::now()->endOfDay();
-        } else
-        {
+        } else {
             $dateFrom = Carbon::parse($request->input('from-date'))->startOfDay();
             $dateTo = Carbon::parse($request->input('to-date'))->endOfDay();
         }
-
         $users = User::all();
-
         $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
-            ->where('updated_at', '<=', $dateTo)
-            ->orderBy('id', 'desc')->get();
+                              ->where('updated_at', '<=', $dateTo)
+                              ->orderBy('id', 'desc')->get();
 
         return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo', 'users'));
-
-//        return $dataTable->render('pages.emailsmanagedatatable');
-
     }
 
-    public function datatables(LeadsDataTable $dataTable)
-    {
+    public function datatables(LeadsDataTable $dataTable) {
 
         //dataTable($query)
     }
 
-    public function transferLead(Request $request, $leadId, $userId)
-    {
+    /**
+     * @param         $request
+     * @param         $leadId
+     * @param         $userId
+     * @return false|string
+     */
+    public function transferLead($request, $leadId, $userId) {
 
         $user = User::where('id', $userId)->first();
-        if ($user)
-        {
-            $lead = $this->sendIndividualLead($leadId, $user, $user->email);
+        if ($user) {
+            $lead = $this->sendIndividualLead($user, $user->email);
 
             return json_encode(array('success' => 'Lead #' . $leadId . ' successfully transferred to agent: ' . $user->email));
-        } else
-        {
+        } else {
             return json_encode(array('error' => 'User ID: ' . $userId . ' not found'));
         }
 
@@ -390,51 +302,44 @@ class MailBoxController extends Controller {
 
     /**
      * So this processes the sending of leads based upon the the user_group and the priority
-     * @param Request $request
+     * @param $request
      * @return array|string[]
      * @todo - 5 - Check-re-enabled the non new group checking
      *
      */
-    public function sendLeads(Request $request)
-    {
+    public function sendLeads($request) {
         $user = Auth::user();
 
         $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
         $time_set_init = 1 * (explode(':', $user->time_set_init)[0] . explode(':', $user->time_set_init)[1]);
         $time_set_final = 1 * (explode(':', $user->time_set_final)[0] . explode(':', $user->time_set_final)[1]);
 
-        if (LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed)
-        {
-            if ($currentTime >= $time_set_init && $currentTime <= $time_set_final)
-            {
-                if ($user->user_group == 1)
-                {
+        if (LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed) {
+            if ($currentTime >= $time_set_init && $currentTime <= $time_set_final) {
+                if ($user->user_group == 1) {
                     $leadMails = LeadMails::where('rejected', 0)
-                        ->where('agent_id', 0)
-                        ->where('to_group', $user->user_group)
-                        ->orderBy('to_group', 'desc')
-                        ->orderBy('priority')
-                        ->orderBy('updated_at')
-                        ->limit(1)
-                        ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
-                } else
-                {
+                                          ->where('agent_id', 0)
+                                          ->where('to_group', $user->user_group)
+                                          ->orderBy('to_group', 'desc')
+                                          ->orderBy('priority')
+                                          ->orderBy('updated_at')
+                                          ->limit(1)
+                                          ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+                } else {
                     //@todo - 2 - need to check the changes
                     $leadMails = LeadMails::where('rejected', 0)
-                        ->where('agent_id', '=', 0)
-                        ->where('to_group', '<=', $user->user_group)
+                                          ->where('agent_id', '=', 0)
+                                          ->where('to_group', '<=', $user->user_group)
                         //->whereIn('to_group', [null,0,$user->user_group])
                         //->whereNull('to_veteran')
-                        ->orderBy('priority')
-                        ->orderBy('updated_at')
-                        ->limit(1)
-                        ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
+                                          ->orderBy('priority')
+                                          ->orderBy('updated_at')
+                                          ->limit(1)
+                                          ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
                 }
 
-                foreach ($leadMails as $lead)
-                {
-                    if(defined('ENABLE_MAILER') && ENABLE_MAILER)
-                    {
+                foreach ($leadMails as $lead) {
+                    if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
                         Mail::to($user->email)->send(new LeadSent($lead));
                         $lead->agent_id = $user->id;
                         $lead->assigned_date = Carbon::now();
@@ -442,13 +347,11 @@ class MailBoxController extends Controller {
                     $lead->save();
                 }
 
-            } else
-            {
+            } else {
 //                return array('type' => 'ERROR', 'message' => 'You are not in the Allowed Period!');
                 return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
             }
-        } else
-        {
+        } else {
             return array('type' => 'ERROR', 'message' => 'You have reached your 24h leads limit!');
         }
 
@@ -458,54 +361,43 @@ class MailBoxController extends Controller {
 
     /**
      *
-     * @param        $leadId
      * @param        $user
      * @param string $forceEmail
      * @return mixed
      *
      * @todo What is $forceEmail set to? It is being set in places.
      */
-    public function sendIndividualLead($leadId, $user, string $forceEmail = '')
-    {
-        $lead = LeadMails::find($leadId);
-
+    public function sendIndividualLead($user, string $forceEmail = '') {
         $mailable = '';
 
         // If the user has been removed
         // How can we get here if the user does not exist???
-        if ( ! $user)
-        { // Sending an e-mail to a non-user
-            $lead->agent_id = -1;
-
-            if(defined('ENABLE_MAILER') && ENABLE_MAILER)
-            {
-                $mailable = Mail::to($forceEmail)->send(new LeadSent($lead));
+        if ( ! $user) { // Sending an e-mail to a non-user
+            $this->lead->agent_id = -1;
+            if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
+                $mailable = Mail::to($forceEmail)->send(new LeadSent($this->lead));
             }
             //@todo - 3 -Fix Logic - What is $forceEmail is not set?
-        } else
-        {
-            if ($lead->agent_id > 0)
-            {
-                $lead->old_agent_id = $lead->agent_id;
-                $lead->old_assigned_date = $lead->assigned_date;
+        } else {
+            if ($this->lead->agent_id > 0) {
+                $this->lead->old_agent_id = $this->lead->agent_id;
+                $this->lead->old_assigned_date = $this->lead->assigned_date;
             }
-            $lead->agent_id = $user->id;
-            $lead->assigned_date = Carbon::now();
+            $this->lead->agent_id = $user->id;
+            $this->lead->assigned_date = Carbon::now();
 
             // We need to send the attachment as well
-            if(defined('ENABLE_MAILER') && ENABLE_MAILER)
-            {
-                $mailable = Mail::to($user->email)->send(new LeadSent($lead));
+            if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
+                $mailable = Mail::to($user->email)->send(new LeadSent($this->lead));
             }
         }
 
-        $lead->save();
+        $this->lead->save();
 
         return $mailable;
     }
 
-    public function downloadAttachment($leadId)
-    {
+    public function downloadAttachment($leadId) {
         $lead = LeadMails::find($leadId);
 
         return redirect(Storage::url($lead->attachment));
@@ -517,24 +409,25 @@ class MailBoxController extends Controller {
      * @param $leadId
      * @return false|string
      */
-    public function getBody($leadId)
-    {
+    public function getBody($leadId) {
         $lead = LeadMails::find($leadId);
         $content = $this->parseMailBody($lead->body);
 
         return json_encode(array('body' => base64_encode($content)));
     }
 
-    public function getReassigned($leadId)
-    {
+    /**
+     * @param $leadId
+     * @return false|string
+     */
+    public function getReassigned($leadId) {
         $lead = LeadMails::find($leadId);
         $content = $this->parseMailBody($lead->reassigned_message);
 
         return json_encode(array('body' => base64_encode(explode('On', $content)[0])));
     }
 
-    public function getRejected($leadId)
-    {
+    public function getRejected($leadId) {
         $lead = LeadMails::find($leadId);
         $content = $this->parseMailBody($lead->rejected_message);
 
@@ -547,14 +440,11 @@ class MailBoxController extends Controller {
      * @param $content
      * @return string
      */
-    private function parseMailBody($content)
-    {
+    private function parseMailBody($content) {
         //@todo - 2 - not tested with text email
-        if ($this->isHTML($content))
-        {
+        if ($this->isHTML($content)) {
             $content = preg_replace("/\r\n/", "", $content);
-        } else
-        {
+        } else {
             $content = nl2br($content);
         }
 
@@ -562,8 +452,7 @@ class MailBoxController extends Controller {
     }
 
 
-    public function report(Request $request, $dateFrom, $dateTo)
-    {
+    public function report(Request $request, $dateFrom, $dateTo) {
 
         $leads = \DB::select(\DB::raw(
             "
@@ -603,8 +492,7 @@ class MailBoxController extends Controller {
         return $leads;
     }
 
-    public function reportEmail(Request $request, $dateFrom, $dateTo)
-    {
+    public function reportEmail(Request $request, $dateFrom, $dateTo) {
 
         $leads = \DB::select(\DB::raw(
             "
@@ -637,69 +525,14 @@ class MailBoxController extends Controller {
             GROUP BY LM.agent_id
             "
         ));
-        if(defined('ENABLE_MAILER') && ENABLE_MAILER)
-        {
+        if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
             Mail::to(Auth::user()->email)
                 ->bcc('timbrownlaw@gmail.com')
                 ->bcc('visiontocode2022@gmail.com')
                 ->send(new ReportMail($leads, $dateFrom, $dateTo));
         }
+
         return json_encode(array('type' => 'SUCCESS', 'message' => 'E-mail Report was sent to ' . Auth::user()->email));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return void
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return void
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return void
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param int     $id
-     * @return void
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -709,8 +542,7 @@ class MailBoxController extends Controller {
      * @return RedirectResponse
      * @throws Exception
      */
-    public function destroy($leadId): RedirectResponse
-    {
+    public function destroy($leadId): RedirectResponse {
         $lead = LeadMails::find($leadId);
         $lead->delete();
 
@@ -725,27 +557,63 @@ class MailBoxController extends Controller {
      * @param $text
      * @param $line
      */
-    private function echod($color, $text, $line)
-    {
-        if (config('app.debug'))
-        {
+    private function echod($color, $text, $line) {
+        if (config('app.debug')) {
             Colors::nobr()->green("Line: " . $line . ' ');
             Colors::{$color}(' ' . $text);
-        } else
-        {
+        } else {
             echo $text;
         }
-
     }
 
     /**
-     *
-     *
      * @param $string
      * @return bool
      */
-    private function isHTML($string)
-    {
+    private function isHTML($string) {
         return ($string != strip_tags($string));
     }
+
+    /**
+     * @return void
+     */
+    private function detect_console_command() {
+        // Added for debug
+        if (config('app.debug')) {
+            if (app()->runningInConsole()) {
+                $this->echod('red', "Running MalBoxController in Console", __LINE__);
+            }
+        }
+    }
+
+    /**
+     * @return \Client|\Webklex\IMAP\Client
+     * @throws ConnectionFailedException
+     */
+    private function connect_to_imap_server() {
+        $oClient = Client::account('default');
+        $oClient->connect();
+
+        return $oClient;
+    }
+
+    /**
+     * @param $oClient
+     * @return array
+     */
+    private function determine_mailboxes($oClient) {
+        if (strpos(config('app.url'), 'cruisertravels') !== FALSE) {
+            // This is for the leads.cruisertravels.com
+            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('Junk Email')];
+        } else if (strpos(config('app.url'), 'joesdigitalservices') !== FALSE) {
+            // This is for cruiser.joesdigitalservices.com
+            $aFolder = [$oClient->getFolder('INBOX'), $oClient->getFolder('INBOX.spam')];
+        } else {
+            // Fall back to the Base INBOX
+            $aFolder = [$oClient->getFolder('INBOX')];
+        }
+
+        return $aFolder;
+    }
+
 }

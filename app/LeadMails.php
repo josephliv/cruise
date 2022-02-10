@@ -10,7 +10,7 @@ use Illuminate\Support\Carbon;
 /**
  * App\LeadMails
  *
- * @property mixed          to_group
+ * @property mixed          $to_group
  * @property int            $id
  * @property string|null    $email_imap_id
  * @property string         $email_from
