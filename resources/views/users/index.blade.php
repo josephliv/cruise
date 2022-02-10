@@ -32,6 +32,7 @@
                         <div class="card-body table-full-width table-responsive">
                             <table class="table table-hover table-striped">
                                 <thead>
+                                    <th>{{ __('Id') }}</th>
                                     <th>{{ __('Name') }}</th>
                                     <th>{{ __('Email') }}</th>
                                     <th>{{ __('Start') }}</th>
@@ -40,6 +41,7 @@
                                 </thead>
                                 <tfoot>
                                     <tr>
+                                        <th>{{ __('Id') }}</th>
                                         <th>{{ __('Name') }}</th>
                                         <th>{{ __('Email') }}</th>
                                         <th>{{ __('Start') }}</th>
@@ -51,6 +53,7 @@
 
                                     @foreach ($users as $user)
                                         <tr>
+                                            <td>{{ $user->id }}</td>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->created_at }}</td>
