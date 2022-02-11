@@ -34,7 +34,10 @@
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
         <!-- CSS mostly for custom changes such as the dropdown menu -->
+
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet" >
+
     </head>
 
     <body>
@@ -63,6 +66,7 @@
     </body>
         <!--   Core JS Files   -->
     <script src="{{ asset('light-bootstrap/js/core/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('light-bootstrap/js/core/popper.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('light-bootstrap/js/core/bootstrap.min.js') }}" type="text/javascript"></script>
 
@@ -73,6 +77,27 @@
     <script src="{{ asset('light-bootstrap/js/plugins/bootstrap-notify.js') }}"></script>
 
     @stack('js')
+    <script>
+      $(document).ready( function () {
+      $('#lead-table0').DataTable(
+        {
+        "order": [[ 0, "desc" ]]
+        }
+      );
+      $('#lead-table1').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table2').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table3').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table4').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      } );
+    </script>
     <script>
       $(document).ready(function () {
 
