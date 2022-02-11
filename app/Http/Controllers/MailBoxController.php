@@ -48,13 +48,15 @@ class MailBoxController extends Controller {
     public function index() {
         $this->detect_console_command();
 
-        $this->echod('red',"Processing Mailboxes - Version 2.0", __LINE__);
+        $this->echod('red', "Processing Mailboxes - Version 2.0", __LINE__);
 
         $oClient = $this->connect_to_imap_server();
         // Create an array of Mailbox Folder(s) we want to check
         $aFolder = $this->determine_mailboxes($oClient);
         // Process Each Mail Box
         foreach ($aFolder as $oFolder) {
+            $this->lead = new LeadMails();
+
             $this->echod('yellow', 'Processing: ' . $oFolder->name, __LINE__);
             $aMessage = $oFolder->query(NULL)->unseen()->limit(5)->since(Carbon::now()->subDays(9))->get();
 
@@ -63,6 +65,7 @@ class MailBoxController extends Controller {
                 $subject_array = explode('-||', $oMessage->getSubject());
                 $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
 
+                // This is the only place a lead is retrieved from the Database or saved...So sending before a lead is saved is nuts
                 if ($originalMessageId) {
                     $this->lead = LeadMails::find($originalMessageId);
                 } else {
@@ -88,33 +91,34 @@ class MailBoxController extends Controller {
                     if ($isMessageSpam) {
                         $this->lead->rejected = 1;
                         $this->lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $this->lead->body);
-                        // Need to save
                         $this->lead->save();
                     } elseif ($isMessageTest) {
                         $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
                     } elseif ($isMessageReassignment) {
+                        $this->echod('white', 'Agent Reassigning the Lead', __LINE__);
                         $this->newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
                         $isValidAgentEmail = $this->newUser->count();
+                        $agent_email = $isValidAgentEmail ? $this->newUser->values()[0]->email : 'We cannot find it';
+                        $this->echod('yellow', 'Trying to Send to ' . $agent_email, __LINE__);
                         if ($isValidAgentEmail) {
+                            $this->echod('green', 'Agent Email is Valid', __LINE__);
                             $this->lead->reassigned_message = str_replace(explode(' ', strip_tags($this->body))[0], '', $emailContent);
                             $this->lead->save();
-                            $this->sendIndividualLead($this->newUser->first());
+                            $this->sendIndividualLead($originalMessageId, $this->newUser->first());
                         } else {
                             if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
-                                // @todo - 1 - ErrorMail Class does not attach the attachment
+                                $this->echod('red', 'Agent Email is INVALID', __LINE__);
                                 Mail::to($this->lead->agent()->first()->email)->bcc('timbrownlaw@gmail.com')->send(new ErrorMail($this->lead, 'Agent not found with e-mail: ' . explode('!', $emailFirstWord)[0] . '. Please check the spelling.'));
                             }
                         }
                     }
-                } else { //Count as a new Lead
-                    // Where we have no subject line Message ID so check it against all known Imap Ids
-                        $this->save_new_lead($oMessage);
-                        $this->echod('white', 'New Lead Saved', __LINE__);
-                    }
+                } else {
+                    $this->save_new_lead($oMessage);
+                    $this->echod('white', 'New Lead Saved', __LINE__);
                 }
             }
         }
-
+    }
 
     /**
      * Extract any added text to the beginning of an existing string
@@ -140,9 +144,11 @@ class MailBoxController extends Controller {
      * @param bool $test
      */
     private function save_new_lead($oMessage, bool $test = FALSE) {
+        $this->lead = new LeadMails();
+        $this->lead->agent_id = 0;
         $this->lead->email_imap_id = $oMessage->message_id;
         $this->lead->email_from = $oMessage->getFrom()[0]->mail; // @TB Correct
-        $this->lead->agent_id = 0;
+
         $this->lead->subject = $oMessage->getSubject();
         $this->lead->body = $this->body;
         $this->lead->attachment = $this->attachment_filename;
@@ -167,7 +173,11 @@ class MailBoxController extends Controller {
      *
      */
     private function apply_rules_and_priorities() {
+        $this->echod('yellow', 'Checking Rules and Priorities: ', __LINE__);
         foreach (Priority::all() as $priority) {
+
+            $this->echod('green', 'Rules Checked: ' . $priority->condition, __LINE__);
+
             switch ($priority->field) {
                 case 1: // Subject
                 {
@@ -175,7 +185,7 @@ class MailBoxController extends Controller {
                         echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
                         $this->echod('green', 'P Subject: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
 
-                        $this->send_lead_to_destination($this->lead, $priority);
+                        $this->send_lead_to_destination($priority);
                         break 2;
                     }
                     break;
@@ -186,7 +196,7 @@ class MailBoxController extends Controller {
                         echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
                         $this->echod('green', 'P Email: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
 
-                        $this->send_lead_to_destination($this->lead, $priority);
+                        $this->send_lead_to_destination($priority);
                         break 2;
                     }
                     break;
@@ -234,8 +244,7 @@ class MailBoxController extends Controller {
      * @return void
      * @property $attachment_filename
      */
-    private
-    function save_attachment($oMessage) {
+    private function save_attachment($oMessage) {
 
         if ($oMessage->getAttachments()->count()) {
             $attachment = $oMessage->getAttachments()->first();
@@ -248,7 +257,7 @@ class MailBoxController extends Controller {
         }
     }
 
-    public function manage($request) {
+    public function manage(Request $request) {
         if ( ! count($request->input())) {
             $leadMails = LeadMails::orderBy('id', 'asc')
                                   ->limit(1)
@@ -279,22 +288,21 @@ class MailBoxController extends Controller {
     }
 
     /**
-     * @param         $request
+     * @param Request $request
      * @param         $leadId
      * @param         $userId
      * @return false|string
      */
-    public function transferLead($request, $leadId, $userId) {
+    public function transferLead(Request $request, $leadId, $userId) {
 
         $user = User::where('id', $userId)->first();
         if ($user) {
-            $lead = $this->sendIndividualLead($user, $user->email);
+            $lead = $this->sendIndividualLead($leadId, $user, $user->email);
 
             return json_encode(array('success' => 'Lead #' . $leadId . ' successfully transferred to agent: ' . $user->email));
         } else {
             return json_encode(array('error' => 'User ID: ' . $userId . ' not found'));
         }
-
     }
 
     /**
@@ -364,8 +372,10 @@ class MailBoxController extends Controller {
      *
      * @todo What is $forceEmail set to? It is being set in places.
      */
-    public function sendIndividualLead($user, string $forceEmail = '') {
+    public function sendIndividualLead($leadId, $user, string $forceEmail = '') {
         $mailable = '';
+        // We need to get the message id
+        $this->lead = LeadMails::find($leadId);
 
         // If the user has been removed
         // How can we get here if the user does not exist???
@@ -556,7 +566,7 @@ class MailBoxController extends Controller {
      */
     private function echod($color, $text, $line) {
         if (config('app.debug')) {
-            Colors::nobr()->green("Line: " . $line . ' ');
+            Colors::nobr()->green("Line: " . $line . "\t\t");
             Colors::{$color}(' ' . $text);
         } else {
             echo $text;
