@@ -79,10 +79,23 @@
     @stack('js')
     <script>
       $(document).ready( function () {
-      $('#lead-table1').DataTable();
-      $('#lead-table2').DataTable();
-      $('#lead-table3').DataTable();
-      $('#lead-table4').DataTable();
+      $('#lead-table0').DataTable(
+        {
+        "order": [[ 0, "desc" ]]
+        }
+      );
+      $('#lead-table1').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table2').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table3').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table4').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
       } );
     </script>
     <script>
