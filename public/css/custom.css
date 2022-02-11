@@ -1080,7 +1080,9 @@
     color: #000!important;
   }
 
-  .table>thead>tr>th {font-size: 14px!important; color: rgb(0, 0, 0);}
-  .table i {font-size: 12px!important;}
+  .table>thead>tr>th {font-size: 14px!important; color: rgb(0, 0, 0); border-bottom: none!important;}
+  .table-responsive i {font-size: 12px!important;}
   .btn {font-size: 1.2rem!important; transition: 0.3s;}
   .btn:hover {background:#dcdff0!important;}
+  .nav-pills .nav-link{color: rgb(226, 99, 14)!important; font-weight: 800;}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {background-color: #d47d1a!important; color: white!important;}
