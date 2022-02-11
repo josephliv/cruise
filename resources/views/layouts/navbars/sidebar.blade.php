@@ -16,13 +16,14 @@
       <li class="nav-item">
         <a class="@if($activePage == 'dashboard') highlight @endif" href="{{route('dashboard')}}" title="Return to the dashboard"><i class="nc-icon nc-chart-pie-35"></i>&nbsp;{{ __("Dashboard") }}</a>
       </li>
+      <li class="nav-item"><a class="@if($activePage == 'leads-management') highlight @endif" href="{{route('emails.manage')}}" title="View or edit the leads"><i class="nc-icon nc-email-85"></i>&nbsp;{{ __("Manage Leads") }}</a></li>
+      <li class="nav-item"><a class="@if($activePage == 'priority-management') highlight @endif" href="{{route('priorities.index')}}" title="View or edit the priorities"><i class="nc-icon nc-preferences-circle-rotate"></i>&nbsp;{{ __("Rules & Priorities") }}</a></li>
+      <li class="nav-item"> <a class="@if($activePage == 'user-management') highlight @endif" href="{{route('user.index')}}" title="View or edit your agents"><i class="nc-icon nc-circle-09"></i>&nbsp;{{ __("Manage Agents") }}</a></li>
       <li class="nav-item">
         <a class="@if($activePage == 'user') highlight @endif" href="{{route('profile.edit')}}" title="View or edit your profile"><i class="nc-icon nc-single-02"></i>&nbsp;{{ __("My Profile") }}</a>
       </li>
-      <li class="nav-item"> <a class="@if($activePage == 'user-management') highlight @endif" href="{{route('user.index')}}" title="View or edit your agents"><i class="nc-icon nc-circle-09"></i>&nbsp;{{ __("Manage Agents") }}</a></li>
-      <li class="nav-item"><a class="@if($activePage == 'leads-management') highlight @endif" href="{{route('emails.manage')}}" title="View or edit the leads"><i class="nc-icon nc-email-85"></i>&nbsp;{{ __("Manage Leads") }}</a></li>
-      <li class="nav-item"><a class="@if($activePage == 'priority-management') highlight @endif" href="{{route('priorities.index')}}" title="View or edit the priorities"><i class="nc-icon nc-preferences-circle-rotate"></i>&nbsp;{{ __("Rules & Priorities") }}</a></li>
-     </ul>
+
+    </ul>
   </div>
 
   <hr style="border-color: #fff; width: 80%; margin: 10px auto;">
