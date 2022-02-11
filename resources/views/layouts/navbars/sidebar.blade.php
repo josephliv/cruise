@@ -2,7 +2,7 @@
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
   <div class="top-part-side-bar">
     <a href="{{route('dashboard')}}">
-      <img style="border-radius: 4px; " src="/light-bootstrap/img/logo.jpg">
+      <img style="border-radius: 4px; " src="/light-bootstrap/img/logo.png">
     </a><p></p>
     Logged in as: <br> {{ \Auth::user()->name }}
   </div>
@@ -10,8 +10,8 @@
     <button class="btn-outline-dark text-light"  href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
       <i class="nc-icon nc-sun-fog-29"></i>&nbsp;{{ __('Log out') }} </button>
   </div>
-  <hr style="border-color: #fff; width: 80%; margin: 20px auto;">
-  <div class="side-bar-links">
+  <hr class="mt-4 border-bottom col-8">
+  <div class="side-bar-links my-4">
     <ul class="nav">
       <li class="nav-item">
         <a class="@if($activePage == 'dashboard') highlight @endif" href="{{route('dashboard')}}" title="Return to the dashboard"><i class="nc-icon nc-chart-pie-35"></i>&nbsp;{{ __("Dashboard") }}</a>
@@ -22,11 +22,10 @@
       <li class="nav-item">
         <a class="@if($activePage == 'user') highlight @endif" href="{{route('profile.edit')}}" title="View or edit your profile"><i class="nc-icon nc-single-02"></i>&nbsp;{{ __("My Profile") }}</a>
       </li>
-
-    </ul>
+     </ul>
   </div>
 
-  <hr style="border-color: #fff; width: 80%; margin: 10px auto;">
+  <hr class="mb-4 border-bottom col-8">
      <div class="side-bar-links">
       <ul class="nav" >
         <li class="nav-item text-center">
