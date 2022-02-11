@@ -47,10 +47,10 @@
                             <button type="submit" class="btn-outline-primary">Submit</button>
                         </div>
                         <!-- Nav tabs -->
-<ul class="nav nav-tabs" id="myTab" role="tablist">
+<ul class="nav nav-pills nav-justified mb-4" id="myTab" role="tablist">
     
   <li class="nav-item">
-    <a class="nav-link active" id="total-tab" data-toggle="tab" href="#totalLeads" role="tab" aria-controls="home" aria-selected="true">Total Leads ({{ $leadMails->count() }}) <?php //This will be added later ?></a>
+    <a class="nav-link active" id="total-tab" data-toggle="tab" href="#totalLeads" role="tab" aria-controls="home" aria-selected="true">Total Leads ({{ $leadMails->count() }})</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" id="home-tab" data-toggle="tab" href="#unassigned" role="tab" aria-controls="home" aria-selected="true">Unassigned ({{$unassignedTotal}})</a>
@@ -74,6 +74,7 @@
                                     <thead>
                                         <th>#</th>
                                         <th>Sender </th>
+                                        <th>Status</th>
                                         <th class="col-md-6">Subject Line </th>
                                         <th>Time/date</th>
                                         <th>Options</th>
@@ -84,7 +85,31 @@
                                         <tr>
                                             <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                             <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
-                                            <td class="col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
+                                            <td class="col-md-3">
+                                            <?php
+                                                if(optional($leadMail)->agent_id == 0){
+                                                    echo 'Unassigned';
+                                                } elseif(optional($leadMail)->rejected > 0){
+                                                    echo 'Rejected by';
+                                                } elseif(optional($leadMail)->old_agent_id > 0){
+                                                    echo 'Reassigned';
+                                                } else {
+                                                    echo 'Assigned';
+                                                }
+                                            ?>
+                                            {{-- @if (optional($leadMail)->agent_id == 0)
+                                                Unassigned
+                                                @elseif (optional($leadMail)->agent_id > 0)
+                                                Assigned to <br> {{ optional(optional($leadMail->agent())->first())->name }}
+                                                @elseif (optional($leadMail)->rejected > 0) 
+                                                Rejected
+                                                @elseif (optional($leadMail)->old_agent_id > 0)
+                                                Reassigned from {{optional(optional(optional($leadMail)->old_agent())->first())->name}} to {{optional(optional(optional($leadMail)->agent())->first())->name}} 
+                                                <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="reassigned" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Reassigned message"></i></a>
+                                            @endif --}}
+                                        </td>
+                                               
+                                            <td class="col-md-4"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
     
                                             <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span> </td>
                                             <td class="d-flex justify-content-end">
@@ -94,6 +119,13 @@
                                                             <a href="#" target="_blank" class="btn disabled btn-link btn-warning edit d-inline-block"><i class="fa fa-paperclip"></i></a>
                                                         @endif
                                                         <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="body" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-file" title="Read full email."></i></a>
+                                                        @if ($leadMail->rejected)
+                                                            <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-type="rejected" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Rejected message"></i></a>
+                                                        @endif
+                                                        <!-- this is suppose to display the reassigned message but it isn't showing the icon -->
+                                                        @if (optional($leadMail)->old_agent_id > 0)
+                                                            <a data-toggle="modal" data-id="{{$leadMail->id}}" data-type="reassigned" data-target="#leadsModal" class="btn btn-link btn-warning getbody d-inline-block"><i class="fa fa-paper-plane" title="Reassigned message"></i></a>
+                                                        @endif
                                                         <a data-toggle="modal" data-id="{{optional($leadMail)->id}}" data-original-user="{{optional(optional($leadMail)->agent)->id}}" data-type="body" data-target="#sendLeadModal" class="btn btn-link btn-warning direct-send-lead d-inline-block"><i class="fa fa-envelope" title="Manually Send Lead"></i></a>
     
                                                         <a class="btn btn-link btn-danger " onclick="confirm('{{ __('Are you sure you want to delete this Lead?') }}') ? window.location.href='{{ route('leads.destroy', optional($leadMail)->id) }}' : ''"s><i class="fa fa-times" title="Delete."></i></a>
@@ -105,7 +137,7 @@
                                 </table>
                         </div>
       </div>
-  <div class="tab-pane active" id="unassigned" role="tabpanel" aria-labelledby="home-tab">
+  <div class="tab-pane" id="unassigned" role="tabpanel" aria-labelledby="home-tab">
     <div id="unassigned">
                             <table class="table table-bordered table-striped  table-responsive" id="lead-table">
                                 <thead>
