@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -32,10 +31,8 @@ class ErrorMail extends Mailable
      */
     public function build()
     {
-        $mailable = $this
-                    ->subject($this->lead->subject . '-||' . $this->lead->id)
-                    ->view('mails.error');
-
-        return $mailable;
+        return $this
+            ->subject($this->lead->subject . ' -||' . $this->lead->id)
+            ->view('mails.error');
     }
 }

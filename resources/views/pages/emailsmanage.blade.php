@@ -281,15 +281,6 @@
         </div>
     </div>
     </div>
-
-
-
-
-<script>
-    $(document).ready( function () {
-    $('#lead-table').DataTable();
-} );
-</script>
 <script>
 function openReport(e, report, caller) {
   var i;
