@@ -82,17 +82,6 @@ class User extends Authenticatable
     {
         return $this->hasOne('App\User', 'id', 'agent_id');
     }
-
-    /**
-     * Only works if the field name matches the primary key name i.e. group_id and not user_group (Bad Name)
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function group()
-    {
-        return $this->belongsTo('App\Group');
-    }
-
     /**
      * Get the users table (for Manage Agents ) and group_name for each user
      *
@@ -108,10 +97,19 @@ class User extends Authenticatable
         return $rows;
     }
 
+
+    /**
+     * Only works if the field name matches the primary key name i.e. group_id and not user_group (Bad Name)
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function group()
+    {
+        return $this->belongsTo('App\Group');
+    }
+
     public function get_group()
     {
-
         return $this->hasOne('App\Group', 'id','user_group');
-
     }
 }

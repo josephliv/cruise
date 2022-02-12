@@ -60,4 +60,5 @@ class Group extends Model {
 
         return $row;
     }
+
 }

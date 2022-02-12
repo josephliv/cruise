@@ -1,8 +1,7 @@
-<?php
+<?php /** @noinspection ALL */
 
 namespace App\Http\Controllers;
 
-use App\DataTables\LeadsDataTable;
 use App\LeadMails;
 use App\Mail\ErrorMail;
 use App\Mail\LeadSent;
@@ -13,10 +12,12 @@ use Auth;
 use Carbon\Carbon;
 use Colors;
 use Exception;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Mail;
 use Storage;
 use Webklex\IMAP\Exceptions\ConnectionFailedException;
@@ -85,8 +86,8 @@ class MailBoxController extends Controller {
                 // Removes the Title Text, the removes all the tags
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 // Replace all occurrences of <br/> or <br> with a space then strip all tags
-                $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
+                $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
                 $isMessageSpam = strpos($emailFirstWord, 'spam') !== FALSE;
                 $isMessageTest = strpos($emailFirstWord, 'test') !== FALSE;
                 $isMessageReassignment = filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL);
@@ -101,6 +102,7 @@ class MailBoxController extends Controller {
                     } elseif ($isMessageTest) {
                         $this->lead->rejected = 1;
                         $this->lead->rejected_message = "Detected as a TEST EMAIL\r\n";
+                        $this->echod('yellow', 'OLD Lead - Detected as Test Email - Rejected', __LINE__);
                         $this->lead->save(); // Save it but reject it immediately
                     } elseif ($isMessageReassignment) {
                         $this->echod('white', 'Agent Reassigning the Lead', __LINE__);
@@ -169,6 +171,9 @@ class MailBoxController extends Controller {
         $this->lead->priority = 100;
 
         if ($test != FALSE) {
+            $this->echod('yellow', 'New Lead - Detected as Test Email - Rejected', __LINE__);
+            $this->lead->agent_id = 0;
+            $this->lead->old_agent_id = 0;
             $this->lead->rejected = 1;
             $this->lead->rejected_message = "Detected as a TEST EMAIL\r\n";
 //            $this->lead->agent_id = 1;
@@ -288,16 +293,13 @@ class MailBoxController extends Controller {
             $dateTo = Carbon::parse($request->input('to-date'))->endOfDay();
         }
         $users = User::all();
-        $leadMails = LeadMails::where('updated_at', '>=', $dateFrom)
-                              ->where('updated_at', '<=', $dateTo)
-                              ->orderBy('id', 'desc')->get();
+        $leadMails = LeadMails::where('lead_mails.updated_at', '>=', $dateFrom)
+                              ->where('lead_mails.updated_at', '<=', $dateTo)
+                              ->join('groups', 'groups.id', '=', 'lead_mails.to_group')
+                              ->orderBy('lead_mails.id', 'desc')->get(['lead_mails.*','groups.name as group_name']);
+
 
         return view('pages.emailsmanage', compact('leadMails', 'dateFrom', 'dateTo', 'users'));
-    }
-
-    public function datatables(LeadsDataTable $dataTable) {
-
-        //dataTable($query)
     }
 
     /**
@@ -379,6 +381,7 @@ class MailBoxController extends Controller {
 
     /**
      *
+     * @param        $leadId
      * @param        $user
      * @param string $forceEmail
      * @return mixed
@@ -406,7 +409,6 @@ class MailBoxController extends Controller {
             $this->lead->agent_id = $user->id;
             $this->lead->assigned_date = Carbon::now();
 
-            // We need to send the attachment as well
             if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
                 $mailable = Mail::to($user->email)->send(new LeadSent($this->lead));
             }
@@ -417,6 +419,10 @@ class MailBoxController extends Controller {
         return $mailable;
     }
 
+    /**
+     * @param $leadId
+     * @return Application|RedirectResponse|Redirector
+     */
     public function downloadAttachment($leadId) {
         $lead = LeadMails::find($leadId);
 
@@ -455,8 +461,6 @@ class MailBoxController extends Controller {
     }
 
     /**
-     *
-     *
      * @param $content
      * @return string
      */
@@ -471,9 +475,13 @@ class MailBoxController extends Controller {
         return $content;
     }
 
-
+    /**
+     * @param Request $request
+     * @param         $dateFrom
+     * @param         $dateTo
+     * @return array
+     */
     public function report(Request $request, $dateFrom, $dateTo) {
-
         $leads = \DB::select(\DB::raw(
             "
             SELECT 	LM.agent_id,

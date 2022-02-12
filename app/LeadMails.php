@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -55,7 +56,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder|LeadMails whereToGroup($value)
  * @method static Builder|LeadMails whereToVeteran($value)
  * @method static Builder|LeadMails whereUpdatedAt($value)
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class LeadMails extends Model {
 
@@ -71,17 +72,10 @@ class LeadMails extends Model {
      * @return HasOne
      * @todo - minor - PHPStorm not seeing it being used
      */
-    public function group_name()
-    {
-        return $this->hasOne('App\Group', 'id', 'to_group');
-    }
-
-    /**
-     * @return HasOne
-     * @todo - minor - PHPStorm not seeing it being used
-     */
     public function old_agent()
     {
         return $this->hasOne('App\User', 'id', 'old_agent_id');
     }
+
+
 }
