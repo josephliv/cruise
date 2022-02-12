@@ -63,6 +63,7 @@ class MailBoxController extends Controller {
             // Process Each Message
             foreach ($aMessage as $oMessage) {
                 $subject_array = explode('-||', $oMessage->getSubject());
+
                 $originalMessageId = $subject_array[1] ?? FALSE; // Either get a ID or its 0
 
                 // This is the only place a lead is retrieved from the Database or saved...So sending before a lead is saved is nuts
@@ -79,12 +80,17 @@ class MailBoxController extends Controller {
                 }
 
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
+                /** @todo Do we need this */
+
+                // Removes the Title Text, the removes all the tags
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
+                // Replace all occurrences of <br/> or <br> with a space then strip all tags
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
                 $isMessageSpam = strpos($emailFirstWord, 'spam') !== FALSE;
                 $isMessageTest = strpos($emailFirstWord, 'test') !== FALSE;
                 $isMessageReassignment = filter_var(explode('!', $emailFirstWord)[0], FILTER_VALIDATE_EMAIL);
+
                 $isExistingLead = $this->lead && $this->lead->count();
 
                 if ($isExistingLead) {
@@ -93,13 +99,16 @@ class MailBoxController extends Controller {
                         $this->lead->rejected_message = $this->extract_rejected_message_from_body($emailContent, $this->lead->body);
                         $this->lead->save();
                     } elseif ($isMessageTest) {
-                        $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
+                        $this->lead->rejected = 1;
+                        $this->lead->rejected_message = "Detected as a TEST EMAIL\r\n";
+                        $this->lead->save(); // Save it but reject it immediately
                     } elseif ($isMessageReassignment) {
                         $this->echod('white', 'Agent Reassigning the Lead', __LINE__);
                         $this->newUser = User::where('email', explode('!', $emailFirstWord)[0])->get(['id', 'email']);
                         $isValidAgentEmail = $this->newUser->count();
                         $agent_email = $isValidAgentEmail ? $this->newUser->values()[0]->email : 'We cannot find it';
                         $this->echod('yellow', 'Trying to Send to ' . $agent_email, __LINE__);
+
                         if ($isValidAgentEmail) {
                             $this->echod('green', 'Agent Email is Valid', __LINE__);
                             $this->lead->reassigned_message = str_replace(explode(' ', strip_tags($this->body))[0], '', $emailContent);
@@ -113,8 +122,12 @@ class MailBoxController extends Controller {
                         }
                     }
                 } else {
-                    $this->save_new_lead($oMessage);
-                    $this->echod('white', 'New Lead Saved', __LINE__);
+                    if ($isMessageTest) {
+                        $this->save_new_lead($oMessage, TRUE); // Save it but reject it immediately
+                    } else {
+                        $this->save_new_lead($oMessage);
+                        $this->echod('white', 'New Lead Saved', __LINE__);
+                    }
                 }
             }
         }
@@ -157,9 +170,9 @@ class MailBoxController extends Controller {
 
         if ($test != FALSE) {
             $this->lead->rejected = 1;
-            $this->lead->rejected_message = "Test Email - IGNORE";
-            $this->lead->agent_id = 1;
-            $this->lead->old_agent_id = 1;
+            $this->lead->rejected_message = "Detected as a TEST EMAIL\r\n";
+//            $this->lead->agent_id = 1;
+//            $this->lead->old_agent_id =01;
         }
 
         $this->lead->save();
