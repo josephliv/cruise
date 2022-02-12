@@ -87,6 +87,7 @@ class MailBoxController extends Controller {
                 $this->body = $oMessage->getHTMLBody() ?: $oMessage->getTextBody();
 
                 // @todo - 9 - These need to be tested as I am unsure as to the reasons this is here.
+                //This removes the words between the title tag and grabs the first word in the body. 
                 $emailFirstWord = trim(strtolower(explode(' ', strip_tags(preg_replace('#(<title.*?>).*?(</title>)#', '$1$2', $this->body)))[0]));
                 $emailContent = strip_tags(str_replace('<br/>', ' ', str_replace('<br>', ' ', $this->body)));
 
