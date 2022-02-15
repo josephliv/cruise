@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\LeadMails;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -25,35 +25,45 @@ class HomeController extends Controller
      */
     public function index()
     {
+        // Get an Agents Group Information
+        $resultGroups = new \App\Group;
+        // This can be NULL if user_group = 0 or NULL
+        $userGroup = $resultGroups->group_name(Auth::user()->id);
 
-        
-        if(\Auth::user()->is_admin){
+        $user = array(
+            'group' => $userGroup
+        );
+
+        if (\Auth::user()->is_admin)
+        {
             $leadMails = array(
-                'subDay' => Carbon::now()->startOfDay(),
-                'total' => LeadMails::count(),
-                'available' => LeadMails::where('agent_id', '=', 0)->count(),
-                'totalSent' => LeadMails::where('agent_id', '>', 0)->count(),
+                'subDay'      => Carbon::now()->startOfDay(),
+                'total'       => LeadMails::count(),
+                'available'   => LeadMails::where('agent_id', '=', 0)->count(),
+                'totalSent'   => LeadMails::where('agent_id', '>', 0)->count(),
                 'totalReject' => LeadMails::where('rejected', '=', 1)->count(),
 
-                'total24h' => LeadMails::where('received_date', '>', Carbon::now()->startOfDay())->count(),
-                'totalSent24h' => LeadMails::where('agent_id', '>', 0)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
+                'total24h'       => LeadMails::where('received_date', '>', Carbon::now()->startOfDay())->count(),
+                'totalSent24h'   => LeadMails::where('agent_id', '>', 0)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
                 'totalReject24h' => LeadMails::where('rejected', '=', 1)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
             );
-        } else {
+        } else
+        {
             $leadMails = array(
-                'subDay' => Carbon::now()->startOfDay(),
-                'total' => LeadMails::count(),
-                'available' => LeadMails::where('agent_id', '=', 0)->count(),
-                'totalSent' => LeadMails::where('agent_id', \Auth::user()->id)->count(),
+                'subDay'      => Carbon::now()->startOfDay(),
+                'total'       => LeadMails::count(),
+                // This is where we need to add in any Filtering based upon an Agents Group
+                'available'   => LeadMails::where('agent_id', '=', 0)->where('to_group', '<=', $userGroup['id'])->count(),
+                'totalSent'   => LeadMails::where('agent_id', \Auth::user()->id)->count(),
                 'totalReject' => LeadMails::where('agent_id', \Auth::user()->id)->where('rejected', '=', 1)->count(),
 
-                'total24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
-                'totalSent24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
+                'total24h'       => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
+                'totalSent24h'   => LeadMails::where('agent_id', \Auth::user()->id)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
                 'totalReject24h' => LeadMails::where('agent_id', \Auth::user()->id)->where('rejected', '=', 1)->where('updated_at', '>', Carbon::now()->startOfDay())->count(),
-            );            
+            );
         }
 
-        $view = \Auth::user()->is_admin ? view('dashboardadmin', compact('leadMails')) : view('dashboardagent', compact('leadMails')); ;
+        $view = \Auth::user()->is_admin ? view('dashboardadmin', compact('leadMails')) : view('dashboardagent', compact('leadMails', 'user'));
         return $view;
     }
 }

@@ -1,4 +1,4 @@
-<!-- 
+<!--
 =========================================================
  Light Bootstrap Dashboard - v2.0.1
 =========================================================
@@ -34,7 +34,10 @@
         <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
         <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
         <!-- CSS mostly for custom changes such as the dropdown menu -->
+
         <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" />
+        <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet" >
+
     </head>
 
     <body>
@@ -43,7 +46,7 @@
             @if (auth()->check() && request()->route()->getName() != "")
                 @if(auth()->check() && ! \Auth::user()->is_admin)
                 @include('layouts.navbars.sidebaragent')
-                
+
                 @else
                   @include('layouts.navbars.sidebar')
                 @endif
@@ -59,10 +62,11 @@
             </div>
 
         </div>
-       
+
     </body>
         <!--   Core JS Files   -->
     <script src="{{ asset('light-bootstrap/js/core/jquery.3.2.1.min.js') }}" type="text/javascript"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="{{ asset('light-bootstrap/js/core/popper.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('light-bootstrap/js/core/bootstrap.min.js') }}" type="text/javascript"></script>
 
@@ -73,6 +77,27 @@
     <script src="{{ asset('light-bootstrap/js/plugins/bootstrap-notify.js') }}"></script>
 
     @stack('js')
+    <script>
+      $(document).ready( function () {
+      $('#lead-table0').DataTable(
+        {
+        "order": [[ 0, "desc" ]]
+        }
+      );
+      $('#lead-table1').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table2').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table3').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      $('#lead-table4').DataTable({
+        "order": [[ 0, "desc" ]]
+        });
+      } );
+    </script>
     <script>
       $(document).ready(function () {
 
@@ -86,26 +111,28 @@
                     console.log(res);
                     $('#detailedReportTable').find('tbody').empty();
                     $('#detailedReportTable').find('tfoot').empty();
-                    leadsTotal = rejectedTotal = 0;
+                    leadsTotal = rejectedTotal = reassignedTotal = 0;
                     for(r in res){
                       date = new Date(res[r].last_lead);
                       formattedDate = date.toLocaleDateString('en-US') + ' ' + date.toLocaleTimeString('en-US');
 
                       leadsTotal    += parseInt(res[r].leads_count);
                       rejectedTotal += parseInt(res[r].leads_rejected);
+                      reassignedTotal += parseInt(res[r].leads_reassigned);
+
                       if(res[r].agent_id == 0){ // This is for unassigned leads
-                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td  class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td  class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td  class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td  class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
+                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td  class="text-left"><span id="time-sent">' + formattedDate + '</span> </td><td  class="text-left"><span id="leads-sent">' + res[r].leads_count + '</span></td><td  class="text-left"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td  class="text-left"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       } else {
-                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td class="text-center"><span id="time-sent">' + formattedDate + '</span> </td><td class="text-center"><span id="leads-sent">' + res[r].leads_count + '</span></td><td class="text-center"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td class="text-center"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
+                        $('#detailedReportTable').find('tbody').append('<tr><td><span id="agent-name">' + res[r].agent_name + '</span></td><td class="text-left"><span id="time-sent">' + formattedDate + '</span> </td><td class="text-left"><span id="leads-sent">' + res[r].leads_count + '</span></td><td class="text-left"><span id="leads-sent">' + res[r].leads_reassigned + '</span></td><td class="text-left"><span id="leads-rejected">' + res[r].leads_rejected + '</span></td></tr>');
                       }
                     }
-                    $('#detailedReportTable').find('tfoot').append('<tr><th colspan="2">TOTAL</th><th colspan="2" class="text-center">' + leadsTotal + '</th><th>' + rejectedTotal + '</th></tr>');
+                    $('#detailedReportTable').find('tfoot').append('<tr><th colspan="2">TOTAL</th><th class="text-left">' + leadsTotal + '</th><th class="text-left">'+ reassignedTotal +'</th><th class="text-left">' + rejectedTotal + '</th></tr>');
                 },
                 error: function(a,b,c){
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });            
+            });
         });
 
         $('#detailedEmailBtn').on('click',function(e){
@@ -121,9 +148,9 @@
                     alert('Something Went Wrong!');
                     console.log(a,b,c);
                 }
-            });            
+            });
         });
-        
+
         $('.removeLead').on('click', function(e){
             e.stopPropagation();
             confirm('You really want to delete this lead?');

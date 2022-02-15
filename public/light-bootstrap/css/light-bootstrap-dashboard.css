@@ -11,7 +11,7 @@
 =========================================================
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.*/
- 
+
 /*      light colors         */
 
 @keyframes spin {
@@ -76,7 +76,7 @@ td,
 button.close {
     -moz-osx-font-smoothing: grayscale;
     -webkit-font-smoothing: antialiased;
-    
+    font-family: "Roboto", "Helvetica Neue", Arial, sans-serif;
     font-weight: 400;
 }
 
@@ -808,7 +808,7 @@ body>.navbar-collapse[data-color="purple"]:after {
     right: -15px;
 }
 
-.modal.show .modal-dialog {
+/* .modal.show .modal-dialog {
     -webkit-transform: translate(0, 30%);
     -o-transform: translate(0, 30%);
     transform: translate(0, 30%);
@@ -817,9 +817,9 @@ body>.navbar-collapse[data-color="purple"]:after {
 .modal.modal-mini .modal-dialog {
     max-width: 255px;
     margin: 0 auto;
-}
+} */
 
-.modal .modal-content .modal-header {
+/* .modal .modal-content .modal-header {
     border-bottom: none;
     padding-top: 24px;
     padding-right: 24px;
@@ -872,7 +872,7 @@ body>.navbar-collapse[data-color="purple"]:after {
 .modal .modal-content .modal-footer .btn:hover,
 .modal .modal-content .modal-footer .btnfocus {
     text-decoration: none;
-}
+} */
 
 .btn {
     border-width: 2px;
@@ -2129,7 +2129,7 @@ fieldset[disabled] .form-control {
 }
 
 .navbar.fixed {
-    width: calc(100% - $sidebar-width);
+    width: calc(100% - 250px);
     right: 0;
     left: auto;
     border-radius: 0;

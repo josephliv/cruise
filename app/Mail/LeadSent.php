@@ -3,9 +3,9 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 class LeadSent extends Mailable
@@ -27,16 +27,25 @@ class LeadSent extends Mailable
     /**
      * Build the message.
      *
-     * @return $this
+     * @return LeadSent $mailable
      */
     public function build()
     {
-        $mailable = $this
-                    ->subject($this->lead->subject . ' -||' . $this->lead->id)
-                    ->replyTo('sales@cruisertravels.com')
-                    ->bcc('timbrownlaw@gmail.com')
-                    ->bcc('joesdigitalservices@gmail.com')
-                    ->view('mails.leadsent');
+
+       if(Config::get('app.env') == 'local') {
+           $mailable = $this
+               ->subject($this->lead->subject . ' -||' . $this->lead->id)
+               ->replyTo('sales@cruiser.joesdigitalservices.com')
+               ->bcc('timbrownlaw@gmail.com')
+               ->view('mails.leadsent');
+       } else {
+           $mailable = $this
+               ->subject($this->lead->subject . ' -||' . $this->lead->id)
+               ->replyTo('sales@cruisertravels.com')
+               ->bcc('timbrownlaw@gmail.com')
+               ->bcc('joesdigitalservices@gmail.com')
+               ->view('mails.leadsent');
+       }
 
         Log::debug($this->lead->attachment);
         if($this->lead->attachment){
@@ -45,7 +54,7 @@ class LeadSent extends Mailable
             if(is_file($attachment)){
                 $mailable->attach($attachment);
             }
-        }        
+        }
 
         return $mailable;
     }
