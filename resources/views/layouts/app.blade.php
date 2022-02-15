@@ -78,20 +78,21 @@
 
     @stack('js')
     <script>
-      $(document).ready( function () {
-      $('#lead-table0').DataTable(
-        {
-        "order": [[ 0, "desc" ]]
-        }
-      );
-      $('#lead-table1').DataTable({
-        "order": [[ 0, "desc" ]]
-        });
-      $('#lead-table2').DataTable({
-        "order": [[ 0, "desc" ]]
-        });
-      $('#lead-table3').DataTable({
-        "order": [[ 0, "desc" ]]
+        $(document).ready(function () {
+            $('#lead-table0').DataTable(
+                {
+                    "order": [[0, "desc"]],
+                    "pageLength": 100
+                }
+            );
+            $('#lead-table1').DataTable({
+                "order": [[0, "desc"]]
+            });
+            $('#lead-table2').DataTable({
+                "order": [[0, "desc"]]
+            });
+            $('#lead-table3').DataTable({
+                "order": [[0, "desc"]]
         });
       $('#lead-table4').DataTable({
         "order": [[ 0, "desc" ]]
