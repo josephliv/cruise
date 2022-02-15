@@ -147,14 +147,16 @@ class MailBoxController extends Controller {
             }
         }
     }
-
-
     /**
      * We want to
      * 1. Remove the existing email body from the DB
      * 2. Remove the Email Address
      * 3. Detect the Reassignment Message ( assume it is on it's own NEW LINE?)
      *
+     * RULES: Reassignment Email and Message must be on a Single Line
+     *
+     * agent@email.com!Whatever they like
+     * <enter>
      *
      * @param $sBody
      * @param $dbBody
