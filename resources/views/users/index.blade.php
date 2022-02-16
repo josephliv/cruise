@@ -6,6 +6,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card data-tables">
+
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
@@ -19,10 +20,12 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="col-12 mt-2">
                             @include('alerts.success')
                             @include('alerts.errors')
                         </div>
+
                         <div class="toolbar">
                             <!--        Here you can write extra buttons/actions for the toolbar              -->
                         </div>
@@ -45,12 +48,15 @@
                                     </tr>
                                 </tfoot>
                                 <tbody>
+
                                     @foreach ($users as $user)
                                         <tr>
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->created_at }}</td>
-                                            <td>{{$user->get_group->name}}</td>
+{{--                                            <td>{{ $user->group_name }}</td>--}}
+                                            <td>{{optional(optional($user)->get_group)->name}}</td>
+
                                             <td class="d-flex justify-content-left">
                                                 @if ($user->id != auth()->id())
                                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit"></i></a>
@@ -75,3 +81,33 @@
         </div>
     </div>
 @endsection
+
+@push('js')
+{{--    <script type="text/javascript">--}}
+{{--        $(document).ready(function() {--}}
+{{--            $('#datatables').DataTable({--}}
+{{--                "pagingType": "full_numbers",--}}
+{{--                "lengthMenu": [--}}
+{{--                    [10, 25, 50, -1],--}}
+{{--                    [10, 25, 50, "All"]--}}
+{{--                ],--}}
+{{--                responsive: true,--}}
+{{--                language: {--}}
+{{--                    search: "_INPUT_",--}}
+{{--                    searchPlaceholder: "Search records",--}}
+{{--                }--}}
+
+{{--            });--}}
+
+
+{{--            var table = $('#datatables').DataTable();--}}
+
+{{--            // Delete a record--}}
+{{--            table.on('click', '.remove', function(e) {--}}
+{{--                $tr = $(this).closest('tr');--}}
+{{--                table.row($tr).remove().draw();--}}
+{{--                e.preventDefault();--}}
+{{--            });--}}
+{{--        });--}}
+{{--    </script>--}}
+@endpush
