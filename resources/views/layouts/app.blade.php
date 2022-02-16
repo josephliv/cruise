@@ -13,60 +13,55 @@
 
  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.  -->
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('light-bootstrap/img/apple-icon.png') }}">
     <link rel="icon" type="image/png" href="{{ asset('light-bootstrap/img/favicon.ico') }}">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
     <title>{{ $title }}</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
-        name='viewport' />
+          name='viewport'/>
     <!--     Fonts and icons     -->
     <!-- <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" /> -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mallanna&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"/>
     <!-- CSS Files -->
-    <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" />
-    <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet" />
+    <link href="{{ asset('light-bootstrap/css/bootstrap.min.css') }}" rel="stylesheet"/>
+    <link href="{{ asset('light-bootstrap/css/light-bootstrap-dashboard.css?v=2.0.0') }} " rel="stylesheet"/>
     <!-- CSS mostly for custom changes such as the dropdown menu -->
 
-    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet" />
+    <link href="{{ asset('/css/custom.css') }}" rel="stylesheet"/>
     <link href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css" rel="stylesheet">
-
 </head>
 
 <body>
-    <div class="wrapper @if (!auth()->check() ||
+<div class="wrapper @if (!auth()->check() ||
     request()->route()->getName() == '') wrapper-full-page @endif">
 
-        @if (auth()->check() &&
-    request()->route()->getName() != '')
-            @if (auth()->check() && !\Auth::user()->is_admin)
-                @include('layouts.navbars.sidebaragent')
+    @if (auth()->check() &&    request()->route()->getName() != '')
+        @if (auth()->check() && !\Auth::user()->is_admin)
+            @include('layouts.navbars.sidebaragent')
 
-            @else
-                @include('layouts.navbars.sidebar')
-            @endif
-
+        @else
+            @include('layouts.navbars.sidebar')
         @endif
 
-        <div class="@if (auth()->check() &&
-    request()->route()->getName() != '') main-panel @endif">
+    @endif
 
-            @include('layouts.navbars.navbar')
+    <div class="@if (auth()->check() &&    request()->route()->getName() != '') main-panel @endif">
 
-            @yield('content')
-            @include('layouts.footer.nav')
-        </div>
+        @include('layouts.navbars.navbar')
 
+        @yield('content')
+        @include('layouts.footer.nav')
     </div>
+
+</div>
 
 </body>
 <!--   Core JS Files   -->
@@ -85,14 +80,15 @@
 <script>
     //Chris didn't request this and doesn't like it! :/
 
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('#lead-table0').DataTable({
             "order": [
                 [0, "desc"]
             ],
             "pageLength": 100,
             "stateSave": true,
-            "stateDuration": -1
+            "stateDuration": -1,
+            // fixedColumns: true
 
         });
         $('#lead-table1').DataTable({
@@ -101,9 +97,8 @@
             ],
             "pageLength": 100,
             "stateSave": true,
-            "stateDuration": -1
-
-
+            "stateDuration": -1,
+            // fixedColumns: true
         });
         $('#lead-table2').DataTable({
             "order": [
@@ -111,7 +106,8 @@
             ],
             "pageLength": 100,
             "stateSave": true,
-            "stateDuration": -1
+            "stateDuration": -1,
+            // fixedColumns: true
         });
         $('#lead-table3').DataTable({
             "order": [
@@ -119,9 +115,8 @@
             ],
             "pageLength": 100,
             "stateSave": true,
-
-            "stateDuration": -1
-
+            "stateDuration": -1,
+            // fixedColumns: true
         });
         $('#lead-table4').DataTable({
             "order": [
@@ -129,21 +124,41 @@
             ],
             "pageLength": 100,
             "stateSave": true,
-            "stateDuration": -1
+            "stateDuration": -1,
+
+            "columnDefs": [
+                { "width": "10%"},
+                { "width": "10%"},
+                { "width": "20%"},
+                { "width": "20%"},
+                { "width": "10%"},
+                { "width": "10%"},
+                { "width": "20%"},
+            ],
+            // columnDefs: [
+            //     null,
+            //     null,
+            //     null,
+            //     null,
+            //     null,
+            //     null,
+            //     null,
+            // ],
+            // fixedColumns: true
 
         });
     });
 </script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-        $('#detailedReportBtn').on('click', function(e) {
+        $('#detailedReportBtn').on('click', function (e) {
             e.stopPropagation();
             $('#detailedReportTable').find('tbody').html(
                 '<tr><td colspan="5">Processing...</td><td></td><td></td><td></td><td></td></tr>');
             $.ajax({
                 url: "/leads/" + $('#from-date').val() + "/" + $('#to-date').val() + "/report/",
-                success: function(result) {
+                success: function (result) {
                     res = result;
                     console.log(res);
                     $('#detailedReportTable').find('tbody').empty();
@@ -187,35 +202,35 @@
                         leadsTotal + '</th><th class="text-left">' + reassignedTotal +
                         '</th><th class="text-left">' + rejectedTotal + '</th></tr>');
                 },
-                error: function(a, b, c) {
+                error: function (a, b, c) {
                     alert('Something Went Wrong!');
                     console.log(a, b, c);
                 }
             });
         });
 
-        $('#detailedEmailBtn').on('click', function(e) {
+        $('#detailedEmailBtn').on('click', function (e) {
             e.stopPropagation();
             $.ajax({
                 url: "/leads/" + $('#from-date').val() + "/" + $('#to-date').val() + "/email/",
-                success: function(result) {
+                success: function (result) {
                     res = JSON.parse(result);
                     console.log(res);
                     alert(res.message);
                 },
-                error: function(a, b, c) {
+                error: function (a, b, c) {
                     alert('Something Went Wrong!');
                     console.log(a, b, c);
                 }
             });
         });
 
-        $('.removeLead').on('click', function(e) {
+        $('.removeLead').on('click', function (e) {
             e.stopPropagation();
             confirm('You really want to delete this lead?');
         });
 
-        $('.getbody').on('click', function(e) {
+        $('.getbody').on('click', function (e) {
             id = $(this).data('id');
             type = $(this).data('type');
 
@@ -224,12 +239,12 @@
             if (type == 'body') {
                 $.ajax({
                     url: "/leads/" + id + "/body",
-                    success: function(result) {
+                    success: function (result) {
                         res = JSON.parse(result);
                         //console.log(atob(res.body));
                         $('#leadsModalBody').html(atob(res.body))
                     },
-                    error: function(a, b, c) {
+                    error: function (a, b, c) {
                         alert('Something Went Wrong!');
                         console.log(a, b, c);
                     }
@@ -239,12 +254,12 @@
             if (type == 'reassigned') {
                 $.ajax({
                     url: "/leads/" + id + "/reassigned",
-                    success: function(result) {
+                    success: function (result) {
                         res = JSON.parse(result);
                         //console.log(atob(res.body));
                         $('#leadsModalBody').html(atob(res.body))
                     },
-                    error: function(a, b, c) {
+                    error: function (a, b, c) {
                         alert('Something Went Wrong!');
                         console.log(a, b, c);
                     }
@@ -254,12 +269,12 @@
             if (type == 'rejected') {
                 $.ajax({
                     url: "/leads/" + id + "/rejected",
-                    success: function(result) {
+                    success: function (result) {
                         res = JSON.parse(result);
                         //console.log(atob(res.body));
                         $('#leadsModalBody').html(atob(res.body))
                     },
-                    error: function(a, b, c) {
+                    error: function (a, b, c) {
                         alert('Something Went Wrong!');
                         console.log(a, b, c);
                     }
@@ -268,12 +283,12 @@
 
         });
 
-        $('.direct-send-lead').on('click', function(e) {
+        $('.direct-send-lead').on('click', function (e) {
             $('#transferLeadId').val($(this).data('id'));
             $('#transferLeadOriginalAgent').val($(this).data('original-user'));
         })
 
-        $('.direct-send-lead-button').on('click', function(e) {
+        $('.direct-send-lead-button').on('click', function (e) {
             var transferLeadId = $('#transferLeadId').val();
             var transferLeadOriginalAgent = $('#transferLeadOriginalAgent').val();
             var transferLeadNewAgent = $('#transferLeadNewAgent').val();
@@ -281,13 +296,13 @@
             if (transferLeadOriginalAgent != transferLeadNewAgent) {
                 $.ajax({
                     url: "/leads/transfer/" + transferLeadId + "/" + transferLeadNewAgent,
-                    success: function(result) {
+                    success: function (result) {
                         res = JSON.parse(result);
                         console.log(res);
                         alert(res.success);
                         location.reload();
                     },
-                    error: function(a, b, c) {
+                    error: function (a, b, c) {
                         alert('Something Went Wrong!');
                         console.log(a, b, c);
                     }
@@ -304,7 +319,7 @@
             enableHover: false,
             enableTracking: false,
             enableCounter: false,
-            click: function(api, options) {
+            click: function (api, options) {
                 api.simulateClick();
                 api.openPopup('facebook');
             },
@@ -319,7 +334,7 @@
             enableCounter: false,
             enableHover: false,
             enableTracking: true,
-            click: function(api, options) {
+            click: function (api, options) {
                 api.simulateClick();
                 api.openPopup('googlePlus');
             },
@@ -339,7 +354,7 @@
                     via: 'CreativeTim'
                 }
             },
-            click: function(api, options) {
+            click: function (api, options) {
                 api.simulateClick();
                 api.openPopup('twitter');
             },
