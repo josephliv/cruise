@@ -29,9 +29,12 @@ class HomeController extends Controller
         $resultGroups = new \App\Group;
         // This can be NULL if user_group = 0 or NULL
         $userGroup = $resultGroups->group_name(Auth::user()->id);
+        $resultUsers = new \App\User;
+        $userInfo = $resultUsers->find(Auth::user()->id);
 
         $user = array(
-            'group' => $userGroup
+            'group' => $userGroup,
+            'userInfo' => $userInfo
         );
 
         if (\Auth::user()->is_admin)
