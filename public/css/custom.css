@@ -973,7 +973,7 @@
     top: 0;
     left: 0;
     background-image: linear-gradient(to right top, #3472f7, #2261d0, #134fab, #083e86, #052e63, #03285c, #022354, #001d4d, #001f5d, #00206d, #00207c, #001f8b);
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
     transition: 0.5s;
     padding-top: 60px;
     box-shadow: 0 5px 0 5px #000;
