@@ -25,14 +25,14 @@
         </style>
         <div class="agent">
 
-            <div class="jumbotron bg-transparent">
+            <div class="jumbotron bg-transparent  border">
                 <div class="text-lg-left">
                     Level: {{$user['group']->name}}<br>
                     <p>Operating Hours: {{$user['userInfo']->time_set_init}} to {{$user['userInfo']->time_set_final}}<br>
                         Local Time: <span id="time"></span>
                 </div>
                 <div class="row">
-                    <table class="table table-bordered " style="width: 400px; ">
+                    <table class="table table-bordered" style="width: 400px; ">
                         <thead>
                         <tr>
                             <td colspan="3">
@@ -180,6 +180,6 @@
     @endif
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.1/moment.min.js"></script>
-
+    <script src="/js/agent.js"></script>
 
 @endsection
