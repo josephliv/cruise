@@ -34,6 +34,10 @@ class MailBoxController extends Controller {
     private $newUser;
     private $emailLeadId;
 
+    // Default priority and Group
+    private $default_priority = 50;
+    private $default_group = 1;
+
     /**
      * @var LeadMails[]|Builder[]|Collection
      */
@@ -247,28 +251,28 @@ class MailBoxController extends Controller {
      */
     private function apply_rules_and_priorities() {
         $this->echod('yellow', 'Checking Rules and Priorities: ', __LINE__);
-        foreach (Priority::all() as $priority) {
 
+        foreach (Priority::all() as $priority) {
             $this->echod('green', 'Rules Checked: ' . $priority->condition, __LINE__);
 
             switch ($priority->field) {
+
                 case 1: // Subject
                 {
                     if (strpos(strtolower($this->lead->subject), strtolower($priority->condition)) !== FALSE) {
                         echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
                         $this->echod('green', 'P Subject: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
-
                         $this->send_lead_to_destination($priority);
                         break 2;
                     }
                     break;
                 }
+
                 case 2: // From Email Address
                 {
                     if (strtolower($this->lead->email_from) == strtolower($priority->condition)) {
                         echo $priority->id . " - " . $priority->description . " - " . $priority->condition . "\r\n";
                         $this->echod('green', 'P Email: ' . $this->lead->subject . ' - ' . $priority->condition, __LINE__);
-
                         $this->send_lead_to_destination($priority);
                         break 2;
                     }
@@ -279,8 +283,14 @@ class MailBoxController extends Controller {
                     break;
                 }
             }
+
+            // So if we get here then we did not have a match
+            $this->lead->priority = $this->default_priority;
+            $this->lead->to_group = $this->default_group;
+            $this->lead->save();
         }
     }
+
 
     /**
      * Send Email as set in rules
@@ -395,7 +405,7 @@ class MailBoxController extends Controller {
      * @todo - 5 - Check-re-enabled the non new group checking
      *
      */
-    public function sendLeads($request) {
+    public function sendLeads() {
         $user = Auth::user();
 
         $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
