@@ -106,7 +106,7 @@
                                                         @endif
                                                     </td>
                                                     <td class="col-md-4"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-                                                    <td>{{($leadMail->group->name)??'All'}}</td>
+                                                    <td>{{($leadMail->group->name)??'N/A'}}</td>
                                                     <td>{{$leadMail->priority}}</td>
                                                     <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
                                                     <td class="d-flex justify-content-end">
@@ -141,6 +141,8 @@
                                             <th>#</th>
                                             <th>Sender</th>
                                             <th>Subject Line</th>
+                                            <th>Group</th>
+                                            <th>Priority</th>
                                             <th>Time/date</th>
                                             <th>Options</th>
                                             </thead>
@@ -151,7 +153,8 @@
                                                         <td><span id="mail-from">{{optional($leadMail)->id}}</span></td>
                                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                                         <td class="col-12 col-md-6"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-
+                                                        <td>{{($leadMail->group->name)??'N/A'}}</td>
+                                                        <td>{{$leadMail->priority}}</td>
                                                         <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
                                                         <td class="d-flex justify-content-center">
                                                             @if(optional($leadMail)->attachment)
@@ -183,6 +186,8 @@
                                             <th>Sender</th>
                                             <th>Subject Line</th>
                                             <th>Agent</th>
+                                            <th>Group</th>
+                                            <th>Priority</th>
                                             <th>Time/date</th>
                                             <th>Options</th>
                                             </thead>
@@ -195,7 +200,8 @@
                                                         <td><span id="mail-from">{{$leadMail->email_from}}</span></td>
                                                         <td class="col-12 col-md-6">{{$leadMail->subject}}</td>
                                                         <td>{{optional(optional($leadMail->agent())->first())->name}}</td>
-
+                                                        <td>{{($leadMail->group->name)??'N/A'}}</td>
+                                                        <td>{{$leadMail->priority}}</td>
                                                         <td><span id="mail-date">{{\Carbon\Carbon::parse($leadMail->received_date)->format('m/d/Y g:i A')}}</span></td>
                                                         <td class="d-flex justify-content-end">
                                                             @if($leadMail->attachment)
@@ -226,6 +232,8 @@
                                             <th>Sender</th>
                                             <th>Subject Line</th>
                                             <th>Agent</th>
+                                            <th>Group</th>
+                                            <th>Priority</th>
                                             <th>Time/date</th>
                                             <th>Options</th>
                                             </thead>
@@ -237,7 +245,8 @@
                                                         <td><span id="mail-from">{{optional($leadMail)->email_from}}</span></td>
                                                         <td class="col-12 col-md-6">{{optional($leadMail)->subject}}</td>
                                                         <td>{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
-
+                                                        <td>{{($leadMail->group->name)??'N/A'}}</td>
+                                                        <td>{{$leadMail->priority}}</td>
                                                         <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
 
                                                         <td class="d-flex justify-content-center">
@@ -273,6 +282,8 @@
                                             <th>Subject Line</th>
                                             <th>Orig. Agent</th>
                                             <th>Curr. Agent</th>
+                                            <th>Group</th>
+                                            <th>Priority</th>
                                             <th>Time/date</th>
                                             <th>Options</th>
                                             </thead>
@@ -285,6 +296,8 @@
                                                         <td><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
                                                         <td>{{optional(optional(optional($leadMail)->old_agent())->first())->name}}</td>
                                                         <td>{{optional(optional(optional($leadMail)->agent())->first())->name}}</td>
+                                                        <td>{{($leadMail->group->name)??'N/A'}}</td>
+                                                        <td>{{$leadMail->priority}}</td>
 
                                                         <td><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
                                                         <td class="d-flex justify-content-center">
