@@ -125,13 +125,13 @@
             }
 
             let timer = document.getElementById('time');
+            let refreshLeadBtnDisableTimeout = 0;
 
             let today = new Date();
             let currentTime = today.toLocaleTimeString('it-IT');
             let allReadyDisabledLeadBtnFlag = false;
             let allReadyEnabledLeadBtnFlag = false;
             checkRequestTimePeriod();
-
 
             function checkRequestTimePeriod() {
                 if (currentTime < time_end && currentTime > time_start) {
@@ -142,7 +142,6 @@
                         leadBtn.innerHTML = 'Request A Lead';
                         allReadyEnabledLeadBtnFlag = true;
                         allReadyDisabledLeadBtnFlag = false;
-
                     }
                 } else {
                     if (allReadyDisabledLeadBtnFlag === false) {
@@ -155,8 +154,6 @@
                     }
                 }
             }
-
-            let refreshLeadBtnDisableTimeout = 0;
 
             function startTime() {
                 let today = new Date();
@@ -174,8 +171,6 @@
             }
 
             startTime();
-
-
         </script>
     @else
         <div class="text-center">
