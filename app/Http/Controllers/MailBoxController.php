@@ -409,11 +409,13 @@ class MailBoxController extends Controller {
         $user = Auth::user();
 
         $currentTime = 1 * (explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[0] . explode(':', explode(' ', Carbon::now()->setTimeZone('America/New_York'))[1])[1]);
+
         $time_set_init = 1 * (explode(':', $user->time_set_init)[0] . explode(':', $user->time_set_init)[1]);
         $time_set_final = 1 * (explode(':', $user->time_set_final)[0] . explode(':', $user->time_set_final)[1]);
 
         //@todo - 2 - Clean up SQL Code
         if (LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed) {
+
             if ($currentTime >= $time_set_init && $currentTime <= $time_set_final) {
                 // This gets the leads for NEW Group Onlu
                 if ($user->user_group == 1) {
@@ -447,7 +449,8 @@ class MailBoxController extends Controller {
                     $lead->save();
                 }
             } else {
-                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
+//                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
+                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time! '.$currentTime.' '.$time_set_init.' '.$time_set_final);
             }
         } else {
             return array('type' => 'ERROR', 'message' => 'You have reached your 24h leads limit!');
