@@ -43,7 +43,7 @@ class Group extends Model {
      * ** Tested TB 27th Jan 2022 **
      * @return Model|\Illuminate\Database\Query\Builder|object|null
      */
-    public function group_name($user_id = 24)
+    public function group_name($user_id)
     {
         $row = \App\Group::select('groups.*', 'users.id as user_id')
             ->join('users', 'users.user_group', '=', 'groups.id')
@@ -60,5 +60,4 @@ class Group extends Model {
 
         return $row;
     }
-
 }

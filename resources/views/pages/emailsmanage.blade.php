@@ -75,6 +75,8 @@
                                             <th>Sender</th>
                                             <th>Status</th>
                                             <th>Subject Line</th>
+                                            <th>Group</th>
+                                            <th>Priority</th>
                                             <th>Time/date</th>
                                             <th>Options</th>
                                             </thead>
@@ -103,9 +105,9 @@
 
                                                         @endif
                                                     </td>
-
                                                     <td class="col-md-4"><span id="mail-subject">{{optional($leadMail)->subject}}</span></td>
-
+                                                    <td>{{($leadMail->group->name)??'All'}}</td>
+                                                    <td>{{$leadMail->priority}}</td>
                                                     <td class="col-md-2"><span id="mail-date">{{\Carbon\Carbon::parse(optional($leadMail)->received_date)->format('m/d/Y g:i A')}}</span></td>
                                                     <td class="d-flex justify-content-end">
                                                         {{-- Attachment --}}

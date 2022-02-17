@@ -77,5 +77,9 @@ class LeadMails extends Model {
         return $this->hasOne('App\User', 'id', 'old_agent_id');
     }
 
+    public function group()
+    {
+        return $this->hasOne('App\Group','id','to_group');
+    }
 
 }
