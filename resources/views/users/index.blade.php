@@ -54,9 +54,7 @@
                                             <td>{{ $user->name }}</td>
                                             <td>{{ $user->email }}</td>
                                             <td>{{ $user->created_at }}</td>
-{{--                                            <td>{{ $user->group_name }}</td>--}}
                                             <td>{{optional(optional($user)->get_group)->name}}</td>
-
                                             <td class="d-flex justify-content-left">
                                                 @if ($user->id != auth()->id())
                                                     <a href="{{ route('user.edit', $user->id) }}" class="btn btn-link btn-warning edit d-inline-block"><i class="fa fa-edit"></i></a>

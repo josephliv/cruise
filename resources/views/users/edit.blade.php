@@ -9,7 +9,7 @@
                         <div class="card-header">
                             <div class="row align-items-center">
                                 <div class="col-8">
-                                    <h3 class="mb-0">{{ __('Edit Agent') }} **</h3>
+                                    <h3 class="mb-0">{{ __('Edit Agent') }}</h3>
                                 </div>
                                 <div class="col-4 text-right">
                                     <a href="{{ route('user.index') }}" class="btn btn-sm btn-default">{{ __('Back to list') }}</a>
@@ -32,7 +32,7 @@
                                             <i class="w3-xxlarge fa fa-user"></i>{{ __('Name') }}
                                         </label>
                                         <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus autocomplete>
-        
+
                                         @include('alerts.feedback', ['field' => 'name'])
                                     </div>
                                     <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
@@ -77,7 +77,7 @@
                                     <div class="text-center">
                                         <button type="submit" class="btn btn-default mt-4">{{ __('Save changes') }}</button>
                                     </div>
-                                    
+
                                 </div>
                             </form>
                         </div>
