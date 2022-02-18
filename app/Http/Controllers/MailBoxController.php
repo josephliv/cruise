@@ -306,7 +306,6 @@ class MailBoxController extends Controller {
         if (trim($priority->send_to_email) != '') {
             $this->newUser = User::where('email', $priority->send_to_email)->get(['id', 'email']);
             if ($this->newUser->count()) {
-                // @todo BUG - We need leadId
                 $this->sendIndividualLead(EMAIL_TYPE_DEFAULT, $this->emailLeadId, $this->newUser->first());
                 $this->echod('yellow', 'Send Lead to: ' . $priority->send_to_email, __LINE__);
             } else {
@@ -379,6 +378,8 @@ class MailBoxController extends Controller {
     }
 
     /**
+     * External Request
+     *
      * @param Request $request
      * @param         $leadId
      * @param         $userId
@@ -413,33 +414,10 @@ class MailBoxController extends Controller {
         $time_set_init = 1 * (explode(':', $user->time_set_init)[0] . explode(':', $user->time_set_init)[1]);
         $time_set_final = 1 * (explode(':', $user->time_set_final)[0] . explode(':', $user->time_set_final)[1]);
 
-        //@todo - 2 - Clean up SQL Code
         if (LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed) {
 
             if ($currentTime >= $time_set_init && $currentTime <= $time_set_final) {
-                // This gets the leads for NEW Group Onlu
-                if ($user->user_group == 1) {
-                    $leadMails = LeadMails::where('rejected', 0)
-                                          ->where('agent_id', 0)
-                                          ->where('to_group', $user->user_group)
-                                          ->orderBy('to_group', 'desc')
-                                          ->orderBy('priority')
-                                          ->orderBy('updated_at')
-                                          ->limit(1)
-                                          ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
-                } else {
-                    // This gets the leads for Higher Groups and Below
-                    //@todo - 2 - need to check the changes
-                    $leadMails = LeadMails::where('rejected', 0)
-                                          ->where('agent_id', '=', 0)
-                                          ->where('to_group', '<=', $user->user_group)
-                        //->whereIn('to_group', [null,0,$user->user_group])
-                        //->whereNull('to_veteran')
-                                          ->orderBy('priority')
-                                          ->orderBy('updated_at')
-                                          ->limit(1)
-                                          ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'rejected', 'to_veteran']);
-                }
+                $leadMails = $this->get_lead_queue();
                 foreach ($leadMails as $lead) {
                     if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
                         Mail::to($user->email)->send(new LeadSent($lead));
@@ -450,7 +428,7 @@ class MailBoxController extends Controller {
                 }
             } else {
 //                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
-                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time! '.$currentTime.' '.$time_set_init.' '.$time_set_final);
+                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time! ' . $currentTime . ' ' . $time_set_init . ' ' . $time_set_final);
             }
         } else {
             return array('type' => 'ERROR', 'message' => 'You have reached your 24h leads limit!');
@@ -458,6 +436,31 @@ class MailBoxController extends Controller {
 
         return array('type' => 'SUCCESS', 'message' => count($leadMails) . ' Lead ' . (count($leadMails) > 1 ? 'have' : 'has') . ' been sent to your e-mail!', 'leads' => count($leadMails));
 
+    }
+
+
+    /**
+     * Leads are fetched by lowest priority and oldest updated_at.
+     * New Group Agents only get New Group Leads.
+     *
+     * For Non New Group Members, they are not sorted by group
+     *
+     * @param $group_id
+     * @return LeadMails[]|Builder[]|Collection|\Illuminate\Database\Query\Builder[]|\Illuminate\Support\Collection
+     *
+     * @todo -2- Review the get columns. Which ones do we actually need?
+     */
+    public function get_lead_queue($group_id, $limit = 1) {
+        $operator = ($group_id == 1) ? '=' : '<=';
+        $leadMails = LeadMails::where('rejected', 0)
+                              ->where('agent_id', $operator, 0)
+                              ->where('to_group', '<=', $group_id)
+                              ->orderBy('priority')                     // Lowest Priority
+                              ->orderBy('updated_at')                   // Oldest Lead
+                              ->limit($limit)
+                              ->get(['id', 'email_from', 'agent_id', 'subject', 'body', 'attachment', 'received_date', 'priority', 'to_group', 'rejected']);
+
+        return $leadMails;
     }
 
     /**
@@ -518,7 +521,6 @@ class MailBoxController extends Controller {
         }
 
         if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
-            // @todo -2- Just check what comes back and see if we should be using it?
             $mailable = Mail::to($mail_to)->send(new LeadSent($this->lead));
         }
 
