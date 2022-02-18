@@ -3,7 +3,6 @@
 
 @section('content')
     @if (ENABLE_MAILER)
-        {
         <style>
             .agent {
                 display: flex;
@@ -21,14 +20,12 @@
                 scrollbar-width: none;
                 /* Firefox */
             }
-
         </style>
         <div class="agent">
-
-            <div class="jumbotron bg-transparent  border">
+            <div class="jumbotron bg-transparent">
                 <div class="text-lg-left">
-                    Level: {{$user['group']->name}}<br>
-                    <p>Operating Hours: {{$user['userInfo']->time_set_init}} to {{$user['userInfo']->time_set_final}}<br>
+                    Level: {{$group->name}}<br>
+                    <p>Operating Hours: {{$userInfo->time_set_init}} to {{$userInfo->time_set_final}}<br>
                         Local Time: <span id="time"></span>
                 </div>
                 <div class="row">
@@ -36,7 +33,7 @@
                         <thead>
                         <tr>
                             <td colspan="3">
-                                <img class="m-4" src="/light-bootstrap/img/logo.png">
+                                <img alt="Cruiser Travel Leads Logo - Sidebar" class="m-4" src="/light-bootstrap/img/logo.png">
                             </td>
                         </tr>
                         <tr>
@@ -94,9 +91,40 @@
             </div>
         </div>
 
+        @if($lead)
+            <div class="container">
+                <div class="row">
+                    <div style="display:inline-table">
+                        <h2>Available Leads</h2>
+                        <table role="table" class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>agent_id</th>
+                                <th>old_agent_id</th>
+                                <th>group</th>
+                                <th>priority</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            @foreach($lead as $item)
+                                <tr>
+                                    <td>{{ $item->id}} </td>
+                                    <td>{{ $item->agent_id }}</td>
+                                    <td>{{ $item->old_agent_id??'NULL'}}</td>
+                                    <td>{{ $item->to_group??'NULL'}}</td>
+                                    <td>{{ $item->priority??'NULL'}}</td>
+                                </tr>
+                            @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        @endif
         <script type="text/javascript">
-            let time_start = '{{$user['userInfo']->time_set_init}}';
-            let time_end = '{{$user['userInfo']->time_set_final}}';
+            let time_start = '{{$userInfo->time_set_init}}';
+            let time_end = '{{$userInfo->time_set_final}}';
 
             const leadBtn = document.querySelector("#generateLeadBtn");
 
@@ -165,7 +193,7 @@
                 } else {
                     refreshLeadBtnDisableTimeout += 1;
                 }
-                t = setTimeout(function () {
+                let t = setTimeout(function () {
                     startTime()
                 }, 500);
             }
