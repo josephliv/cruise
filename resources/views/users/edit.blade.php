@@ -31,25 +31,25 @@
                                         <label class="form-control-label" for="input-name">
                                             <i class="w3-xxlarge fa fa-user"></i>{{ __('Name') }}
                                         </label>
-                                        <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus>
+                                        <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus autocomplete="false">
 
                                         @include('alerts.feedback', ['field' => 'name'])
                                     </div>
                                     <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                         <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
-                                        <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required>
+                                        <input type="email" name="email"  class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required onfocus="this.removeAttribute('readonly');" autocomplete="off">
 
                                         @include('alerts.feedback', ['field' => 'email'])
                                     </div>
                                     <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
                                         <label class="form-control-label" for="input-password">{{ __('Password') }}</label>
-                                        <input type="password" name="password" id="input-password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" value="">
+                                        <input type="password" name="password"  class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" placeholder="{{ __('Password') }}" value="" autocomplete="new-password">
 
                                         @include('alerts.feedback', ['field' => 'password'])
                                     </div>
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-password-confirmation">{{ __('Confirm Password') }}</label>
-                                        <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="">
+                                        <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control" placeholder="{{ __('Confirm Password') }}" value="" autocomplete="false">
                                     </div>
                                     <div class="form-group">
                                         <label class="form-control-label" for="input-user-group">{{ __('User Level') }}</label>
@@ -61,17 +61,17 @@
                                     </div>
                                     <div class="user-attributes form-group" style="@if($user->user_group == 5) {{'display:none'}} @endif" >
                                         <label class="form-control-label" for="input-leads-allowed">{{ __('Leads Allowed') }}</label>
-                                        <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="{{ old('leads_allowed', $user->leads_allowed) }}">
+                                        <input type="number" name="leads_allowed" id="input-leads_allowed" class="form-control" placeholder="50" value="{{ old('leads_allowed', $user->leads_allowed) }}" autocomplete="false">
                                     </div>
                                     <label class="user-attributes form-control-label" for="time_set_init"  style="@if($user->user_group == 5) {{'display:none'}} @endif" >{{ __('Select Time Period:') }}</label>
                                     <div class="user-attributes row" style="@if($user->user_group == 5) {{'display:none'}} @endif" >
                                         <div class="col-md-6 form-group">
                                             <label class="form-control-label" for="input-time_set_init">{{ __('Initial') }}</label>
-                                            <input type="time" name="time_set_init" id="time_set_init" class="user-attributes form-control" placeholder="09:00" value="{{ old('time_set_init', $user->time_set_init) }}">
+                                            <input type="time" name="time_set_init" id="time_set_init" class="user-attributes form-control" placeholder="09:00" value="{{ old('time_set_init', $user->time_set_init) }}" autocomplete="false">
                                         </div>
                                         <div class="col-md-6 form-group">
                                             <label class="form-control-label" for="input-time_set_final">{{ __('Final') }}</label>
-                                            <input type="time" name="time_set_final" id="time_set_final" class="user-attributes form-control" placeholder="17:00" value="{{ old('time_set_final', $user->time_set_final) }}">
+                                            <input type="time" name="time_set_final" id="time_set_final" class="user-attributes form-control" placeholder="17:00" value="{{ old('time_set_final', $user->time_set_final) }}" autocomplete="false">
                                         </div>
                                     </div>
                                     <div class="text-center">
