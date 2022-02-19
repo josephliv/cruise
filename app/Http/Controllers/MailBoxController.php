@@ -417,7 +417,7 @@ class MailBoxController extends Controller {
         if (LeadMails::where('agent_id', $user->id)->where('updated_at', '>', Carbon::now()->subDay())->count() < $user->leads_allowed) {
 
             if ($currentTime >= $time_set_init && $currentTime <= $time_set_final) {
-                $leadMails = $this->get_lead_queue();
+                $leadMails = $this->get_lead_queue($user->user_group);
                 foreach ($leadMails as $lead) {
                     if (defined('ENABLE_MAILER') && ENABLE_MAILER) {
                         Mail::to($user->email)->send(new LeadSent($lead));
@@ -427,7 +427,6 @@ class MailBoxController extends Controller {
                     $lead->save();
                 }
             } else {
-//                return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time!');
                 return array('type' => 'ERROR', 'message' => 'You are operating outside of your allowed allocated time! ' . $currentTime . ' ' . $time_set_init . ' ' . $time_set_final);
             }
         } else {
@@ -435,9 +434,7 @@ class MailBoxController extends Controller {
         }
 
         return array('type' => 'SUCCESS', 'message' => count($leadMails) . ' Lead ' . (count($leadMails) > 1 ? 'have' : 'has') . ' been sent to your e-mail!', 'leads' => count($leadMails));
-
     }
-
 
     /**
      * Leads are fetched by lowest priority and oldest updated_at.
