@@ -31,13 +31,13 @@
                                         <label class="form-control-label" for="input-name">
                                             <i class="w3-xxlarge fa fa-user"></i>{{ __('Name') }}
                                         </label>
-                                        <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus autocomplete>
+                                        <input type="text" name="name" id="input-name" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" placeholder="{{ __('Name') }}" value="{{ old('name', $user->name) }}" required autofocus>
 
                                         @include('alerts.feedback', ['field' => 'name'])
                                     </div>
                                     <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
                                         <label class="form-control-label" for="input-email">{{ __('Email') }}</label>
-                                        <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required autocomplete>
+                                        <input type="email" name="email" id="input-email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" placeholder="{{ __('Email') }}" value="{{ old('email', $user->email) }}" required>
 
                                         @include('alerts.feedback', ['field' => 'email'])
                                     </div>
